@@ -1,0 +1,15 @@
+# Datasets and derived data (never committed)
+data/
+# Large / generated outputs
+results/
+*.pkl
+*.h5
+*.npy
+*.npz
+*.parquet
+*.zip
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
