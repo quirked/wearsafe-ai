@@ -424,3 +424,12 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none blocking. Approval is needed for the full D02 run (15 subjects, tag `v1`).
 
 **Next step (waiting for user approval):** full D02 run. D03 is not started.
+
+## 2026-10-12 04:28 — D02 — Correction: entry timestamps
+**What I did:** The headings of the two previous entries say 04:45 and 05:00, which is later than when they were written. The work actually finished at about 04:28 (system clock). The entries were not edited, because the log is append-only; this note corrects them. Their order is correct.
+**Files created/changed:** PROJECT_LOG.md (this entry only).
+**Checks run and results:** none.
+**Decisions made (and why):** none.
+**Problems / surprises:** none.
+**Open questions for the user:** none.
+**Next step (waiting for user approval):** full D02 run.
