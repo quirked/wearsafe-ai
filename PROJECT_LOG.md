@@ -1877,3 +1877,47 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** the user to run `! git -C ~/wearsafe-ai push origin master`.
+
+## 2026-10-12 11:28 — DEMO v5 — visual fixes on v4: built and tested, NOT swapped (v4 stays live)
+**What I did:** Built `app/wearsafe_demo_v5.py`, a copy of v4 with visual changes only:
+- light theme (command-line theme flags), a transparent header and hidden toolbar;
+- styled tabs, dropdown and slider;
+- scenario cards with a "Selected ✓" badge and the "Choose" button only on the other card;
+- a single controls row, and a smaller status circle (190 px);
+- a new live chart "What the watch is sensing":
+  - the sudden-movement score (0–100) over the last 60 s, a dashed "Alert level" line, check-in moments shaded amber and a "now" marker;
+  - a heart-rate line on the normal day, with gaps while moving;
+  - an air-pressure change line for the fall + pressure view.
+
+  The "Height change" label was renamed "Air pressure change" before the test: the plotted value is pressure, not a converted height.
+
+Same data, numbers, replays and claims as v4. No model, result, config, v4 or v3 file was changed.
+
+Tested on spare port 8502 with the theme flags (log `logs/2026-10-12_demo_app_v5_test.log`).
+
+**Files created/changed:**
+- `app/wearsafe_demo_v5.py` (new)
+- `reports/figures/demo_v5/1_live_demo.png` (new)
+- `PROJECT_LOG.md`
+
+**Checks run and results:**
+- PASS: the app responds; all three tabs load with no errors.
+- PASS: both scenarios play (normal day sitting at 60×, walking; the fall clip; the jog clip "No height change"; fall + pressure).
+- PASS: the heart check-in appears.
+- PASS: "I'm safe", "Get help now" and the countdown timeout (→ "Getting help (SIMULATION)") work.
+- PASS: no banned jargon in the rendered text of four pages.
+- **FAIL (visual):** in the screenshot the controls row is not aligned. "▶ Play" sits above the row and a stray "Choose" button appears inside it. Most likely a leftover element from the card picker, whose "Choose" button now appears only for the unselected card.
+- NOT VERIFIED: the "Alert level" line and the amber check-in shading. The chart draws on a canvas, so its labels are not in the page text, and the chart was below the screenshot's crop.
+
+**Decisions made (and why):**
+- Not swapped: the rule was to swap only if every check passed by 11:33 UTC, and the hard stop for testing was 11:30.
+- v4 stays live on 8501, untouched (health ok at 11:28). The spare 8502 instance is stopped.
+- Design note for the chart: it plots the sudden-movement score against the true alert level (everyday 0.1622, fall fold model, pressure 0.2389), not raw wrist movement. That way the line only crosses "Alert level" when the app really alerts.
+
+**Problems / surprises:** the stray "Choose" button and the misaligned controls row, described above.
+
+**Open questions for the user:** Retry v5 in a new time box?
+
+**Next step (waiting for user approval):** a v5 retry. Proposed fixes:
+- always render a fixed widget per card (or a fixed st.empty slot) so the element tree stays the same across reruns;
+- check the chart in a screenshot cropped to the chart.
