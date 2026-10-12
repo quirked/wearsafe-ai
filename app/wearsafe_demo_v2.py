@@ -297,16 +297,7 @@ def live_page(tl):
     c[1].metric("What the person is doing", DOING.get(str(row.context), "Not sure yet"))
     c[2].metric("Heart reading", heart, help="The wrist heart reading is often not reliable during strong movement.")
     c[3].metric("Alert setting in use", "Movement + air pressure" if use_pressure else s.setting)
-    if use_pressure:
-        p1, p2 = st.columns([1, 3])
-        p1.metric("Air pressure", "Height change detected" if bool(row.height_change) else "No height change",
-                  help="A fall usually means dropping towards the ground, which changes air pressure slightly.")
-        pres = load_pressure()[CLIPS[s.clip]]["pressure_hpa"]
-        n = int(min(len(pres), max(1, t * 10)))
-        with p2:
-            st.markdown("**Air pressure**")
-            st.line_chart(pd.DataFrame({"seconds": np.arange(n) / 10, "Air pressure": pres[:n] - pres[0]}).set_index("seconds"),
-                          height=160)
+
     g1, g2 = st.columns(2)
     with g1:
         st.markdown("**Wrist movement**")
@@ -328,6 +319,15 @@ def live_page(tl):
                 st.info("Waiting for enough heart data…")
         else:
             st.info("Not available in this recording (no heart sensor).")
+    if use_pressure:
+        st.markdown("**Air pressure**")
+        a1, a2 = st.columns([1, 3])
+        a1.markdown(f"<div style='font-size:26px;font-weight:700'>{'Height change detected' if bool(row.height_change) else 'No height change'}</div>",
+                    unsafe_allow_html=True, help="A fall usually means dropping towards the ground, which changes air pressure slightly.")
+        pres = load_pressure()[CLIPS[s.clip]]["pressure_hpa"]
+        n = int(min(len(pres), max(1, t * 10)))
+        a2.line_chart(pd.DataFrame({"seconds": np.arange(n) / 10, "Air pressure change": pres[:n] - pres[0]}).set_index("seconds"),
+                      height=160)
     st.progress(min(1.0, s.pos / max(1, len(dec) - 1)), text=f"Playback: {t:.0f} s")
     if s.log:
         st.markdown("**Event log**")

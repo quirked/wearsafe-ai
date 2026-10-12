@@ -1629,3 +1629,20 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 
 **Next step (waiting for user approval):** STOP.
 - **v2 start command:** `OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 MKL_NUM_THREADS=4 ~/miniconda3/envs/wearsafe/bin/python -m streamlit run app/wearsafe_demo_v2.py --server.port 8501 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false > logs/2026-10-12_demo_app_v2_streamlit.log 2>&1`
+
+## 2026-10-12 10:12 — Demo v2 — Layout fix live
+**What I did:** Moved the air-pressure card and chart below the movement and heart charts in `app/wearsafe_demo_v2.py` (layout only), and restarted v2 on 8501 in the regular-shell window `sao:demo_app`.
+
+**Files created/changed:** `app/wearsafe_demo_v2.py`, `reports/figures/demo_v2/3_fall_demo_air_pressure_layout_fixed.png` (new screenshot; the earlier ones are kept), `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- Re-tested on 8502 (all checks OK, 0 exceptions) before the swap; the test instance was then stopped.
+- Live on 8501: health ok; the everyday and fall demos load.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:** while the "Are you safe?" box is shown, Streamlit briefly keeps leftover charts from the previous screen. This comes from the original app's alert path; it is not new in v2 and is not fixed.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
