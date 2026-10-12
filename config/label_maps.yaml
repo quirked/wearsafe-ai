@@ -5,6 +5,11 @@
 #   - "TODO" = open decision for the user; code must refuse to build a task dataset
 #     while a needed mapping is TODO.
 #   - There is no "attack" class anywhere (CLAUDE.md §2.3).
+#   - GENERAL RULE (user decision 2026-10-12): ambiguous segments are EXCLUDED from
+#     component-model training but INCLUDED in false-alert-per-hour evaluation.
+#   - Training sets are built ONLY from the `training_v1` lists. A TODO class mapping on a
+#     label listed under `training_v1.excluded` does not block a build.
+#   - `eval_role` records why an excluded label is kept (false-alert evaluation or probe).
 version: 1
 
 subject_id_format: "{PREFIX}_S{nn:02d}"   # PPGDALIA_S01, WESAD_S02, BITS2_S03
@@ -31,7 +36,7 @@ ppg_dalia:
     7: walking
     8: working
   context_class:             # context doc §16
-    transient: null
+    transient: null          # excluded from v1 context training; included in false-alert eval (decision 2026-10-12 #4)
     sitting: stationary
     working: low_activity
     driving: low_activity
@@ -39,12 +44,18 @@ ppg_dalia:
     stairs: vigorous_activity
     cycling: vigorous_activity
     table_soccer: vigorous_activity
-    lunch: TODO              # OPEN QUESTION (context doc §16/§41): "mixed / low_activity, to be decided after inspection"
+    lunch: TODO              # class still undecided (context doc §16/§41); excluded from v1 context training, included in false-alert eval (decision 2026-10-12 #3)
   hard_negative: [table_soccer, stairs, cycling]   # context doc §17
   motion_event_class:        # PROPOSED (context doc §10: everyday movement); confirm with user
     default: normal_adl
     transient: normal_adl
   arousal_class: null        # no arousal ground truth in PPG-DaLiA
+  training_v1:               # user decisions 2026-10-12 #3, #4
+    context: [sitting, working, driving, walking, stairs, cycling, table_soccer]
+    excluded: [transient, lunch]
+  eval_role:
+    transient: false_alert_eval
+    lunch: false_alert_eval
 
 wesad:
   source: "SX.pkl['label'] (700 Hz); codes from wesad_readme.pdf"
@@ -61,14 +72,20 @@ wesad:
     transient: null
     baseline: low_arousal
     stress: high_arousal
-    amusement: TODO          # OPEN QUESTION: context doc §17 lists it as "non-danger high arousal" hard negative
-    meditation: TODO         # OPEN QUESTION: low_arousal or excluded?
+    amusement: TODO          # not used for v1 training; evaluation probe, see eval_role (decision 2026-10-12 #2)
+    meditation: TODO         # not used for v1 training; evaluation probe, see eval_role (decision 2026-10-12 #2)
     ignore_5: null
     ignore_6: null
     ignore_7: null
   hard_negative: [amusement]
   context_class: null        # lab protocol, not daily-life context
   motion_event_class: null
+  training_v1:               # user decision 2026-10-12 #1
+    arousal: [baseline, stress]
+    excluded: [transient, amusement, meditation, ignore_5, ignore_6, ignore_7]
+  eval_role:                 # user decision 2026-10-12 #2
+    amusement: {role: probe, expected: high_arousal, note: "non-danger high arousal probe"}
+    meditation: {role: probe, expected: low_arousal, note: "expected-low probe"}
 
 bits2:
   source: "Dataset/{adl,fall}/userN/userN_{adl,fall}K.csv; activity names UNKNOWN (no docs in download)"
@@ -79,8 +96,12 @@ bits2:
   motion_event_class:        # context doc §9/§15: falls are abrupt-event PROXIES, not attacks
     adl: normal_adl
     fall: abrupt_event_proxy
-  context_class: TODO        # needs activity names for adl1-16 (missing documentation)
+  context_class: TODO        # stays TODO until the activity table from the paper is available; no guessing (decision 2026-10-12 #5)
   arousal_class: null
+  repetitions_per_activity:  # decision 2026-10-12 #7
+    value: 5
+    status: "stated in paper, not yet verified in files"
+    source: "Nandi et al., Data in Brief 52 (2024) 109812, abstract (PMC10709028)"
 
 units:                       # original -> canonical (context doc §20; D00a §4)
   ppg_dalia:
@@ -93,3 +114,8 @@ units:                       # original -> canonical (context doc §20; D00a §4
     gyro: {original: "rad/s (inferred)", canonical: rad/s, factor: 1.0}
     mgm: {original: "uT (inferred)", canonical: uT, factor: 1.0}
     hrt: {original: bpm, canonical: bpm, factor: 1.0}
+
+open_items:                  # decision 2026-10-12 #6
+  - milestone: D02
+    item: "per-sample acc_saturated flag for the ±2 g E4 watch ACC range (PPG-DaLiA, WESAD)"
+    decision: "none yet"

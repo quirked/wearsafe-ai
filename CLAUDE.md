@@ -110,3 +110,5 @@ Keep a short "Current status" block at the TOP of the file (current milestone, c
 
 ### Cross-dataset
 Wrist ACC units differ by dataset (g / 1/64 g / m/s²). The canonical unit is m/s². Only BITS-2 has a gyroscope. Only PPG-DaLiA and WESAD have BVP/PPG.
+
+Correction 2026-10-12: the 5-repetitions claim comes from the abstract of Nandi et al., Data in Brief 52 (2024) 109812 (PMC10709028), now saved as docs/papers/BITS2_DataInBrief_2024.pdf. docs/papers/BITS2-paper.pdf is the PerHeart paper, not BITS-2. Status: stated in paper, not yet verified in files.

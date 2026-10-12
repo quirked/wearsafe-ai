@@ -6,7 +6,8 @@
 - **Data version:** raw only. Checksum manifest `metadata/raw_checksums.csv` (2,126 files, SHA-256). No interim/processed data yet.
 - **Split version:** none.
 - **Last validated result:** D00 tests 12 passed / 1 skipped (fast mode); full SHA-256 raw check 3/3 passed (2026-10-12).
-- **Open blockers:** BITS-2 documentation (activity names, device, "5 repetitions" claim) still missing; label-map TODOs (lunch, amusement, meditation, BITS-2 context).
+- **Open items:** BITS-2 context classes TODO (needs the activity table from the paper); D02 item: per-sample `acc_saturated` flag (no decision yet). Label decisions 2026-10-12 recorded in `config/label_maps.yaml`.
+- **Next milestone:** D00b — BITS-2 forensics plan (not started).
 
 ---
 
@@ -142,3 +143,37 @@ Nothing under `data/` was created or modified. No unzipping was needed.
 4. Open items from D00a §6 remain: BITS-2 duplicates, HR rows with status −1.
 
 **Next step (waiting for user approval):** D01 — PPG-DaLiA ingestion audit. Not started.
+
+## 2026-10-12 00:55 — D00 — User decisions 2026-10-12
+**What I did:** Recorded the user's label and evaluation decisions in `config/label_maps.yaml` and in this log. I also appended a correction note to CLAUDE.md §6, as the user explicitly allowed. Nothing else was changed, and no data was read or processed.
+
+**Decisions (user, 2026-10-12) and how they are encoded:**
+- **General rule:** ambiguous segments are EXCLUDED from component-model training but INCLUDED in false-alert-per-hour evaluation. This is in the YAML header comment. Training sets are built only from the new `training_v1` lists; `eval_role` says why an excluded label is kept.
+1. **WESAD v1 arousal training = baseline (low_arousal) vs stress (high_arousal) only.** Encoded as `wesad.training_v1.arousal: [baseline, stress]`, with all other labels in `excluded`.
+2. **WESAD amusement and meditation:** not used for v1 training; kept as evaluation probes. Encoded in `wesad.eval_role`:
+   - amusement = probe, expected high_arousal ("non-danger high arousal probe").
+   - meditation = probe, expected low_arousal ("expected-low probe").
+   - Their `arousal_class` stays `TODO` (no training class assigned).
+3. **PPG-DaLiA lunch:** excluded from context training; included in false-alert evaluation. Encoded in `ppg_dalia.training_v1.excluded` and `eval_role.lunch: false_alert_eval`. `context_class.lunch` stays `TODO`, because its class is still undecided.
+4. **PPG-DaLiA transient:** excluded from context training; included in false-alert evaluation. Encoded in `ppg_dalia.training_v1.excluded` and `eval_role.transient: false_alert_eval`.
+5. **BITS-2 context classes stay TODO** until the activity table from the paper is available. No guessing. Recorded in a comment on `bits2.context_class`.
+6. **Added to the D02 TODO list:** a per-sample `acc_saturated` flag for the ±2 g watch range. There is no decision yet on how to handle it. Encoded as top-level `open_items` in the YAML.
+7. **"Each activity repeated 5 times"** comes from the abstract of Nandi et al., *Data in Brief* 52 (2024) 109812 (PMC10709028). Status: **stated in paper, not yet verified in files.** Encoded as `bits2.repetitions_per_activity` (value 5, status, source).
+
+**Files created/changed:**
+- `config/label_maps.yaml`: header rule, `training_v1`, `eval_role`, `repetitions_per_activity`, `open_items`, updated comments. No existing class mapping value was changed.
+- `CLAUDE.md`: one correction line appended at the end of §6. No line removed or rewritten.
+- `PROJECT_LOG.md`: this entry plus the Current status block.
+- `docs/papers/BITS2_DataInBrief_2024.pdf`: added to git as saved by the user. Its existence was confirmed only; it has not been read.
+
+**Checks run and results:**
+- YAML parses.
+- Every label named in `training_v1` and `eval_role` exists in that dataset's `original_label`, and every original label appears in exactly one `training_v1` list (read-only check).
+- `pytest -q` in env `wearsafe`: 12 passed, 1 skipped (unchanged).
+
+**Problems / surprises:**
+- Leftover note updated: the correct BITS-2 paper is now on disk as `docs/papers/BITS2_DataInBrief_2024.pdf`. `docs/papers/BITS2-paper.pdf` remains the PerHeart paper, not BITS-2. CLAUDE.md §6 now carries a correction note saying so.
+
+**Open questions for the user:** none new.
+
+**Next step (waiting for user approval):** D00b — BITS-2 forensics plan, using `docs/papers/BITS2_DataInBrief_2024.pdf`. D01 (PPG-DaLiA ingestion audit) is to be marked as largely covered by D00a.
