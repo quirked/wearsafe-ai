@@ -1741,3 +1741,24 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run M03 v2.
+
+## 2026-10-12 10:50 — M03 v2 — Results (demo_v0, PRELIMINARY)
+**What I did:** Ran `scripts/m03_v2_sqi.py` in tmux window `sao:m03v2` with 4 threads (log `logs/2026-10-12_M03v2.log`). Wrote `reports/M03_v2_sqi_demo_v0.md` and `reports/M03_v2_tables.md`.
+
+**Files created/changed:** the files above; `results/2026-10-12_M03_v2_sqi_demo_v0/`; `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **v1 (SQI 0.90)** reproduces M03: LR PR-AUC 0.882, 4/15 people.
+- **v2 (SQI 0.50):**
+  - gate pass: stress 62.3%, baseline 89.0%, everyday 32.9%;
+  - LR: PR-AUC 0.716, stress caught 79.1%, 15/15 people with a stress check-in; amusement / meditation flagged 17.5 / 11.5%;
+  - everyday check-ins/h: TEST 2.38 (all 15: 2.03); RF 2.12 (1.72).
+- **Device AUC (LR):** v1 0.722, v2 0.792.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** Stage 2, if time allows.
