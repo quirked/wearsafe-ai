@@ -25,6 +25,11 @@ MOTION_FEATURE_NAMES = (
     "jerk_mean", "jerk_std", "jerk_max", "motion_energy", "dominant_freq", "spectral_entropy",
     "spectral_energy", "acc_saturated_frac",
 )
+SATURATION_FEATURE_NAMES_V2 = (
+    "sat_longest_run_s", "sat_n_runs", "sat_max_axes", "post_peak_stillness", "pre_peak_min_mag",
+)
+MOTION_FEATURE_NAMES_V2 = MOTION_FEATURE_NAMES + SATURATION_FEATURE_NAMES_V2
+POST_PEAK_MIN_SAMPLES = 8          # 0.25 s at 32 Hz (config/features_v2.yaml)
 PHYSIOLOGY_FEATURE_NAMES = (
     "hr_mean", "hr_std", "hr_min", "hr_max", "hr_delta", "hr_slope", "hr_rel_baseline",
     "bvp_peak_rate", "ibi_mean", "ibi_std", "ppg_sqi", "physiology_uncertain",
@@ -137,3 +142,32 @@ def rel_baseline(starts: np.ndarray, ends: np.ndarray, hr_mean: np.ndarray, unce
         if m.any():
             out[i] = hr_mean[i] - float(np.median(hr_mean[m]))
     return out
+
+
+def saturation_features_v2(acc: np.ndarray, fs: float, sat_axes: np.ndarray) -> dict:
+    """features_v2 additions (config/features_v2.yaml), from ONE window's samples only.
+
+    sat_axes: (n, 3) bool per-axis saturation flags. Peak = first argmax of |a| in the window.
+    """
+    acc = np.asarray(acc, dtype=float)
+    sat_axes = np.asarray(sat_axes, dtype=bool)
+    any_sat = sat_axes.any(axis=1)
+    runs, n = [], 0
+    for v in any_sat:
+        if v:
+            n += 1
+        elif n:
+            runs.append(n)
+            n = 0
+    if n:
+        runs.append(n)
+    mag = np.sqrt((acc ** 2).sum(axis=1))
+    k = int(np.argmax(mag))
+    after, before = mag[k + 1:], mag[:k]
+    return {
+        "sat_longest_run_s": float(max(runs) / fs) if runs else 0.0,
+        "sat_n_runs": float(len(runs)),
+        "sat_max_axes": float(sat_axes.sum(axis=1).max()) if len(sat_axes) else 0.0,
+        "post_peak_stillness": float(after.std()) if len(after) >= POST_PEAK_MIN_SAMPLES else np.nan,
+        "pre_peak_min_mag": float(before.min()) if len(before) else np.nan,
+    }

@@ -16,8 +16,8 @@ from typing import Optional
 # ---------------------------------------------------------------------------
 # Vocabularies (context doc §15, §20)
 # ---------------------------------------------------------------------------
-DATASETS = ("ppg_dalia", "wesad", "bits2")
-SUBJECT_PREFIX = {"ppg_dalia": "PPGDALIA", "wesad": "WESAD", "bits2": "BITS2"}
+DATASETS = ("ppg_dalia", "wesad", "bits2", "fallalld")
+SUBJECT_PREFIX = {"ppg_dalia": "PPGDALIA", "wesad": "WESAD", "bits2": "BITS2", "fallalld": "FALLALLD"}
 
 CONTEXT_CLASSES = ("stationary", "low_activity", "locomotion", "vigorous_activity")
 MOTION_EVENT_CLASSES = ("normal_adl", "abrupt_event_proxy")
@@ -35,7 +35,7 @@ CANONICAL_UNITS = {
 }
 STANDARD_GRAVITY = 9.80665  # m/s^2 per g
 
-_SUBJECT_RE = re.compile(r"^(PPGDALIA|WESAD|BITS2)_S\d{2}$")
+_SUBJECT_RE = re.compile(r"^(PPGDALIA|WESAD|BITS2|FALLALLD)_S\d{2}$")
 
 
 def namespaced_subject_id(dataset: str, raw_number: int) -> str:
@@ -149,6 +149,7 @@ WINDOW_META_COLUMNS = (
     "acc_i0", "acc_i1", "bvp_i0", "bvp_i1", "act_i0", "act_i1",
     "hr_ref_k0", "hr_ref_k1", "n_hr_ref", "has_hr_ref", "hr_ref_bpm",
     "seconds_to_nearest_boundary", "window_name",
+    "record_id", "activity_id", "trial_no", "window_role", "kind", "version",
 )
 
 # Columns that must never be used as model inputs (CLAUDE.md §2.3: no label-derived features;
