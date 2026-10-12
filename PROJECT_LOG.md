@@ -788,3 +788,41 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** the D08 plan is approved; execution follows.
+
+## 2026-10-12 05:55 — D08 — User decisions on the D08 plan (recorded before any D08 code runs)
+**What I did:** Recorded the user's approval of the D08 plan, with one change and answers 1–12.
+
+**Files created/changed:** `PROJECT_LOG.md`, `CLAUDE.md` (one bullet inserted under the clip-position rule; nothing removed), `config/evaluation_v1.yaml`, `config/label_maps.yaml`, `config/fallalld_v1.yaml` (new), `config/features_v2.yaml` (new).
+
+**Checks run and results:** none (recording only).
+
+**Decisions made (and why)** (user):
+- **Milestone ID:** **D08 = "FallAllD wrist motion dataset"** (requested as D05; D05 stays "BITS-2 synchronized event dataset" per context doc §32).
+- **CHANGE (decision 4):** positive windows = ONLY the window starting at 9 s, [9, 11).
+  - **Reason (user):** it contains t* = 10.0 s with margin, while [10, 12) starts exactly at t* and would miss impacts slightly before 10 s (peak p5 = 9.44 s).
+  - The window starting at 10 s becomes `fall_clip_context`, like the other non-positive fall-clip windows.
+  - **Expected balance:** 523 positive windows; 523 × 18 = 9,414 fall-clip context windows; (1,992 − 70) × 19 = 36,518 ADL negative windows; 70 × 19 = 1,330 probe windows.
+- **Answers:**
+  1. D08 accepted.
+  2. **Gravity check:** low-motion = non-overlapping 1 s segment (238 samples) of an ADL record (IDs 1–44) with std(|a|) < 0.01 g and max − min of |a| < 0.05 g. Statistic = the median over records of each record's median |a| over its low-motion segments. Pass = within [0.95, 1.05] g with ≥ 100 contributing ADL records; otherwise STOP.
+  3. **Impact time:** protocol t* = 10.0 s, not the detected peak (avoids circularity).
+  5. **fall_clip_context:** excluded from training, kept for analysis.
+  6. **Position-only baseline, operational definition:**
+     - **(a)** a position-matched subset: windows starting at 9 s from all clips; the position-only baseline must be at chance there, and every model is also reported on this subset;
+     - **(b)** a features→position leakage test on cyclic-ADL clips (edge vs interior windows), which must be at chance;
+     - **(c)** clip-level metrics: a fall clip is detected if any window fires; an ADL clip is a false alarm if any window fires.
+     - Recorded in `config/evaluation_v1.yaml` and as a note under the clip-position rule in CLAUDE.md §2.3.
+  7. **e4_clipped order:** clip each axis at 238 Hz to [−2.0, +1.984375] g → resample → re-clip → quantise to 1/64 g.
+  8. **Resampling:** `scipy.signal.resample_poly(up=16, down=119, window=('kaiser', 5.0), padtype='line')`.
+  9. **features_v2 APPROVED now** (before any model exists) = v1 (§14) + longest saturated run, number of saturated runs, axes saturated simultaneously, post-peak stillness, pre-peak low-g dip, all computed within the window.
+     - Both feature versions are computed for both signal versions.
+     - **Every later model must report results for both feature versions; never pick the better one silently.**
+  10. **Smoke subjects:** FALLALLD_S01 + FALLALLD_S04.
+  11. **Inner validation:** inner LOSO among the training subjects with falls (recorded in the split manifest and in `evaluation_v1.yaml`).
+  12. **Report-only list** of fall clips whose detected peak lies outside the positive window [9, 11). The user decides any exclusion after seeing it, before any model is trained.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: pre-checks (STOP if gravity fails) → smoke build on S01 + S04 → commit → STOP.

@@ -1,0 +1,53 @@
+# FallAllD wrist motion dataset (milestone D08), version 1. Fixed before any D08 run (PROJECT_LOG, user decisions on the D08 plan).
+version: 1
+source: "data/interim/_unzipped/fallalld/FallAllD.pkl (original only; the SMOTE pkl is BANNED, CLAUDE.md §2.3)"
+labels: "data/interim/_unzipped/fallalld/activity_info.pkl"
+device: Wrist
+sensor: Acc                     # wrist ACC only; no gyro / mag / bar
+native_hz: 238
+samples_per_record: 4760        # 20 s
+counts_per_g: 4096              # [inferred]; verified by the gravity check before anything else runs
+
+gravity_check:
+  segment_s: 1                  # non-overlapping 238-sample segments
+  low_motion: {std_mag_g_lt: 0.01, range_mag_g_lt: 0.05}
+  activity_ids: [1, 44]         # ADLs only
+  statistic: "median over records of each record's median |a| over its low-motion segments"
+  pass_range_g: [0.95, 1.05]
+  min_records: 100
+
+resample:
+  target_hz: 32
+  method: "scipy.signal.resample_poly(up=16, down=119, window=('kaiser', 5.0), padtype='line'), per axis, whole record"
+  up: 16
+  down: 119
+  kaiser_beta: 5.0
+  padtype: line
+  samples_out: 640
+
+versions:
+  unclipped: "counts/4096 -> g -> resample -> m/s^2"
+  e4_clipped: "counts/4096 -> g -> clip per axis [-2.0, 127/64] g at 238 Hz -> resample -> re-clip -> quantise round(g*64) in [-128, 127] -> /64 -> m/s^2"
+  e4_rails_counts: [-128, 127]
+  e4_counts_per_g: 64
+  saturation_flag: "e4_clipped: per axis, counts at -128 or +127 (same as PPG-DaLiA); unclipped: per axis, |g| >= 32767/4096 (FallAllD int16 rail)"
+
+windows:
+  length_s: 2
+  step_s: 1
+  per_record: 19
+  impact_time_s: 10.0           # protocol t* (clip centre), not the detected peak (user decision 3)
+  positive_window_start_s: [9]  # only [9, 11) (user CHANGE to decision 4)
+  roles:
+    fall_positive: "abrupt_event_proxy / train_candidate: fall clip, window starting at 9 s"
+    fall_clip_context: "every other fall-clip window (incl. the one starting at 10 s): excluded from training, kept for analysis"
+    adl: "normal_adl / train_candidate"
+    hard_negative_probe: "ADL IDs 15 and 23, all windows"
+  position_matched_subset_start_s: [9]
+
+prechecks:
+  peak_outside_positive_window: "report-only list of fall clips whose detected peak (argmax |a|, unclipped 32 Hz) is outside [9, 11)"
+  near_duplicate_xcorr_gt: 0.99
+  edge_artefact_max_rel_diff: 0.01   # cyclic-ADL clips: first/last window median acc_mag_mean vs interior
+
+smoke_subjects: [1, 4]

@@ -1,0 +1,13 @@
+# Layer C motion features, version 2 = features_v1 (§14) + saturation-aware features.
+# APPROVED by the user on 2026-10-12 before any model exists (D08 decision 9). Every later model reports BOTH
+# feature versions (config/evaluation_v1.yaml). All features use only samples inside the window.
+version: 2
+base: config/features_v1.yaml
+added_motion_features:
+  sat_longest_run_s: "longest run of consecutive samples with any axis saturated, in seconds (0 if none)"
+  sat_n_runs: "number of runs of consecutive samples with any axis saturated (0 if none)"
+  sat_max_axes: "maximum number of axes saturated at the same sample (0-3)"
+  post_peak_stillness: "std(|a|) of the samples strictly after the window's first argmax |a|; NaN if fewer than 8 samples (0.25 s at 32 Hz) remain"
+  pre_peak_min_mag: "min(|a|) of the samples strictly before the window's first argmax |a| (m/s^2; low-g / free-fall cue); NaN if the argmax is the first sample"
+nan_rules: "post_peak_stillness and pre_peak_min_mag may be NaN only under the conditions above; all other features 0 NaN"
+saturation_flag: "per axis, from Layer A (FallAllD: config/fallalld_v1.yaml)"

@@ -21,3 +21,11 @@ fallalld_motion:                  # user decision 11 after D00c (PROJECT_LOG 202
 required_checks:                  # CLAUDE.md §2.3 rules added after D00c
   position_only_baseline: "every motion model is compared with a position-only baseline, which must perform at chance level"
   device_discrimination: "before training/evaluating on mixed datasets/devices, report whether a simple classifier can tell the datasets apart from the same features"
+
+position_only_baseline_operational:   # user decision 6 on the D08 plan (2026-10-12); CLAUDE.md §2.3 note
+  a_position_matched_subset: "FallAllD: windows starting at 9 s from all clips; position-only baseline must be at chance there; every model also reported on this subset"
+  b_features_to_position_leakage: "cyclic-ADL clips: classifier predicting edge vs interior window from motion features must be at chance"
+  c_clip_level_metrics: "fall clip detected if any window fires; ADL clip is a false alarm if any window fires"
+
+fallalld_inner_validation: "inner leave-one-subject-out among the TRAINING subjects with falls (tuning only)"   # decision 11
+feature_versions_reporting: "every model reports results for BOTH features_v1 and features_v2; never pick the better one silently"   # decision 9

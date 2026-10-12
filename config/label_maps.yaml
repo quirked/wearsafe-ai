@@ -165,6 +165,7 @@ fallalld:
     15: {role: hard_negative_probe, note: "Fail to stand up; excluded from motion training"}
     23: {role: hard_negative_probe, note: "Stumbling; excluded from motion training"}
   gyro_used_v1: false                  # decision 10
+  window_roles_v1: "see config/fallalld_v1.yaml windows.roles: positive = fall clip window starting at 9 s only; other fall-clip windows fall_clip_context (excluded from training); IDs 15/23 hard_negative_probe"
 
 upfall:
   source: "data/interim/_unzipped/upfall/up-fail-complete-dataset.csv (wearable columns only)"
