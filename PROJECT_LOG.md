@@ -1665,3 +1665,33 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run M03-lite.
+
+## 2026-10-12 10:33 — M03-lite — Results (demo_v0, PRELIMINARY)
+**What I did:**
+- Ran `scripts/m03_still_racing.py` in tmux window `sao:m03` with 4 threads, on CPU (log `logs/2026-10-12_M03.log`).
+- Wrote `reports/M03_still_racing_demo_v0.md` and `reports/M03_tables.md`; outputs in `results/2026-10-12_M03_still_racing_demo_v0/`.
+- The demo app was not touched.
+
+**Files created/changed:** the files above; `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **WESAD alignment:** ACC/32 = BVP/64 = label/700 durations for all 15 subjects.
+- **Gate pass rate:** stress 7.4%, baseline 18.4%, amusement 19.4%, meditation 34.8%. PPG-DaLiA: 10.7% of windows.
+- **LOSO, gated:**
+
+  | Model | PR-AUC | ROC-AUC | Precision | Recall | Amusement flagged | Meditation flagged |
+  |---|---|---|---|---|---|---|
+  | LR | 0.882 | 0.957 | 0.891 | 0.872 | 0% | 3.6% |
+  | RF | 0.774 | 0.930 | 0.745 | 0.745 | 0% | 0% |
+
+- **Check-in rule:** fired during stress for 26.7% of subjects (both models).
+- **Everyday (PPG-DaLiA, 36.0 h):** LR 2 check-ins (0.056/h), RF 4 (0.111/h).
+- **Device check** (WESAD baseline vs PPG-DaLiA sitting, gated): AUC LR 0.722, RF 0.820.
+
+**Decisions made (and why):** none adopted; not added to the app.
+
+**Problems / surprises:** the gate passes very few stress windows, which limits the check-in rule.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
