@@ -1,5 +1,6 @@
 # Layer C feature parameters, version 1 (D03). Fixed before any D03 run (user decisions P4-P6 after D00b).
-# NOT used yet: D03 has not been run.
+# Additions on 2026-10-12 before the first D03 run (PROJECT_LOG): filter order, polarity, HR estimator,
+# NaN rules and the report-only boundary-bin table (user request).
 version: 1
 motion:                          # context doc §14 only (P6); computed on |acc| in m/s^2, window samples only
   features: [acc_mag_mean, acc_mag_std, acc_mag_max, acc_mag_p95, acc_mag_rms, acc_mag_range,
@@ -8,6 +9,9 @@ motion:                          # context doc §14 only (P6); computed on |acc|
   spectrum: "rfft of de-meaned |acc| with a Hann window, DC excluded"
 physiology:                      # 30 s windows, BVP only; ECG reference HR is NEVER a feature
   bandpass_hz: [0.5, 4.0]
+  filter: "Butterworth order 2, zero-phase (filtfilt), applied to each window's own samples only"
+  bvp_polarity: "stored BVP used as is (fixed a priori; never chosen from results)"
+  window_hr: "hr_* from instantaneous HR = 60/IBI of valid beats; hr_delta = mean HR of beats in last 10 s minus first 10 s; hr_slope = linear fit (bpm/s)"
   peaks: "neurokit2 ppg_findpeaks, method elgendi"
   hr_valid_bpm: [30, 220]
   baseline: "median of good-quality hr_mean over the PREVIOUS 300 s of the same recording (past only)"
@@ -22,3 +26,11 @@ bvp_hr_vs_ecg:                   # P4; analysis output, never a feature
   primary: "dataset 8 s / 2 s reference windows, aligned exactly to hr_ref"
   secondary: "30 s physiology windows; hr_ref averaged over reference windows fully inside"
   metrics: [mae, rmse, bias, pct_within_5bpm, pct_within_10bpm]
+  estimator_8s: "60 / median valid IBI in the 8 s window (same filter/peaks as features); NaN if < 2 valid IBIs (reported as coverage)"
+  sqi_secondary: "skewness of the filtered window (report only)"
+nan_rules:
+  motion: "no NaN allowed"
+  physiology: "hr_mean/std/min/max, ibi_mean/std, ppg_sqi may be NaN only where physiology_uncertain is true; hr_delta, hr_slope, hr_rel_baseline NaN rates are reported"
+report_only:
+  boundary_bins_s: [0, 5, 10, 20, 40]   # bins [0,5) [5,10) [10,20) [20,40) [40,inf) of seconds_to_nearest_boundary
+  boundary_bins_note: "motion features by distance to the nearest label change, per activity; measures label-edge noise; must NOT change the 10 s rule or any v1 training role"

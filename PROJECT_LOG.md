@@ -630,3 +630,37 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** none started.
+
+## 2026-10-12 05:05 — D03 — Start: features + wrist-PPG vs ECG, SMOKE (S03, S06); parameters fixed before running
+**What I did:** Wrote the D03 code and tests before any D03 run. Inputs are D02 v1 (`normalized_signals_v1`, `windows_v1`, windowing config v2 roles).
+
+**Files created/changed:**
+- **Code:** `src/wearsafe/features.py`; `scripts/d03_ppg_dalia_features.py`, `scripts/d03_bvp_hr_vs_ecg.py`, `scripts/d03_report.py`.
+- **Tests:** `tests/test_features.py`.
+- **Config/schema:** `config/features_v1.yaml` (additions below); `src/wearsafe/schemas.py` (`seconds_to_nearest_boundary` and `window_name` added to the forbidden feature columns).
+
+**Checks run and results:** pytest passes before the run (see the commit).
+
+**Decisions made (and why):**
+- **User decisions applied:**
+  - **P4:** primary comparison on 8 s/2 s reference windows, plus a secondary 30 s table.
+  - **P5:** template-match SQI with the threshold fixed at 0.9, plus a report-only sensitivity table at 0.80/0.85/0.90/0.95.
+  - **P6:** §14 features only.
+  - **New report-only table** of motion features by `seconds_to_nearest_boundary` bins (0–5, 5–10, 10–20, 20–40, 40+ s) per activity. It must not change the 10 s rule or any v1 training role.
+- **Parameters added to `config/features_v1.yaml` before the run** (none were tuned on results):
+  - Butterworth order 2, zero-phase, applied to each window's own samples;
+  - the stored BVP polarity is used as is;
+  - the 8 s HR estimator is 60 / median valid IBI (NaN if < 2 valid IBIs, reported as coverage);
+  - hr_delta and hr_slope definitions;
+  - NaN rules;
+  - boundary bins;
+  - skewness SQI as a report-only secondary.
+- **Window-HR estimator (my choice, overrulable):** the 8 s windows use the median IBI (robust to single missed or extra beats), while the 30 s features use the mean of instantaneous HR.
+- **Constant windows:** dominant frequency, spectral entropy and spectral energy are 0, so motion features never produce NaN.
+- **has_hr:** the feature table's `has_hr` contract column is left out, because PPG-DaLiA has no native wrist HR stream. The ECG reference is ground truth, not an input; `has_hr_ref` is carried as a forbidden meta column.
+
+**Problems / surprises:** none yet.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run the smoke test (trial run to scratch, then the official run), then stop.

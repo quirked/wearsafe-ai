@@ -148,6 +148,7 @@ WINDOW_META_COLUMNS = (
     "label_purity", "crosses_boundary", "eval_role",
     "acc_i0", "acc_i1", "bvp_i0", "bvp_i1", "act_i0", "act_i1",
     "hr_ref_k0", "hr_ref_k1", "n_hr_ref", "has_hr_ref", "hr_ref_bpm",
+    "seconds_to_nearest_boundary", "window_name",
 )
 
 # Columns that must never be used as model inputs (CLAUDE.md §2.3: no label-derived features;
