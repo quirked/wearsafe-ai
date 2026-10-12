@@ -1527,3 +1527,34 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** M02 (running).
+
+## 2026-10-12 09:59 — M02 — Results (EXPERIMENT, PRELIMINARY); partially complete at the hard stop
+**What I did:**
+- Ran `scripts/m02_extra_sensors.py` (features + train) in tmux window `sao:m02` with 4 threads (log `logs/2026-10-12_M02.log`).
+- Ran the two light LR baselines with 1 thread (`scripts/m02_baselines.py`).
+- Ran the evaluation (`--phase eval`) and wrote `reports/M02_extra_sensors.md` and `reports/M02_tables.md`.
+
+**Files created/changed:** the files above; `results/2026-10-12_M02_extra_sensors/`; `data/processed/motion/fallalld_extra_sensors_m02.parquet`; `PROJECT_LOG.md`.
+
+**Checks run and results** (e4_clipped; PR-AUC / everyday-clip false alarm / falls caught):
+
+| Configuration | PR-AUC | False alarm | Falls caught |
+|---|---|---|---|
+| ACC-only (M01) | 0.767 | 14.1% | 93.6% |
+| +gyro | 0.816 | 13.2% | 93.4% |
+| +baro | 0.932 | 4.7% | 93.0% |
+| +gyro+baro | 0.936 | 4.7% | 92.6% |
+| gyro-peak-only | 0.132 | | |
+| baro-change-only | 0.080 | | |
+
+- STOP check passed.
+- **Missing:** unclipped ACC+gyro, ACC+baro, ACC+gyro+baro (3 of 8); training was still running at the hard stop. The `sao:m02` window may continue, but its outputs are not part of this report.
+
+**Decisions made (and why):** none adopted.
+
+**Problems / surprises:**
+- The barometer's benefit cannot be checked on everyday-life data (the E4 has no barometer).
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
