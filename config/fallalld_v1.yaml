@@ -51,3 +51,7 @@ prechecks:
   edge_artefact_max_rel_diff: 0.01   # cyclic-ADL clips: first/last window median acc_mag_mean vs interior
 
 smoke_subjects: [1, 4]
+probe_ids: [15, 23]
+# Added before the smoke build (logged): cyclic ADLs (paper Fig. 4 "Cyclic ADLs", activity_info IDs) used for the
+# edge-artefact check; the activity fills the whole 20 s clip.
+cyclic_adl_ids: [2, 6, 11, 20, 22, 24, 25, 30, 33, 35, 36]

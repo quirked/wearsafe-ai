@@ -826,3 +826,55 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: pre-checks (STOP if gravity fails) → smoke build on S01 + S04 → commit → STOP.
+
+## 2026-10-12 06:04 — D08 — Pre-checks done (gravity PASS); smoke build code ready
+**What I did:**
+- Ran the D08 pre-checks on all FallAllD wrist records in tmux `sao`, env `wearsafe`, on CPU. They were read-only; only report tables were written.
+- Script: `scripts/d08_fallalld_prechecks.py`. Read-only follow-ups: `scripts/d08_neardup_followup.py`, `scripts/d08_overlap_search.py`, `scripts/d08_overlap_search_cross.py`.
+- Logs: `logs/2026-10-12_D08_prechecks.log`, `_neardup_followup.log`, `_overlap_search.log`, `_overlap_search_cross.log`.
+- Wrote the smoke-build code and tests.
+
+**Files created/changed:**
+- **Report:** `reports/D08_fallalld_prechecks_tables.md` (sections 1–4 from the pre-check script; 5–7 appended by the follow-ups).
+- **Code:** `src/wearsafe/{safe_pickle,fallalld_io,motion_harmonise,fallalld_windows,splits}.py`, `src/wearsafe/features.py` (features_v2 functions), `src/wearsafe/schemas.py` (FALLALLD prefix, forbidden meta columns), `scripts/inspect/common.py` (now re-exports the moved `RestrictedUnpickler`).
+- **Scripts:** `scripts/d08_fallalld_{build,features,splits}.py`, `scripts/d08_report.py`.
+- **Tests:** `tests/test_fallalld_{harmonise,windows_labels,splits}.py`.
+- **Config:** `config/fallalld_v1.yaml` gained `probe_ids` and `cyclic_adl_ids` (for the edge-artefact check), added before the smoke build.
+
+**Checks run and results:**
+- **Gravity check: PASS.**
+  - Median of per-record low-motion |a| = 0.9904 g over 1,549 ADL records (14,725 low-motion segments); IQR 0.9858–0.9976 g.
+  - All 13 subjects are within 1 ± 0.05 g (0.9845–1.0082).
+  - 4096 counts/g is confirmed within the pre-set tolerance.
+- **Peak time of wrist falls** (523):
+  - unclipped 32 Hz: median 10.00 s, p5 9.19, p95 10.66; 92.5% in [9, 11);
+  - native 238 Hz: median 10.00 s, p5 9.44, p95 10.75; 93.7% in [9, 11).
+  - In some clips the 238 Hz peak sits at 10.0 s, but the 32 Hz maximum is elsewhere: the impact spike is attenuated by the anti-aliasing filter below other movement in the clip (e.g. jogging steps). Max |t32 − t238| is 9.2 s.
+- **Decision-12 list:** 39 of 523 fall clips (7.46%) have their 32 Hz peak outside [9, 11). Report-only; the list is in tables §3.
+- **Trial gaps:**
+  - 72 groups, 112 missing trial numbers; 35 groups are missing only trial 1;
+  - 4 groups have more trials than typical;
+  - no gap record is involved in any flagged near-duplicate.
+  - This looks like discarded trials, not mislabelling [inferred].
+- **Near-duplicates and overlaps:**
+  - 12 pairs had xcorr > 0.99. All are hand-activity clips that share 100% identical raw samples over 13.7–18.2 s at a time shift.
+  - The exhaustive search found **1,570 within-subject pairs** sharing ≥ 1 s of identical raw samples (1,621 of 2,515 records). Mostly adjacent ADL clips cut from one continuous recording: start/during/stop clapping, waving, walking; sitting down/standing up/fail to stand up; lying down/turning/rising.
+  - 10 pairs are fall–fall: the end of one fall clip overlaps the start of the next, in `fall_clip_context` windows only. **No fall–ADL overlap.**
+  - 67 pairs involve the probe IDs 15/23.
+  - **Cross-subject overlaps: 0**, so LOSO is unaffected.
+  - Detection is guaranteed for identical runs of ≥ 2 s; runs of 1–2 s are found only if they cover an indexed block.
+- **pytest:** 66 passed, 2 skipped.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:**
+- The within-subject overlaps mean some ADL samples appear in several clips under different activity labels. Under LOSO this cannot leak between folds, but it double-counts windows in training and in evaluation.
+- **Proposed for the user's decision** (not applied):
+  - (a) keep everything (LOSO-safe);
+  - (b) de-duplicate windows whose 32 Hz samples are identical to an earlier window of the same subject;
+  - (c) count each overlap once in evaluation only.
+- Also for the user: whether probe clips overlapping training ADLs need special handling. Under LOSO the probe's subject is held out, so this is within-subject only.
+
+**Open questions for the user:** decision 12 (39 clips), and the overlap handling (a/b/c).
+
+**Next step (waiting for user approval):** approved: the smoke build on S01 + S04, then stop.
