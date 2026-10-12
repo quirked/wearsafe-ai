@@ -1788,3 +1788,18 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Next step (waiting for user approval):** STOP.
 - **v3 start command:** `OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 MKL_NUM_THREADS=4 ~/miniconda3/envs/wearsafe/bin/python -m streamlit run app/wearsafe_demo_v3.py --server.port 8501 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false > logs/2026-10-12_demo_app_v3_streamlit.log 2>&1`
 - **Fallback:** the same command with `app/wearsafe_demo_v2.py`.
+
+## 2026-10-12 11:02 — Demo v4 — Not built; v3 kept live (time box)
+**What I did:** Received the v4 redesign request at 11:02 UTC, with a hard stop for Stage 1 at 11:10 and the swap deadline at 11:13. A full redesign plus testing, three screenshots and a safe swap could not be done properly in 8 minutes. v3 was kept running untouched on 8501, as the instructions require; no v4 file was created.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry only).
+
+**Checks run and results:** v3 health check ok.
+
+**Decisions made (and why):** keep v3 live rather than risk the working app minutes before the demo.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** whether to build v4 after the demo.
+
+**Next step (waiting for user approval):** Stage 2 (GitHub push checks).
