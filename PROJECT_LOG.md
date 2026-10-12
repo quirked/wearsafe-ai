@@ -1999,3 +1999,33 @@ No existing result, model, config or app file was changed.
 **Open questions for the user:** none. Switching the heart check to the RF would be a separate, pre-registered decision.
 
 **Next step (waiting for user approval):** none; STOP.
+
+## 2026-10-12 13:55 — DEMO — Why GitHub did not show the live demo; README run command fixed
+**What I did:** Diagnosed why the live demo (v4 + light theme) did not match what GitHub shows. The running app was not touched.
+- **Port 8501:** PID 467373, cwd = repo root.
+  - Command: `~/miniconda3/envs/wearsafe/bin/python -m streamlit run app/wearsafe_demo_v4.py --server.port 8501 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false` plus the 5 light-theme flags.
+- **Git:**
+  - `app/wearsafe_demo_v3.py`, `app/wearsafe_demo_v4.py`, `app/wearsafe_demo_v5.py`, `.streamlit/config.toml` and all 4 `reports/figures/demo_v4/` screenshots are tracked, not ignored, and identical to origin/master.
+  - No `.gitignore` change was needed.
+- **Cause 1:** the README's main "Start" step still ran `app/wearsafe_demo.py` (v0/v1). Only an appended note mentioned v4.
+- **Cause 2:** three small inputs of v4 sit under the ignored `results/` folder and are NOT on GitHub:
+  - `results/2026-10-12_M02_demo_replay/replay.joblib` (4 KB);
+  - `results/2026-10-12_M03_v2_demo_replay/heart.joblib` (8 KB);
+  - `results/2026-10-12_M02_extra_sensors/summary.csv`.
+
+  A fresh clone therefore cannot start v4. `timelines.joblib` is tracked.
+- README "How to run the demo":
+  - the first instruction is now the exact live command;
+  - the v4 input files are listed with their regeneration scripts;
+  - older versions are under "Previous versions" (v5 marked as not live).
+  - Edited at the user's request; no other file changed.
+
+**Files created/changed:** `README.md`, `PROJECT_LOG.md`.
+
+**Checks run and results:** `git diff origin/master -- app/ .streamlit/` is empty, so the app and theme files on GitHub are the same as local.
+
+**Decisions made (and why):** the three missing result files were NOT force-added, because the request allowed a `.gitignore` exception only for `.streamlit/config.toml`. Proposed to the user.
+
+**Open questions for the user:** Track the three small v4 inputs (narrow `!` exceptions or `git add -f`), so a fresh clone can run v4?
+
+**Next step (waiting for user approval):** the user pushes.
