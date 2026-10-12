@@ -48,10 +48,21 @@ windows:
 prechecks:
   peak_outside_positive_window: "report-only list of fall clips whose detected peak (argmax |a|, unclipped 32 Hz) is outside [9, 11)"
   near_duplicate_xcorr_gt: 0.99
-  edge_artefact_max_rel_diff: 0.01   # cyclic-ADL clips: first/last window median acc_mag_mean vs interior
+  edge_artefact_max_rel_diff: 0.01
+  edge_artefact_definition: "REDEFINED after the D08 smoke stop (user): per version, median over cyclic-ADL clips of |acc_mag_mean(converted 32 Hz window) / acc_mag_mean(same window on the native 238 Hz signal; clipped for e4) - 1| for the first and for the last window must be < 1%. The clip-centre intensity pattern is reported separately (dataset property)."
 
 smoke_subjects: [1, 4]
 probe_ids: [15, 23]
 # Added before the smoke build (logged): cyclic ADLs (paper Fig. 4 "Cyclic ADLs", activity_info IDs) used for the
 # edge-artefact check; the activity fills the whole 20 s clip.
 cyclic_adl_ids: [2, 6, 11, 20, 22, 24, 25, 30, 33, 35, 36]
+
+# User decisions on the D08 smoke stop (2026-10-12):
+label_uncertain:
+  file: metadata/fallalld_label_uncertain_v1.csv
+  rule: "fall clip whose native 238 Hz peak (argmax |a|) lies outside [9, 11) s"
+  role: label_uncertain_fall      # all 19 windows; excluded from training and window-level metrics; clip-level fall
+overlap_groups:
+  file: metadata/fallalld_overlap_groups_v1.csv
+  rule: "records sharing >= 1 s (238 samples) of identical raw (x, y, z) samples are connected; connected components = groups; overlap_group_id = lowest record_id in the group"
+  detection_note: "identical runs >= 2 s are always found; 1-2 s runs only if they cover an indexed 1 s block"

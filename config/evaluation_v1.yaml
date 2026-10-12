@@ -25,7 +25,13 @@ required_checks:                  # CLAUDE.md §2.3 rules added after D00c
 position_only_baseline_operational:   # user decision 6 on the D08 plan (2026-10-12); CLAUDE.md §2.3 note
   a_position_matched_subset: "FallAllD: windows starting at 9 s from all clips; position-only baseline must be at chance there; every model also reported on this subset"
   b_features_to_position_leakage: "cyclic-ADL clips: classifier predicting edge vs interior window from motion features must be at chance"
+  b_amended_comparative: "AMENDED after the D08 smoke stop (user): train the same edge-vs-interior classifier (cyclic ADLs) on (i) converted features and (ii) the same features on raw 238 Hz; pass if AUC(converted) - AUC(raw) <= 0.02; report both AUCs (the clips themselves are more intense at the centre)"
   c_clip_level_metrics: "fall clip detected if any window fires; ADL clip is a false alarm if any window fires"
 
 fallalld_inner_validation: "inner leave-one-subject-out among the TRAINING subjects with falls (tuning only)"   # decision 11
 feature_versions_reporting: "every model reports results for BOTH features_v1 and features_v2; never pick the better one silently"   # decision 9
+
+fallalld_clip_groups:             # user decisions on the D08 smoke stop (2026-10-12)
+  label_uncertain_fall: "25 clips listed in metadata/fallalld_label_uncertain_v1.csv: excluded from training and from window-level metrics; INCLUDED as fall clips in clip-level metrics (c)"
+  overlap_dedup_check: "every evaluation reports the main result plus a deduplicated check counting one clip per overlap_group_id (the lowest record_id in the group)"
+  overlaps_within_subject_only: true   # cross-subject identical-overlap search found 0 pairs -> LOSO leakage-safe

@@ -909,3 +909,38 @@ User decisions on the D00b questions (user's wording kept):
 3. Still pending from the pre-checks: decision 12 (39 clips), and the overlap handling (a/b/c).
 
 **Next step (waiting for user approval):** STOPPED. No D08 data outputs written; awaiting the user's decision on the check.
+
+## 2026-10-12 06:11 — D08 — User decisions on the smoke stop (recorded before the re-run)
+**What I did:** Recorded the user's four decisions after the D08 smoke stop.
+
+**Files created/changed:** `PROJECT_LOG.md`, `CLAUDE.md` (one note appended under the clip-position rule; nothing removed), `config/evaluation_v1.yaml`, `config/fallalld_v1.yaml`.
+
+**Checks run and results:** none (recording only).
+
+**Decisions made (and why)** (user):
+1. **Edge-artefact check redefined.**
+   - Compare each edge window (first and last 2 s) of the converted 32 Hz signal with the same window of the raw 238 Hz signal. The limit is unchanged: < 1% difference.
+   - The clip-centre intensity pattern (ADL clips are +4–5% more intense at 8–11 s than at the ends, also at native rate) is reported separately as a dataset property, in the report and its limitations section.
+   - **My operationalisation (overrulable):** for each version, the median over cyclic-ADL clips of |relative difference| in window `acc_mag_mean` (converted vs native), computed separately for the first and last windows. Both must be < 1%. The native reference for `e4_clipped` is the clipped 238 Hz signal (no quantisation). The p95 and the same statistic for interior windows are reported for context.
+2. **Position test (b) becomes COMPARATIVE.**
+   - The same position classifier (edge vs interior windows, cyclic ADLs) is trained on (i) the converted features and (ii) the same features computed on the raw 238 Hz signal.
+   - **Pass if AUC(converted) − AUC(raw) ≤ 0.02**, and both AUCs are reported. Tests (a) and (c) are unchanged.
+   - Recorded in `config/evaluation_v1.yaml` and as a note under the clip-position rule in CLAUDE.md §2.3. It runs with the other shortcut checks at the first modelling milestone.
+3. **The 39 off-window clips:**
+   - **14 kept, with normal labels.** Their 238 Hz peak is ≈ 10.0 s; only the 32 Hz conversion moved the maximum. Finding (limitations): at watch-like sampling rates part of a brief impact can be lost.
+   - **25 truly off-centre clips:** role `label_uncertain_fall` (238 Hz peak also outside [9, 11)).
+     - Excluded from training and from window-level metrics.
+     - INCLUDED as fall clips in clip-level metrics (c).
+     - The list and its evidence are stored in `metadata/fallalld_label_uncertain_v1.csv`.
+   - **My operationalisation:** label_uncertain = fall clip whose native 238 Hz peak lies outside [9, 11). The kept 14 = 32 Hz peak outside but 238 Hz peak inside.
+4. **Overlapping clips: keep all.**
+   - Every record gets an `overlap_group_id`: records connected by any shared identical raw samples (≥ 1 s, same search as the pre-checks) form one group.
+   - The ID is the group's lowest `record_id`, so it is deterministic.
+   - Every evaluation reports the main result **plus a deduplicated check counting one clip per overlap group** (the lowest `record_id` in the group).
+   - **Overlaps are within-subject only** (the cross-subject search found 0), so LOSO is leakage-safe.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: re-run the smoke build on S01 + S04 with the redefined checks, commit, STOP.
