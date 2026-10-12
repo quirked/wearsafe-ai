@@ -1184,3 +1184,33 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** next prompt ("Prompt 2"), which uses the context out-of-fold predictions.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 06:52 — F00/F01-demo — Fusion v0 rules FIXED before any fusion result; compute rule
+**What I did:** Recorded the user's compute rule and the fusion v0 rules, before any fusion result exists.
+
+**Files created/changed:** `CLAUDE.md` (§5, one bullet inserted, nothing removed), `config/fusion_v0.yaml` (new), `PROJECT_LOG.md`.
+
+**Checks run and results:** `nproc` 40, load average about 5 at 06:52 UTC.
+
+**Decisions made (and why):**
+- **Compute rule (user, CLAUDE.md §5):** threads and n_jobs ≤ 8; check load first; never more than one heavy job at a time. This run uses 8 threads.
+- **Fusion v0 rules (user), fixed in `config/fusion_v0.yaml`:**
+  - **Motion model:** e4_clipped + features_v2 RF. M01 shows RF better than LR for that version (PR-AUC 0.767 vs 0.655), so RF; not chosen from PPG-DaLiA results.
+  - **Alarm:** probability ≥ the deploy threshold (median of the inner-validation thresholds).
+  - **Physiology (a PLACEHOLDER rule, not a trained arousal model):**
+    - uncertain if SQI < 0.9 OR high motion;
+    - else elevated if hr_rel_baseline ≥ +15 bpm, unknown if missing, normal otherwise.
+  - **Risk:** NONE / CHECK (motion alarm) / HIGH (alarm + elevated). Physiology and context never suppress an alarm.
+  - **Variants:** V0-base and V0-stillness, both always reported.
+- **My operationalisations (overrulable):**
+  - **"High motion":** acc_mag_std of the 30 s physiology window > the 95th percentile of PPG-DaLiA sitting 30 s windows of the other 14 subjects (LOSO; app value from all 15).
+  - **Stillness:** acc_mag_std over the 5 s after the alarm window ends ≤ that same threshold; no prompt if fewer than 5 s remain.
+  - **Prompt counting:** a 30 s refractory period after each prompt.
+  - **Physiology status at decision time t:** from the latest completed 30 s window (end ≤ t). **Context:** from the latest 5 s window (end ≤ t).
+  - **PPG-DaLiA motion features:** v2 computed with the same code as FallAllD; per-axis saturation = E4 counts at −128/+127.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run F01, then stop.

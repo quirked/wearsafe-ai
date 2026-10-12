@@ -84,6 +84,7 @@ Keep a short "Current status" block at the TOP of the file (current milestone, c
   3. Set `CUDA_VISIBLE_DEVICES` to it.
   4. Record the GPU choice and the `nvidia-smi` snapshot in `PROJECT_LOG.md`.
 - If no GPU is free, say so and use CPU (`CUDA_VISIBLE_DEVICES=""`). Classical models are fine on CPU. Never kill or interfere with other users' processes.
+- COMPUTE RULE (user, 2026-10-12): this is a shared machine. Always limit threads: set OMP_NUM_THREADS, MKL_NUM_THREADS, OPENBLAS_NUM_THREADS and n_jobs to at most 8 (check `nproc` and current load with `uptime` first; use fewer if the machine is busy). Never start more than one heavy job at a time.
 
 ## 6. Verified dataset facts (from `reports/D00a_data_inventory.md`; re-verify before relying on anything marked UNVERIFIED)
 

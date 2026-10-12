@@ -1,0 +1,34 @@
+# Rule-based fusion v0 (F00-lite, demo sprint, tag demo_v0, PRELIMINARY). FIXED before any fusion result exists
+# (PROJECT_LOG 2026-10-12, user rules + my operationalisations marked "mine").
+version: 0
+tag: demo_v0
+decision_clock_s: 1
+motion:
+  model: "M01-demo random forest, e4_clipped + features_v2 (results/2026-10-12_M01_demo_v0_run2/motion/e4_clipped_v2/models/rf_deploy.joblib)"
+  why: "E4-compatible configuration; RF PR-AUC 0.767 vs LR 0.655 on FallAllD held-out folds (M01) -> RF; not chosen from PPG-DaLiA results"
+  window_s: 2
+  alarm: "motion probability >= deploy threshold (median of the M01 inner-validation thresholds, stored in the deploy model)"
+physiology:                        # PLACEHOLDER rule, NOT a trained arousal model
+  label: "placeholder physiology rule (not a trained arousal model)"
+  source: "latest completed 30 s physiology window (end <= decision time), D03 features (BVP only)"
+  uncertain_if: "ppg_sqi < 0.9 OR motion intensity high (acc_mag_std of the same 30 s window > gate threshold)"
+  gate_threshold: "95th percentile of acc_mag_std over PPG-DaLiA sitting 30 s windows (train_candidate) of TRAINING subjects only: per evaluated subject, the other 14 subjects; deploy/app value = all 15 subjects"
+  elevated_if: "hr_rel_baseline >= +15 bpm (when not uncertain)"
+  unknown_if: "hr_rel_baseline missing (when not uncertain)"
+  normal: "otherwise"
+risk_levels:
+  NONE: "no motion alarm"
+  CHECK: "motion alarm -> 'Are you safe?' prompt"
+  HIGH: "motion alarm AND physiology elevated"
+  rules: ["physiology never suppresses a motion alarm", "context is shown but never suppresses in v0"]
+alert_state:                       # mine
+  refractory_s: 30                 # after a prompt, new alarms within 30 s do not create another prompt
+  prompt_definition: "a prompt is created by an alarm when no prompt was created in the previous 30 s"
+variants:                          # pre-registered; BOTH always reported; app offers both as a toggle
+  V0-base: "prompt at the alarm"
+  V0-stillness: "prompt only if the 5 s after the alarm window ends have low motion (person stays down)"
+  stillness_rule: "acc_mag_std of |a| over [alarm window end, +5 s) <= the gate threshold (same sitting p95, training subjects only); if fewer than 5 s of signal remain, no prompt"   # mine
+context: "PPG-DaLiA: out-of-fold M01 RF context predictions (latest 5 s window ending <= decision time); app: RF trained on all PPG-DaLiA train_candidate windows"
+caveats:
+  - "false-alert rates measured on PPG-DaLiA may be optimistic for wider-range watches (PPG-DaLiA is clipped at ±2 g)"
+  - "device-discrimination AUC FallAllD e4_clipped ADL vs PPG-DaLiA = 0.72 (LR) / 0.84 (RF) (M01): the motion model is applied across a device gap"
