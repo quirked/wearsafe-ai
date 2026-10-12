@@ -1951,3 +1951,51 @@ Tested on spare port 8502 with the theme flags (log `logs/2026-10-12_demo_app_v5
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** none; wait for the user.
+
+## 2026-10-12 13:35 — M02/M03 gap fill — logistic regression vs random forest (EXPERIMENT, PRELIMINARY)
+**What I did:**
+1. **M02:** new script `scripts/m02_lr_gap.py`. It trains logistic regression for e4_clipped ACC+barometer and ACC+gyroscope with:
+   - the same data (windows_v1, features-v2 plus the M02 extra-sensor features), splits (`splits/fallalld_v1.json`) and feature columns as the M02 random forest;
+   - M01's `lr()` pipeline and `run_model`, imported unchanged: median imputer + scaler fit inside training folds only, `class_weight="balanced"`, and the inner-LOSO threshold rule (recall ≥ 0.90).
+   - It ran in tmux `sao:m02lr`, env wearsafe, 4 threads (log `logs/2026-10-12_M02_lr_gap.log`, 86 s, EXIT 0, no convergence warnings).
+2. **M03 v2:** the random-forest results were already computed; I report them from `results/2026-10-12_M03_v2_sqi_demo_v0/side_by_side.csv` with no re-run.
+
+**Files created/changed:**
+- `scripts/m02_lr_gap.py`
+- `results/2026-10-12_M02_lr_gap/` (oof + thresholds per set, `summary.csv`)
+- `reports/M02_lr_gap_tables.md`
+- `PROJECT_LOG.md`
+
+No existing result, model, config or app file was changed.
+
+**Checks run and results:**
+- The random-forest rows recomputed from the existing oof files equal `results/2026-10-12_M02_extra_sensors/summary.csv` (PR-AUC 0.767 / 0.816 / 0.932).
+- The ACC-only LR row equals M01 (0.655).
+
+**Results (FallAllD wrist, e4_clipped, LOSO; clip level):**
+
+| Sensors | Model | PR-AUC | Falls caught % | Normal-clip false alarm % (dedup) |
+|---|---|---|---|---|
+| ACC only (M01) | RF | 0.767 | 93.6 | 14.1 (8.4) |
+| ACC only (M01) | LR | 0.655 | 93.2 | 19.1 (11.7) |
+| ACC+gyro | RF | 0.816 | 93.4 | 13.2 (7.5) |
+| ACC+gyro | LR | 0.766 | 92.2 | 14.3 (8.8) |
+| ACC+baro | RF | 0.932 | 93.0 | 4.7 (3.1) |
+| ACC+baro | LR | 0.716 | 92.0 | 12.7 (8.4) |
+
+**M03 v2 (SQI cut-off 0.5), from side_by_side.csv:**
+
+| Model | PR-AUC | Stress caught % | People with a check-in (of 15) | Amusement / meditation flagged % | Check-ins/h, PPG-DaLiA test people |
+|---|---|---|---|---|---|
+| LR | 0.716 | 79.1 | 15 | 17.5 / 11.5 | 2.38 |
+| RF | 0.753 | 79.6 | 15 | 14.7 / 6.3 | 2.12 |
+
+**Decisions made (and why):** the app's models are unchanged. The air-pressure demo stays on the RF, and the heart check stays on the LR.
+
+**Problems / surprises:**
+- The barometer helps the RF much more than the LR (PR-AUC 0.932 vs 0.716). The LR uses the two pressure features linearly, so it cannot form "pressure drop AND impact" combinations.
+- M03 v2: the RF is slightly better than the LR on every measure.
+
+**Open questions for the user:** none. Switching the heart check to the RF would be a separate, pre-registered decision.
+
+**Next step (waiting for user approval):** none; STOP.
