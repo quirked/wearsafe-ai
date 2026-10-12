@@ -1,13 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D00b — BITS-2 forensics and exclusion list — DONE, waiting for user review. Next milestone not started.
+- **Current milestone:** D02 smoke test (PPG-DaLiA S03 + S06), approved 2026-10-12. Full D02 and D03 need separate approval. D01 is covered by D00a. D00c (FallAllD + UP-Fall audit) is pending.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
-- **Data version:** raw only. Checksum manifest **v2** `metadata/raw_checksums_v2.csv` (3,110 files; v1 kept). BITS-2 file manifest `metadata/bits2_file_manifest.csv` (984 files), exclusions `metadata/bits2_exclusions.csv`.
+- **Data version:** raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
 - **Split version:** none.
-- **Last validated result:** D00b. BITS-2 motion-rate verdict "inconsistent" (no time-dependent BITS-2 features in v1). 5 files excluded, 979 motion_ok, 437 hr_ok. Tests 16 passed / 1 skipped; full SHA-256 3/3 (2026-10-12).
-- **Open items:** BITS-2 context map awaits user confirmation (report §8); D00b report §10 decisions; D02 item: per-sample `acc_saturated` flag.
-
+- **Last validated result:** manifest v3, full SHA-256 tests 17 passed (2026-10-12). D00b: BITS-2 rate verdict "inconsistent"; 5 excluded, 979 motion_ok, 437 hr_ok.
+- **Open items:** proposed design change (BITS-2 supporting; FallAllD/UP-Fall pending D00c; device harmonisation experiment); D02 `acc_saturated` flag (being delivered in D02).
 ---
 
 ## 2026-10-11 23:55 — D00a — Data inventory (look-only)
@@ -306,3 +305,74 @@ Nothing under `data/` was created or modified. No unzipping was needed.
 7. subjects with cardiac conditions.
 
 **Next step (waiting for user approval):** none started.
+
+## 2026-10-12 04:20 — D00b — User decisions after D00b (recorded before any further work)
+**What I did:** Recorded the user's answers to the D00b report §10 questions, a proposed design change, a permanent data ban, an evaluation rule, and the user's answers to the D02/D03 plan questions (P1–P8). No data was processed for this entry.
+
+**Files created/changed:** `PROJECT_LOG.md`, `config/label_maps.yaml`, `config/evaluation_v1.yaml` (new), `CLAUDE.md` (§2.3: two bullets inserted, nothing removed).
+
+**Checks run and results:** none needed for this entry (recording only). See the D00b-follow-up entry below for manifest v3 and tests.
+
+**Decisions made (and why):**
+User decisions on the D00b questions (user's wording kept):
+- **Q1:** BITS-2 v1 uses only time-independent motion features: magnitude percentiles, peak magnitude (note: may be underestimated in low-rate files), and FRACTION (not count) of samples above thresholds such as 2 g. No jerk, no frequency, no sample-count features.
+- **Q2:** BITS-2 is EXCLUDED from v1 motion-model training. Whole-file features are used only for a descriptive fall-vs-ADL analysis (compare percentiles and fractions, not just maxima, since ADL files are longer than fall files). No fixed-sample-count windows.
+- **Q3:** adl7/adl8 are kept for motion (motion_ok) and excluded from HR analysis.
+- **Q4:** The event-centred before/during/after HR analysis for BITS-2 is POSTPONED, because fall timing cannot be placed on the HR timeline. It is replaced by a coarse whole-file comparison of HR in fall vs ADL files, clearly labelled coarse.
+- **Q5:** Timestamp-break files stay flagged; only files whose break shows two recordings joined are excluded.
+  - **Operational definition (accepted by the user as P1):** "two recordings joined" = every stream (acc, acg, gyro, mgm, hrt) shows the same number (≥ 2) of segments. This uses the segment definition fixed before the D00b run (`repetition_verdict` starting `ambiguous_2_segments` in `metadata/bits2_file_manifest.csv`).
+  - Eight files carry that verdict. user7_fall3 is already excluded (R4). The 7 others would be excluded: user20_adl2, user27_adl8, user29_adl12, user5_adl5, user8_adl13, user9_adl3, user9_adl5.
+  - **Application is deferred** to the next BITS-2 processing milestone, which will write `metadata/bits2_exclusions_v2.csv`. v1 stays unchanged.
+- **Q6:** The BITS-2 activity classes in D00b report §8 are confirmed as a proposal for analysis and hard negatives only. The v1 context model trains on PPG-DaLiA only.
+- **Q7:** Subjects with health conditions stay in. Use relative-to-baseline HR, and report results per subject.
+- **D01** is marked as covered by D00a.
+
+**PROPOSED DESIGN CHANGE — status: proposed, pending audits (NOT applied to config):**
+- BITS-2 is demoted from main abrupt-motion source to a supporting dataset (time-independent motion features, coarse HR comparisons).
+- FallAllD is promoted to main motion-training candidate, and UP-Fall becomes external validation. Both are pending their audit (D00c).
+- A "device harmonisation" experiment is added for the motion branch: resample to a common rate and clip to ±2 g, applied identically to all datasets. It is always reported alongside the unharmonised version.
+
+**PERMANENT BAN (added to CLAUDE.md §2.3):** `data/raw/fallalld/FallAllD_40SamplesPerSec_ActivityIdsFiltered.pkl` must never be used for training, validation, testing or analysis. It contains SMOTE-generated synthetic samples, filtered activities and unknown downsampling. Only the original FallAllD.pkl may be used, and activity_info.pkl must be verified against the original paper before use.
+- The user approved an added clause: the ban covers the copy inside `data/raw/fallalld/fallalld.zip` and any extracted copy. At present the folder holds only `fallalld.zip`; it was not opened.
+
+**EVALUATION RULE (user, added to CLAUDE.md §2.3 and `config/evaluation_v1.yaml`):** "False alerts per user-hour may only be computed on subjects whose data was NOT used to train or tune ANY component model or fusion threshold involved in that evaluation. For PPG-DaLiA this means subject-held-out (e.g. LOSO) predictions only. Fusion thresholds are tuned on validation subjects only, never on the subjects used to report false alerts."
+
+**User answers to the D02/D03 plan:**
+- **P1:** see Q5.
+- **P2:** The purity threshold for `train_candidate` is 1.0. Boundary windows stay in false-alert evaluation.
+- **P3:** All PPG-DaLiA windows are `motion_event_class = normal_adl`, transient included. The "PROPOSED" mark is removed from label_maps.
+- **P4:** The primary BVP-HR vs ECG comparison uses the dataset's 8 s / 2 s reference windows. A secondary table uses the 30 s physiology windows (hr_ref averaged over the reference windows fully inside each 30 s window).
+- **P5:** The template-matching PPG SQI and the `physiology_uncertain` threshold of 0.9 are fixed now. A REPORT-ONLY sensitivity table at SQI thresholds 0.80/0.85/0.90/0.95 is added; it must not be used to change the v1 threshold.
+- **P6:** Context-doc §14 features only; per-axis extras are a later ablation.
+- **P7:** Windows are stored as index references into Layer A.
+- **P8:** The smoke subjects are PPGDALIA_S03 and PPGDALIA_S06.
+- **Additional rules:**
+  - **B.** PPG-DaLiA has no arousal labels, so `arousal_class` is null for all PPG-DaLiA windows (never inferred from activity or HR). An invariant check enforces this.
+  - **C.** The smoke report shows ACC magnitude, the activity timeline and window labels around one activity boundary per subject.
+
+**Problems / surprises:** The banned .pkl is not a loose file on disk; only `fallalld.zip` is present.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** Approved: manifest v3 and read-only folders, then the D02 smoke test (S03 + S06) only. Then stop.
+
+## 2026-10-12 04:45 — D00b follow-up — FallAllD/UP-Fall read-only, raw checksum manifest v3
+**What I did:**
+- Made `data/raw/fallalld/` and `data/raw/upfall/` read-only (`chmod -R a-w`; permissions only, mtimes unchanged). Contents not inspected (D00c).
+- Built checksum manifest v3 in tmux `sao`, env `wearsafe` (log `logs/2026-10-12_D00b_raw_manifest_v3.log`). No GPU needed (hashing only).
+- Pointed `CURRENT_MANIFEST` to v3. v1 and v2 are kept.
+
+**Files created/changed:** `metadata/raw_checksums_v3.csv` (3,112 files), `src/wearsafe/raw_manifest.py`.
+
+**Checks run and results:**
+- v3 minus the two new files is identical to v2 (every path, size, mtime and SHA-256), so no existing raw file changed.
+- New files: `data/raw/fallalld/fallalld.zip` (569,377,411 B), `data/raw/upfall/upfall-data.zip` (20,099,632 B).
+- `WEARSAFE_FULL_CHECKSUM=1 pytest`: 17 passed (log `logs/2026-10-12_D00b_pytest_manifest_v3.log`).
+
+**Decisions made (and why):** none new.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** D02 smoke test (approved).

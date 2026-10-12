@@ -46,10 +46,10 @@ ppg_dalia:
     table_soccer: vigorous_activity
     lunch: TODO              # class still undecided (context doc §16/§41); excluded from v1 context training, included in false-alert eval (decision 2026-10-12 #3)
   hard_negative: [table_soccer, stairs, cycling]   # context doc §17
-  motion_event_class:        # PROPOSED (context doc §10: everyday movement); confirm with user
+  motion_event_class:        # CONFIRMED by user after D00b (P3): every PPG-DaLiA window is normal_adl, transient included
     default: normal_adl
     transient: normal_adl
-  arousal_class: null        # no arousal ground truth in PPG-DaLiA
+  arousal_class: null        # no arousal ground truth in PPG-DaLiA; null for ALL windows, never inferred from activity or HR (user decision B after D00b)
   training_v1:               # user decisions 2026-10-12 #3, #4
     context: [sitting, working, driving, walking, stairs, cycling, table_soccer]
     excluded: [transient, lunch]
@@ -102,6 +102,47 @@ bits2:
     value: 5
     status: "stated in paper, not yet verified in files"
     source: "Nandi et al., Data in Brief 52 (2024) 109812, abstract (PMC10709028)"
+    d00b_finding: "files contain ~1 trial each (reports/D00b_bits2_forensics.md §4); ~984 recordings, never claim 4,920"
+  # ---- user decisions after D00b (PROJECT_LOG 2026-10-12 04:20) ----
+  context_class_proposal:    # Q6: confirmed as a proposal for ANALYSIS and HARD NEGATIVES only; NOT used for context training
+    status: "confirmed by user as proposal for analysis and hard negatives only; v1 context model trains on PPG-DaLiA only"
+    source: "reports/D00b_bits2_forensics.md §8 (paper Table 1 activity names)"
+    mapping:                 # null = no context class (motion hard negative / false-alert eval)
+      adl1: locomotion         # walking slowly
+      adl2: locomotion         # walking quickly
+      adl3: vigorous_activity  # jogging (hard negative)
+      adl4: vigorous_activity  # jumping (hard negative)
+      adl5: vigorous_activity  # climbing (assumed stairs, not stated in paper)
+      adl6: vigorous_activity
+      adl7: vigorous_activity  # duration-flagged
+      adl8: vigorous_activity  # duration-flagged
+      adl9: null               # sitting on chair (motion hard negative)
+      adl10: null
+      adl11: null
+      adl12: null              # swinging hands (motion hard negative)
+      adl13: stationary        # lying on bed
+      adl14: null              # getting up / turning while lying (motion hard negatives)
+      adl15: null
+      adl16: null
+  training_v1:               # Q2, Q6
+    motion: []
+    context: []
+    note: "BITS-2 is excluded from v1 motion-model and context-model training"
+  motion_features_v1:        # Q1: time-independent only (sampling rate verdict 'inconsistent', D00b)
+    allowed: [acc_mag_percentiles, acc_mag_peak, acc_mag_fraction_above_threshold]
+    notes:
+      acc_mag_peak: "may be underestimated in low-rate files"
+      acc_mag_fraction_above_threshold: "FRACTION of samples (not count), e.g. above 2 g"
+    forbidden: [jerk, frequency_features, sample_count_features, fixed_sample_count_windows]
+    use: "descriptive whole-file fall-vs-ADL analysis only (Q2): compare percentiles and fractions, not just maxima"
+  hr_analysis_v1:
+    exclude_files: [adl7, adl8]                  # Q3: kept for motion (motion_ok), excluded from HR analysis
+    event_centred: postponed                     # Q4: fall timing cannot be placed on the HR timeline
+    replacement: "coarse whole-file HR comparison, fall vs ADL files, clearly labelled coarse"
+    health_conditions: "subjects stay in; relative-to-baseline HR; report per subject (Q7)"
+  exclusion_rule_q5:         # Q5 / P1: defined now, applied at the next BITS-2 milestone (metadata/bits2_exclusions_v2.csv)
+    rule: "exclude a timestamp-break file only if every stream (acc, acg, gyro, mgm, hrt) has the same number (>=2) of segments"
+    status: "defined, not yet applied"
 
 units:                       # original -> canonical (context doc §20; D00a §4)
   ppg_dalia:
@@ -119,3 +160,9 @@ open_items:                  # decision 2026-10-12 #6
   - milestone: D02
     item: "per-sample acc_saturated flag for the ±2 g E4 watch ACC range (PPG-DaLiA, WESAD)"
     decision: "none yet"
+  - milestone: D00c
+    item: "audit FallAllD (data/raw/fallalld/) and UP-Fall (data/raw/upfall/); SMOTE pkl banned (CLAUDE.md §2.3)"
+    decision: "none yet"
+  - milestone: "motion branch (after D00c)"
+    item: "PROPOSED design change, pending audits: BITS-2 supporting dataset; FallAllD main motion-training candidate; UP-Fall external validation; device harmonisation experiment (common rate + clip to ±2 g, identical for all datasets, always reported with the unharmonised version)"
+    decision: "proposed, pending audits; not applied"

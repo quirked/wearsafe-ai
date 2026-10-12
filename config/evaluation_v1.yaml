@@ -1,0 +1,11 @@
+# Evaluation rules, version 1 (user decision after D00b, PROJECT_LOG 2026-10-12 04:20; CLAUDE.md §2.3).
+version: 1
+
+false_alerts_per_user_hour:
+  rule: >-
+    False alerts per user-hour may only be computed on subjects whose data was NOT used to train or
+    tune ANY component model or fusion threshold involved in that evaluation. For PPG-DaLiA this means
+    subject-held-out (e.g. LOSO) predictions only. Fusion thresholds are tuned on validation subjects
+    only, never on the subjects used to report false alerts.
+  ppg_dalia: subject_held_out_predictions_only    # e.g. LOSO
+  fusion_threshold_tuning: validation_subjects_only

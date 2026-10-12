@@ -30,6 +30,8 @@ Honest, lower numbers are always preferred over inflated ones. Specifically forb
 - Hardcoding, fabricating, or estimating any number that appears in a report. Every reported number must come from a script in the repo that can be re-run.
 - Generating synthetic data and mixing it into evaluation. Synthetic data, if ever used, is clearly separated and labelled.
 - Using model performance to debug the dataset. Data is validated by audits and invariant checks first.
+- PERMANENT BAN (user, 2026-10-12): data/raw/fallalld/FallAllD_40SamplesPerSec_ActivityIdsFiltered.pkl must NEVER be used for training, validation, testing or analysis. It contains SMOTE-generated synthetic samples, filtered activities and unknown downsampling. Only the original FallAllD.pkl may be used; activity_info.pkl must be verified against the original paper before use. This applies equally to the copy inside data/raw/fallalld/fallalld.zip and to any extracted copy.
+- EVALUATION RULE (user, 2026-10-12): False alerts per user-hour may only be computed on subjects whose data was NOT used to train or tune ANY component model or fusion threshold involved in that evaluation. For PPG-DaLiA this means subject-held-out (e.g. LOSO) predictions only. Fusion thresholds are tuned on validation subjects only, never on the subjects used to report false alerts.
 
 ### 2.4 Scientific boundaries
 - Claim: "potential danger / safety anomaly". Never claim attack detection.

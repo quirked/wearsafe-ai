@@ -11,7 +11,8 @@ FIELDS = ["path", "size_bytes", "mtime_ns", "sha256"]
 # Current manifest version. Older versions are kept, never overwritten (CLAUDE.md §2.1).
 #   v1 metadata/raw_checksums.csv     (D00, 2,126 files)
 #   v2 metadata/raw_checksums_v2.csv  (D00b, + data/raw/bits2_website_nohr/)
-CURRENT_MANIFEST = "metadata/raw_checksums_v2.csv"
+#   v3 metadata/raw_checksums_v3.csv  (after D00b, + data/raw/fallalld/ and data/raw/upfall/, not inspected)
+CURRENT_MANIFEST = "metadata/raw_checksums_v3.csv"
 
 
 def sha256_of(path: Path, chunk: int = 16 * 1024 * 1024) -> str:
