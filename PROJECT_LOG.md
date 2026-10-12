@@ -1825,3 +1825,37 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 11:14 — Demo v4 — Soft redesign live (app/wearsafe_demo_v4.py on 8501)
+**What I did:**
+- Created `app/wearsafe_demo_v4.py`. v3's data-loading and replay code is copied unchanged; only the layout, styling and text are new:
+  - Nunito font, soft-pink palette, three sections;
+  - scenario cards, one status circle, three status cards;
+  - a "See what the watch senses" expander with fixed placeholders, and a "Settings" expander;
+  - an "Are you safe?" card with "I'm safe" / "Get help now" and a progress-bar countdown;
+  - a SIMULATION help screen and an event timeline;
+  - How it works and Results & honesty tabs (tables read from the report files).
+- No model, rule, threshold, config, result or existing app file changed.
+
+**Files created/changed:** `app/wearsafe_demo_v4.py`, `reports/figures/demo_v4/` (3 screenshots: live safe state, the "Are you safe?" card, How it works), `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **On spare port 8502 (headless Chrome), all passed with 0 exceptions:**
+  - normal day "You're safe";
+  - the heart check-in "Your heart is racing while you're still" appears, as in v3;
+  - "I'm safe" is logged;
+  - "Get help now" leads to the help screen;
+  - the countdown timeout leads to "Getting help (SIMULATION)";
+  - jogging shows "No height change";
+  - How it works and Results & honesty load.
+- **Jargon grep:** only internal keys and paths (lines 27, 37, 93), none on screen.
+- **Swap:** v3 stopped (Ctrl-C) in `sao:demo_app`, v4 started on 8501. Health ok; everyday, fall and results load. The 8502 test instance was stopped.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** Stage 2 (GitHub push).
+- **v4 start command:** same pattern with `app/wearsafe_demo_v4.py` (log `logs/2026-10-12_demo_app_v4_streamlit.log`). **Fallback:** `app/wearsafe_demo_v3.py`.
