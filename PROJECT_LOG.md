@@ -2029,3 +2029,50 @@ No existing result, model, config or app file was changed.
 **Open questions for the user:** Track the three small v4 inputs (narrow `!` exceptions or `git add -f`), so a fresh clone can run v4?
 
 **Next step (waiting for user approval):** the user pushes.
+
+## 2026-10-12 14:05 — DEMO — Track v4 runtime inputs; fresh-clone test passes
+**What I did:**
+- Listed every file `app/wearsafe_demo_v4.py` reads at runtime. It imports no project modules, only joblib/numpy/pandas/streamlit.
+
+  | File | Size | Before |
+  |---|---|---|
+  | `results/2026-10-12_demo_app_v0/timelines.joblib` | 190,461 B | tracked |
+  | `reports/F02_demo_v1_test_tables.md` | 3,317 B | tracked |
+  | `reports/M03_v2_sqi_demo_v0.md` | 2,037 B | tracked |
+  | `.streamlit/config.toml` | 155 B | tracked |
+  | `results/2026-10-12_M02_demo_replay/replay.joblib` | 4,071 B | ignored |
+  | `results/2026-10-12_M03_v2_demo_replay/heart.joblib` | 7,445 B | ignored |
+  | `results/2026-10-12_M02_extra_sensors/summary.csv` | 2,796 B | ignored |
+
+- Tracked the three ignored files (all far below 20 MB) via exact-file `.gitignore` exceptions, appended below the existing rules.
+  - Git cannot re-include a file inside an excluded folder, so each exception re-opens only the path to that one file.
+  - `git ls-files --others --exclude-standard results/` lists exactly these 3 files, so every other results file stays ignored.
+- Commit 2a25706.
+- Fresh-clone test:
+  - `git clone` into the scratchpad (`clone_test`, no `data/` folder);
+  - started v4 there on spare port 8503 with the README command (tmux `sao:clone_test`), then stopped it.
+
+**Files created/changed:**
+- `.gitignore` (append only)
+- the 3 result files (tracked, unchanged)
+- `PROJECT_LOG.md`
+
+**Checks run and results:**
+- PASS: the clone has all 7 runtime files.
+- PASS: curl on 8503 returns HTTP 200.
+- PASS, with 0 errors and no missing-file messages:
+  - Live demo (default);
+  - normal day with the heart check-in;
+  - fall + air pressure with "Are you safe?";
+  - How it works;
+  - Results & honesty.
+- PASS: the clone's Streamlit log has no errors.
+- The live v4 on 8501 was untouched (health ok).
+
+**Decisions made (and why):** only exact files were exposed, never whole folders, as requested.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** the user pushes.
