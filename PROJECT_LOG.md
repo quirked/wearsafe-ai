@@ -1,9 +1,9 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D02 smoke test (PPG-DaLiA S03 + S06), approved 2026-10-12. Full D02 and D03 need separate approval. D01 is covered by D00a. D00c (FallAllD + UP-Fall audit) is pending.
+- **Current milestone:** D02 smoke test (PPG-DaLiA S03 + S06): DONE, all 149 invariant checks passed, waiting for approval of the full D02 run. D03 is not started. D01 is covered by D00a. D00c (FallAllD + UP-Fall audit) is pending.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
-- **Data version:** raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
+- **Data version:** PPG-DaLiA smoke outputs `normalized_signals_smoke_v1/` and `windows_smoke_v1/` (S03, S06 only). Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
 - **Split version:** none.
 - **Last validated result:** manifest v3, full SHA-256 tests 17 passed (2026-10-12). D00b: BITS-2 rate verdict "inconsistent"; 5 excluded, 979 motion_ok, 437 hr_ok.
 - **Open items:** proposed design change (BITS-2 supporting; FallAllD/UP-Fall pending D00c; device harmonisation experiment); D02 `acc_saturated` flag (being delivered in D02).
@@ -376,3 +376,51 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** D02 smoke test (approved).
+
+## 2026-10-12 05:00 — D02 — Smoke test: PPG-DaLiA normalisation + windowing (S03, S06)
+**What I did:**
+- Wrote the Layer A normalisation and Layer B windowing code, configs and tests. These were committed before the run (1022b0a).
+- Ran a trial into the scratchpad, then the official run in tmux `sao`, env `wearsafe`, on CPU. No GPU was needed, so no GPU was selected.
+- The trial passed unchanged. No code changed between the trial and the official run, and the trial outputs served as the independent re-run for the determinism check.
+- Generated tables and boundary plots with `scripts/d02_smoke_report.py`.
+- Logs: `logs/2026-10-12_D02_smoke_trial.log`, `logs/2026-10-12_D02_smoke.log`.
+
+**Files created/changed:**
+- **Code:** `src/wearsafe/ppg_dalia_io.py`, `src/wearsafe/windowing.py`, `src/wearsafe/schemas.py` (`acc_saturated`, window fields, forbidden columns).
+- **Config:** `config/windowing_v1.yaml`, `config/features_v1.yaml` (D03 parameters fixed now, not used yet).
+- **Scripts:** `scripts/d02_ppg_dalia_normalize.py`, `scripts/d02_ppg_dalia_windows.py`, `scripts/d02_smoke_report.py`.
+- **Tests:** `tests/test_ppg_dalia_normalize.py`, `tests/test_windowing.py`, `tests/test_ppg_dalia_outputs.py`, `tests/test_schemas_and_label_maps.py` (extended).
+- **Outputs:**
+  - data: `data/interim/ppg_dalia/normalized_signals_smoke_v1/`, `data/interim/ppg_dalia/windows_smoke_v1/`;
+  - metadata: `metadata/ppg_dalia_subjects_smoke_v1.csv`;
+  - reports: `reports/D02_ppg_dalia_smoke.md`, `reports/D02_ppg_dalia_smoke_v1_tables.md`, `reports/figures/D02_smoke_v1/`.
+
+**Checks run and results:**
+- **Invariant checks:** 149/149 passed (26 normalisation, 123 windowing). They cover:
+  - durations and rates, the hr_ref count, units/E4 counts and NaN = 0;
+  - label seconds against raw, and the S6 duration and missing activities;
+  - window counts against the formula, exact samples per window, and recording bounds;
+  - unique IDs, purity recomputed from raw, and crosses_boundary ⇔ purity < 1;
+  - arousal null (decision B), normal_adl (P3), roles (P2), and n_hr_ref by brute force.
+- **Label seconds** equal the D00a table (max difference 0 s).
+- **Window counts:**
+  - S03: 8740 / 3495 / 581;
+  - S06: 5249 / 2099 / 349 (2 s / 5 s / 30 s).
+- **Saturated ACC samples:** S03 0.29%, S06 0.38%. The highest rates are S03 cycling at 4.6% and S06 table soccer at 2.5%.
+- **Determinism:** all 12 output tables and the subject metadata are identical across the two runs.
+- **pytest:** 37 passed, 1 skipped (the full SHA-256 test, opt-in; it ran earlier with 17 passed on v3).
+
+**Decisions made (and why):**
+- **Window eval_role names:** `train_candidate`, `false_alert_eval` (lunch/transient) and `false_alert_eval_only` (training label with purity < 1), as in `config/windowing_v1.yaml`.
+- **Saturation flag:** a sample is flagged when any axis is at −128 or +127 counts. A +127 reading may be genuine 1.984 g; it is flagged anyway, and this is documented.
+- **Lunch:** `context_class` stays the literal `TODO` from label_maps. It is never `train_candidate` (checked).
+
+**Problems / surprises:**
+- **Label timing (visual observation only, no action):** activity labels follow the protocol, not the movement.
+  - S03: the transient period before the stairs looks like walking.
+  - S06: walking-like motion starts before the stairs label.
+  - Transient windows can therefore contain real locomotion, and the edges of activities carry some label noise.
+
+**Open questions for the user:** none blocking. Approval is needed for the full D02 run (15 subjects, tag `v1`).
+
+**Next step (waiting for user approval):** full D02 run. D03 is not started.

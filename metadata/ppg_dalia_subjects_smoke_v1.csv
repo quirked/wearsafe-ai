@@ -1,0 +1,3 @@
+subject_id,raw_folder,age_years,height_cm,weight_kg,gender,gender_original,skin_type,sport_level,use,source
+PPGDALIA_S03,S3,25,170.0,60.0,m,' m',3,5,analysis_only_never_model_input,data/raw/ppg_dalia/PPG_FieldStudy/S3/S3.pkl['questionnaire']
+PPGDALIA_S06,S6,37,176.0,70.0,f,' f',3,1,analysis_only_never_model_input,data/raw/ppg_dalia/PPG_FieldStudy/S6/S6.pkl['questionnaire']
