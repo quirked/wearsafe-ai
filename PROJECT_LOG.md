@@ -433,3 +433,30 @@ User decisions on the D00b questions (user's wording kept):
 **Problems / surprises:** none.
 **Open questions for the user:** none.
 **Next step (waiting for user approval):** full D02 run.
+
+## 2026-10-12 04:30 — D02 — User decision: boundary margin for training windows (recorded before the full run)
+**What I did:** Recorded a new training rule decided by the user before any model exists, and a new versioned windowing config.
+
+**Files created/changed:** `PROJECT_LOG.md`, `config/windowing_v2.yaml` (new; `config/windowing_v1.yaml` is kept because `windows_smoke_v1` was built with it).
+
+**Checks run and results:** none (recording only).
+
+**Decisions made (and why):**
+- **New per-window field `seconds_to_nearest_boundary`:** the distance from the window to the nearest change in the activity label, including changes to and from transient.
+  - Label changes are at times i/4 s, where activity sample i differs from sample i−1.
+  - For a window [start, end), the distance is 0 if a change lies inside it. Otherwise it is the smallest of (start − change) over changes before the window and (change − end) over changes after it.
+  - The recording start and end are not label changes. If the recording has no change at all, the value is +inf.
+- **New training rule (user):** a window is `train_candidate` only if purity = 1.0 AND `seconds_to_nearest_boundary` ≥ 10 s.
+  - Windows that fail only the 10 s margin get eval_role `false_alert_eval`. They are kept, not dropped.
+  - Boundary-crossing windows (purity < 1) stay `false_alert_eval_only`, and lunch/transient stay `false_alert_eval`.
+- **Reason (user):** the D02 smoke test showed that labels follow the protocol schedule, not the actual movement, so activity edges are noisy.
+- **The 10 s margin is fixed now and must not be tuned later based on model results.**
+- **Versions:**
+  - Windows built with `config/windowing_v2.yaml`: the smoke outputs as a new version, `windows_smoke_v2` (from `normalized_signals_smoke_v1`; `windows_smoke_v1` is kept), and the full run as `windows_v1` (from `normalized_signals_v1`).
+  - Each `run_info.json` records which windowing config was used.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: apply the rule to the smoke outputs (smoke_v2), then run the full D02 on all 15 subjects, then stop. D03 is not started.

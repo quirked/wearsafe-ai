@@ -1,0 +1,25 @@
+# Layer B windowing, version 2 (D02). Same as windowing_v1.yaml plus the boundary-margin training rule.
+# User decision 2026-10-12 04:30 (PROJECT_LOG), made before any model exists.
+# The 10 s margin is FIXED and must not be tuned later based on model results.
+version: 2
+start_s: 0
+tasks:
+  motion_2s: {task: motion, length_s: 2, step_s: 1}
+  context_5s: {task: context, length_s: 5, step_s: 2.5}
+  physiology_30s: {task: physiology, length_s: 30, step_s: 15}
+labels:
+  source: "4 Hz activity samples inside [window_start, window_end)"
+  label_purity: "fraction of activity samples carrying the majority label"
+  crosses_boundary: "more than one distinct activity label inside the window"
+  tie_rule: "among tied labels, the label of the window's last sample (else the tied label occurring last)"
+  seconds_to_nearest_boundary: >-
+    label changes are at t = i/4 s where activity sample i differs from sample i-1 (incl. to/from transient);
+    0 if a change lies inside the window, else min(start - change) over earlier changes and
+    min(change - end) over later changes; recording start/end are not changes; +inf if no change at all
+eval_role:
+  train_candidate: "majority label in label_maps training_v1.context AND label_purity >= purity_threshold AND seconds_to_nearest_boundary >= boundary_margin_s"
+  purity_threshold: 1.0
+  boundary_margin_s: 10          # fixed; never tuned on model results
+  false_alert_eval: "lunch/transient majority label, OR training label with purity 1.0 but seconds_to_nearest_boundary < boundary_margin_s"
+  false_alert_eval_only: "training label but label_purity < purity_threshold (boundary-crossing window)"
+  note: "no window is dropped; every PPG-DaLiA window counts towards false alerts per user-hour (subject-held-out only, config/evaluation_v1.yaml)"
