@@ -1,12 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D02 smoke test (PPG-DaLiA S03 + S06): DONE, all 149 invariant checks passed, waiting for approval of the full D02 run. D03 is not started. D01 is covered by D00a. D00c (FallAllD + UP-Fall audit) is pending.
+- **Current milestone:** D02 — PPG-DaLiA normalisation + windowing — DONE (15 subjects, 1310/1310 checks), waiting for user review. D03 is not started. D01 is covered by D00a. D00c (FallAllD + UP-Fall audit) is pending.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
-- **Data version:** PPG-DaLiA smoke outputs `normalized_signals_smoke_v1/` and `windows_smoke_v1/` (S03, S06 only). Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
+- **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
 - **Split version:** none.
-- **Last validated result:** manifest v3, full SHA-256 tests 17 passed (2026-10-12). D00b: BITS-2 rate verdict "inconsistent"; 5 excluded, 979 motion_ok, 437 hr_ok.
-- **Open items:** proposed design change (BITS-2 supporting; FallAllD/UP-Fall pending D00c; device harmonisation experiment); D02 `acc_saturated` flag (being delivered in D02).
+- **Last validated result:** D02 full run, 2026-10-12. Train candidates (motion/context/physiology): 65079 / 25920 / 4155. Deterministic re-run identical. Tests 42 passed / 1 skipped.
+- **Open items:** proposed design change (BITS-2 supporting; FallAllD/UP-Fall pending D00c; device harmonisation experiment); optional D03 report-only distance-to-boundary table (user to decide).
 ---
 
 ## 2026-10-11 23:55 — D00a — Data inventory (look-only)
@@ -460,3 +460,42 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: apply the rule to the smoke outputs (smoke_v2), then run the full D02 on all 15 subjects, then stop. D03 is not started.
+
+## 2026-10-12 04:40 — D02 — Full run (15 subjects) + boundary-margin rule; smoke re-versioned
+**What I did:**
+- Implemented `seconds_to_nearest_boundary` and the 10 s margin training rule (`config/windowing_v2.yaml`). The code was committed before any run (4d89fee).
+- Ran in tmux `sao`, env `wearsafe`, on CPU (no GPU needed). Scratch trial runs of smoke_v2 and the full run went first, then the official runs. No code changed between them, and the trial outputs served as the independent re-run for determinism.
+- Log: `logs/2026-10-12_D02_full.log`.
+
+**Files created/changed:**
+- **Code:** `src/wearsafe/windowing.py` (`change_times`, `seconds_to_nearest_boundary`); `scripts/d02_ppg_dalia_windows.py` (`--in-tag`, `--config`, margin rule and checks); `scripts/d02_smoke_report.py` (role tables, margin effect, saturation pivot).
+- **Tests:** `tests/test_windowing.py`, `tests/test_ppg_dalia_outputs.py`.
+- **Outputs:**
+  - data: `data/interim/ppg_dalia/windows_smoke_v2/`, `data/interim/ppg_dalia/normalized_signals_v1/`, `data/interim/ppg_dalia/windows_v1/`;
+  - metadata: `metadata/ppg_dalia_subjects_v1.csv`;
+  - reports: `reports/D02_ppg_dalia_full.md`, `reports/D02_ppg_dalia_v1_tables.md`, `reports/D02_ppg_dalia_smoke_v2_tables.md`, `reports/figures/D02_v1/` (15 plots), `reports/figures/D02_smoke_v2/`.
+- `windows_smoke_v1` is kept unchanged.
+
+**Checks run and results:**
+- **Invariant checks:** full run 1310/1310 passed (182 Layer A + 1128 Layer B); smoke_v2 179/179. The new checks are:
+  - `seconds_to_nearest_boundary` equals a brute-force recomputation;
+  - crossing windows have distance 0;
+  - train_candidate ⇔ (training label & purity 1.0 & margin ≥ 10 s);
+  - pure windows within the margin are `false_alert_eval`.
+- **Label seconds** equal the D00a table for all 15 subjects (max difference 0 s). Window counts equal the formula everywhere.
+- **Margin effect:** 3.07% of pure motion, 3.08% of context and 3.01% of physiology training-label windows moved to `false_alert_eval`.
+- **Train candidates (motion/context/physiology):** 65079 / 25920 / 4155. All per-subject × activity tables are in `reports/D02_ppg_dalia_v1_tables.md` §5b.
+- **Saturation:** 0.12–0.38% of ACC samples per subject; up to 5.8% in cycling (S02). 3.8–9.1% of motion windows contain ≥1 saturated sample.
+- **Determinism:** all 65 output tables are identical to the scratch re-run.
+- **pytest:** 42 passed, 1 skipped (the full SHA-256 test is opt-in).
+
+**Decisions made (and why):**
+- The smoke re-version is named `windows_smoke_v2` and built from `normalized_signals_smoke_v1`. The full run is `normalized_signals_v1` + `windows_v1`, built with windowing config v2. `run_info.json` records the config.
+
+**Problems / surprises:**
+- **Visual observation, no action:** in S01, walking-like motion starts while the label is still "sitting", earlier than the 10 s margin zone. So some edge noise remains beyond 10 s. The margin is fixed and was not changed.
+- **Suggestion for the user (not done):** a report-only D03 table of motion features by distance-to-boundary bins, to measure this.
+
+**Open questions for the user:** whether to add the report-only distance-to-boundary table in D03.
+
+**Next step (waiting for user approval):** D03. Not started.
