@@ -1,11 +1,11 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D08 — FallAllD wrist motion dataset — DONE (13 subjects, 69/69 + 8/8 split checks), waiting for user review. No next milestone started. D05 stays BITS-2 (not started).
+- **Current milestone:** M01-demo (demo sprint, tag demo_v0, PRELIMINARY) — DONE, waiting for the user. D08 DONE.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
 - **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2). PPG-DaLiA features v1: `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet` (config `features_v1.yaml`). FallAllD v1: `data/interim/fallalld/*_v1/`, features `data/processed/motion/fallalld_{unclipped,e4_clipped}_features-{v1,v2}_v1.parquet`.
-- **Split version:** `splits/fallalld_v1.json` (FallAllD wrist LOSO, 13 folds).
-- **Last validated result:** D08 full 2026-10-12: 2,515 records / 47,785 windows per version (498 positive, 36,518 ADL); deterministic; split checks 8/8. Tests 71 passed / 1 skipped.
+- **Split version:** `splits/fallalld_v1.json` (FallAllD wrist LOSO, 13 folds); `splits/ppg_dalia_v1.json` (PPG-DaLiA LOSO, 15 folds).
+- **Last validated result:** M01-demo 2026-10-12 (PRELIMINARY): FallAllD RF PR-AUC 0.83 (unclipped) / 0.77 (e4_clipped), ADL-clip false alarm 11–14%; PPG-DaLiA context RF macro-F1 0.72; device check AUC 0.72–0.84. Results in `results/2026-10-12_M01_demo_v0_run2/`.
 - **Open items:** shortcut baselines (position-only (a)/(b comparative)/(c), peak-only, saturation-only) and dedup + clip-level metrics are required at the first motion-model milestone; findings for later 1–4 (v2 SQI threshold, 30 s margin experiment, motion-aware physiology gate, longer HR baseline).
 ---
 
@@ -1137,3 +1137,50 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: continue the sprint.
+
+## 2026-10-12 06:49 — M01-demo — Demo sprint results (demo_v0, PRELIMINARY)
+**What I did:**
+- Ran Parts A, B and C in tmux `sao`, env `wearsafe`, on CPU (`CUDA_VISIBLE_DEVICES=""`, BLAS threads 2, RF n_jobs 8–16). Outputs are in `results/2026-10-12_M01_demo_v0_run2/`.
+- Logs: `logs/2026-10-12_M01demo_run2_*.log`.
+- Wrote `reports/M01_demo_v0.md` and its generated tables (`reports/M01_demo_v0_{motion,context,device}_tables.md`).
+
+**Files created/changed:** `splits/ppg_dalia_v1.json`, the reports above, the `results/...` folder, `scripts/m01_demo_{motion,eval,context,device_check}.py`, `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **STOP check:** not triggered (`results/.../motion/stop_check.json`).
+  - Max pooled model PR-AUC is 0.826.
+  - Shortcuts: peak-only 0.273 / 0.131; saturation-only 0.051 / 0.114; position-only on the position-matched subset 0.176 (chance 0.206); position-only at clip level 100% / 100%.
+- **Motion, pooled out-of-fold PR-AUC:**
+
+  | Config | LR | RF |
+  |---|---|---|
+  | unclipped v1 | 0.679 | 0.820 |
+  | unclipped v2 | 0.682 | 0.826 |
+  | e4_clipped v1 | 0.649 | 0.775 |
+  | e4_clipped v2 | 0.655 | 0.767 |
+
+- **Motion, RF at the inner-validation threshold:**
+  - recall 0.90–0.91; precision 0.51–0.60;
+  - clip fall detection 92.6–94.0%;
+  - clip false alarm on ADL clips 11.0–14.2% (dedup 6.7–8.4%);
+  - probe clips trigger 28.6%; label-uncertain clips detected 72–84%.
+  - Per subject (e4_clipped v2, RF): PR-AUC 0.862 ± 0.095; ADL-clip false alarm 14.6 ± 6.4%.
+- **Context (PPG-DaLiA, LOSO):**
+  - RF macro-F1 0.717 (per subject 0.702 ± 0.060); LR 0.655;
+  - per-class RF F1: stationary 0.592, low_activity 0.823, locomotion 0.716, vigorous_activity 0.739;
+  - out-of-fold predictions for all 51,777 windows saved.
+- **Device check (report only):** FallAllD e4_clipped ADL vs PPG-DaLiA 2 s windows, subject-grouped 5-fold: AUC 0.721 (LR), 0.843 (RF). The largest single-feature differences are mean |a| and jerk.
+- **pytest:** 71 passed, 1 skipped.
+
+**Decisions made (and why):** none beyond the design entry.
+- Deploy models (8) were saved with threshold = the median inner-validation threshold.
+
+**Problems / surprises:**
+- False alarms are the weak point: 11–14% of 20 s ADL clips trigger at least once at the 90% recall operating point.
+- The devices are distinguishable (AUC 0.72–0.84), so FallAllD-trained motion models face a device gap on PPG-DaLiA.
+- Some single subjects have PR-AUC ≥ 0.98 (S01). The STOP rule was defined on the pooled PR-AUC.
+- Position test (b) (comparative) has not been run yet.
+
+**Open questions for the user:** next prompt ("Prompt 2"), which uses the context out-of-fold predictions.
+
+**Next step (waiting for user approval):** STOP.

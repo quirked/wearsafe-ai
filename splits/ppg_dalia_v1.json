@@ -1,0 +1,361 @@
+{
+  "name": "ppg_dalia_v1",
+  "dataset": "ppg_dalia",
+  "scheme": "leave_one_subject_out",
+  "subjects": [
+    "PPGDALIA_S01",
+    "PPGDALIA_S02",
+    "PPGDALIA_S03",
+    "PPGDALIA_S04",
+    "PPGDALIA_S05",
+    "PPGDALIA_S06",
+    "PPGDALIA_S07",
+    "PPGDALIA_S08",
+    "PPGDALIA_S09",
+    "PPGDALIA_S10",
+    "PPGDALIA_S11",
+    "PPGDALIA_S12",
+    "PPGDALIA_S13",
+    "PPGDALIA_S14",
+    "PPGDALIA_S15"
+  ],
+  "folds": [
+    {
+      "fold": 0,
+      "test": [
+        "PPGDALIA_S01"
+      ],
+      "train": [
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 1,
+      "test": [
+        "PPGDALIA_S02"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 2,
+      "test": [
+        "PPGDALIA_S03"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 3,
+      "test": [
+        "PPGDALIA_S04"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 4,
+      "test": [
+        "PPGDALIA_S05"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 5,
+      "test": [
+        "PPGDALIA_S06"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 6,
+      "test": [
+        "PPGDALIA_S07"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 7,
+      "test": [
+        "PPGDALIA_S08"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 8,
+      "test": [
+        "PPGDALIA_S09"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 9,
+      "test": [
+        "PPGDALIA_S10"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 10,
+      "test": [
+        "PPGDALIA_S11"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 11,
+      "test": [
+        "PPGDALIA_S12"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 12,
+      "test": [
+        "PPGDALIA_S13"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S14",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 13,
+      "test": [
+        "PPGDALIA_S14"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S15"
+      ]
+    },
+    {
+      "fold": 14,
+      "test": [
+        "PPGDALIA_S15"
+      ],
+      "train": [
+        "PPGDALIA_S01",
+        "PPGDALIA_S02",
+        "PPGDALIA_S03",
+        "PPGDALIA_S04",
+        "PPGDALIA_S05",
+        "PPGDALIA_S06",
+        "PPGDALIA_S07",
+        "PPGDALIA_S08",
+        "PPGDALIA_S09",
+        "PPGDALIA_S10",
+        "PPGDALIA_S11",
+        "PPGDALIA_S12",
+        "PPGDALIA_S13",
+        "PPGDALIA_S14"
+      ]
+    }
+  ],
+  "checks": {
+    "subject_in_two_splits": false,
+    "every_subject_tested_once": true
+  },
+  "features_sha256": "666c295cfe55ed82c7af86ba32ad25fee0df47b49b009f9129a76475d6bc72dc",
+  "git_commit": "b1de551c2c0c098b8cd1fd843c749aafbb8e1f61",
+  "created": "2026-10-12 06:45:32"
+}
