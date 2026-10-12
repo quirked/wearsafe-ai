@@ -1859,3 +1859,21 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 
 **Next step (waiting for user approval):** Stage 2 (GitHub push).
 - **v4 start command:** same pattern with `app/wearsafe_demo_v4.py` (log `logs/2026-10-12_demo_app_v4_streamlit.log`). **Fallback:** `app/wearsafe_demo_v3.py`.
+
+## 2026-10-12 11:14 — Repo — Push blocked by the session's permission check (user to run it)
+**What I did:** Re-ran the pre-push checks, then tried `git push origin master`.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry only).
+
+**Checks run and results:**
+- Pre-push checks passed: 0 tracked files under `data/raw`, `data/interim` or `data/processed`; 0 tracked files > 50 MB; the SMOTE file is not tracked; no secrets.
+- `git push origin master` was blocked by the session's permission check (not an authentication failure). No workaround was attempted.
+- The running app (v4 on 8501) was unaffected.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:** the blocked push. The local branch is ahead of origin/master by the unpushed commits.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** the user to run `! git -C ~/wearsafe-ai push origin master`.
