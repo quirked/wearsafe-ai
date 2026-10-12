@@ -1573,3 +1573,59 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 10:07 — Demo v2 — Air-pressure model choice (logged before building)
+**What I did:** Started demo v2, adding the M02 "accelerometer + air pressure" result to the fall demo. Only new files are added.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry).
+
+**Checks run and results:** none yet.
+
+**Decisions made (and why):**
+- **Model:** the M02 e4_clipped "ACC + barometer" random forest, exactly as reported.
+- **User wording, recorded as given:** "Chosen post-hoc after comparing 8 configurations on the same held-out folds; its numbers are optimistic and need confirmation on new data."
+- **Fold model (mine, overrulable):**
+  - M02 did not save fold models (`save_models=False`), so the fold-0 model (test subject FALLALLD_S01, the subject of the demo's fall clips) is **refitted with identical data, columns, settings and seed** via the M01/M02 `rf()` pipeline. No retuning.
+  - Its threshold is fold 0's saved inner-validation threshold (0.2389).
+  - A check requires its scores on the S01 windows to equal M02's saved out-of-fold scores.
+- **Alarm logic:** score ≥ threshold, one prompt at a time, 30 s pause (`fusion.prompts`). Balanced / Fewer interruptions / Quietest are not offered with air pressure.
+- **Display-only rule (mine; does not affect any alarm):** "Height change detected" when |pressure change over the 4 s ending now| ≥ 0.06 hPa (≈ 0.5 m at about 0.12 hPa per metre).
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: build the replay and app v2, then switch the running app.
+
+## 2026-10-12 10:11 — Demo v2 — Air-pressure option live (app/wearsafe_demo_v2.py on port 8501)
+**What I did:**
+- Built `scripts/m02_demo_replay.py` and `results/2026-10-12_M02_demo_replay/replay.joblib`.
+- Created `app/wearsafe_demo_v2.py` (a copy of the current app plus the requested additions; `app/wearsafe_demo.py` is unchanged).
+- Tested v2 on port 8502, then switched the running app on 8501 to v2. Took 2 screenshots (`reports/figures/demo_v2/`).
+
+**Files created/changed:** the files above; `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **Replay check:** the refitted fold-0 model reproduces M02's saved out-of-fold scores for all FALLALLD_S01 windows (max |diff| 5.6e-17). Threshold 0.2389 (fold 0).
+  - Fall clip FALLALLD_S01_A101_T01: one prompt at 11 s (max score 0.986).
+  - Jogging clip FALLALLD_S01_A024_T01: no prompt.
+- **v2 test on port 8502 (headless Chrome):**
+  - fall demo: "Height change detected" + "Are you safe?";
+  - jogging: "No height change";
+  - everyday demo: "Air pressure: not available on this watch — using movement only";
+  - the alert-setting lock note and the About "Extra sensor test" section render; no errors.
+- **Banned-word grep:** only internal file keys (lines 33, 64, 66), none displayed.
+- **Live on 8501:** health ok; both demos load.
+
+**Decisions made (and why):** none beyond the 10:07 entry.
+
+**Problems / surprises:**
+- **Switch incident:** the old app window `sao:demo_app` had been created as a command window, so it closed when its app was stopped with Ctrl-C. My start command then found no window.
+  - I created a new regular-shell window `sao:demo_app` and started v2 there; the app was down for about 1 minute.
+  - The original app was not needed as a fallback. Its restart command (in the 09:17 entry) still works, with `app/wearsafe_demo.py`.
+- The test instance on 8502 was stopped (Ctrl-C; its window closed the same way).
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
+- **v2 start command:** `OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 MKL_NUM_THREADS=4 ~/miniconda3/envs/wearsafe/bin/python -m streamlit run app/wearsafe_demo_v2.py --server.port 8501 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false > logs/2026-10-12_demo_app_v2_streamlit.log 2>&1`
