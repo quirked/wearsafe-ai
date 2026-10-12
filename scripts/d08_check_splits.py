@@ -30,7 +30,7 @@ def main():
     roles = win.groupby(["subject_id", "window_role"]).size().unstack(fill_value=0)
     key = {"positive_windows": "fall_positive", "fall_clip_context_windows": "fall_clip_context",
            "label_uncertain_windows": "label_uncertain_fall", "adl_windows": "adl", "probe_windows": "hard_negative_probe"}
-    ok = all(int(roles.at[s, r]) if r in roles else 0) == c[k] for s, c in m["per_subject_counts"].items()
+    ok = all((int(roles.at[s, r]) if r in roles.columns else 0) == c[k] for s, c in m["per_subject_counts"].items()
              for k, r in key.items())
     chk(ok, "per-subject window counts in the manifest == window table")
     chk(all(m["per_subject_counts"][s]["overlap_groups"] == og[og.subject_id == s].overlap_group_id.nunique()
