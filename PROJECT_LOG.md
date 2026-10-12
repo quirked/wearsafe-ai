@@ -1061,3 +1061,60 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** next milestone (e.g. first motion models with the planned shortcut baselines).
 
 **Next step (waiting for user approval):** none started.
+
+## 2026-10-12 06:35 — M01-demo — Demo sprint (tag demo_v0, PRELIMINARY): design fixed before any model runs
+**What I did:** Started the user's demo sprint:
+- Part A: M01-lite motion models on FallAllD;
+- Part B: a context model on PPG-DaLiA;
+- Part C: the device-discrimination check.
+
+All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUDA_VISIBLE_DEVICES=""`); GPUs are not used.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry).
+
+**Checks run and results:** none yet.
+
+**Decisions made (and why)** (mine, fixed now, before any result; overrulable):
+- **Part A grid:** {unclipped, e4_clipped} × {features_v1, features_v2} × {logistic regression, random forest}. All reported.
+- **Training data:** windows with `eval_role == train_candidate` only:
+  - positives = `fall_positive` (the 9 s window of fall clips);
+  - negatives = `adl` windows.
+  - Never used for training: `fall_clip_context`, `label_uncertain_fall`, probes.
+- **Models, with fixed hyperparameters (no tuning):**
+  - LR: median imputer → StandardScaler → `LogisticRegression(class_weight="balanced", max_iter=5000)`;
+  - RF: median imputer → `RandomForestClassifier(n_estimators=300, min_samples_leaf=2, class_weight="balanced_subsample", random_state=0)`.
+  - Every imputer, scaler and model is fit on training folds only. Seed 0.
+- **Threshold:**
+  - for each outer fold, from inner LOSO over that fold's training subjects with falls (`inner_validation_subjects` in `splits/fallalld_v1.json`);
+  - the pooled inner out-of-fold scores on inner fall windows give the threshold = the **highest score threshold with recall ≥ 0.90** on fall windows;
+  - fixed before any outer-test prediction is looked at.
+  - **Deploy threshold** = the median of the 13 outer folds' inner-validation thresholds.
+- **Metrics:**
+  - **Window level** (test subject's `train_candidate` windows; pooled out-of-fold): PR-AUC (primary), ROC-AUC; precision/recall/F1 at each fold's threshold, pooled.
+  - **Per subject:** fall recall on fall subjects; ADL-window false-positive rate on all subjects; mean ± std.
+  - **Clip level (c):** a fall clip is detected if any of its 19 windows ≥ threshold (falls incl. context windows; `label_uncertain_fall` clips reported separately); an ADL clip (non-probe) is a false alarm if any window ≥ threshold.
+  - **Probes:** trigger rate per clip and per window.
+  - **Dedup check:** the clip-level metrics recomputed on one clip per `overlap_group_id` (`dedup_representative`).
+  - **Position-matched subset (a):** windows starting at 9 s from all ADL and fall clips (PR-AUC of the models and of position-only).
+- **Shortcut baselines** (same folds, same LR pipeline):
+  - position-only (`window_start` one-hot; full set, position-matched subset, clip level);
+  - peak-only (`acc_mag_max`);
+  - saturation-only (e4_clipped: `acc_saturated_frac` for v1, plus `sat_longest_run_s` and `sat_n_runs` for v2; not applicable to unclipped).
+- **STOP rule** (user; operationalised by me): STOP and report if any model's pooled PR-AUC > 0.98, or if any shortcut baseline's PR-AUC is within 0.05 of the best model of the same configuration ("close").
+  - The position-only baseline on the full window set is excluded from "close", because it beats chance by construction (CLAUDE.md §2.3 note). Its position-matched and clip-level values are reported.
+  - If triggered: Part A results are written and flagged, no deploy model is presented as usable, and I STOP before Part B.
+- **Part B:**
+  - `splits/ppg_dalia_v1.json` (LOSO over 15 subjects, automatic check);
+  - context features = D03 `context_5s` §14 motion features;
+  - trained on `train_candidate` windows (4 classes from `label_maps.yaml`), same LR/RF pipelines, fixed hyperparameters, class weights balanced;
+  - out-of-fold predictions for EVERY 5 s window, from the fold model that did not see that subject.
+- **Part C:**
+  - FallAllD e4_clipped ADL windows (features_v1, 2 s, 32 Hz, computed with `wearsafe.features.motion_features`) vs PPG-DaLiA `motion_2s` windows (the same function, 2 s, 32 Hz, E4 1/64 g data);
+  - the classifiers are the LR pipeline (simple) and RF, with subject-grouped 5-fold CV (GroupKFold);
+  - AUC reported, plus single-feature AUCs. Report only.
+
+**Problems / surprises:** none yet.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run Part A → (B, C) → report → commit → STOP.
