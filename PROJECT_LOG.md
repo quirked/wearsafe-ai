@@ -1483,3 +1483,23 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run A02.
+
+## 2026-10-12 09:33 — M02 — Extra-sensor setup pre-registered (before any result)
+**What I did:** Wrote `config/m02_extra_sensors.yaml` before any M02 result.
+
+**Files created/changed:** `config/m02_extra_sensors.yaml`, `PROJECT_LOG.md`.
+
+**Checks run and results (unit verification):**
+- **Gyro:** int16 (4760 × 3), no rail hits. Median |ω| is 45 counts in accelerometer-quiet seconds.
+- **Barometer:** (200 × 2): pressure 990–1027 hPa and temperature 18–34 °C, 0 NaN.
+
+**Decisions made (and why):**
+- **Gyro factor:** 2000/32768 dps per count, [inferred] from the paper's ±2000 dps full scale; the RF is insensitive to scale.
+- **Same RF and threshold code as M01:** `run_model` is imported. RF only, as M01's best; ACC-only rows reuse the M01 RF out-of-fold results.
+- **Not measurable:** M02 cannot measure everyday-life false alarms per hour, because the E4 has no gyro or barometer.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run M02 after A02.

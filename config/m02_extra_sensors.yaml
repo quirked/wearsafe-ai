@@ -1,0 +1,20 @@
+# M02 — do the gyroscope and barometer help catch falls? FallAllD wrist only. EXPERIMENT (demo-level, PRELIMINARY).
+# Written BEFORE any M02 result (PROJECT_LOG). The E4 watch has no gyroscope/barometer: M02 measures only the fall
+# side and FallAllD everyday clips; it CANNOT measure everyday-life false alarms per hour.
+version: 1
+units:
+  gyro: "int16 counts; 2000 dps / 32768 = 0.0610 dps per count [inferred from the paper's ±2000 dps full scale; check: median |w| in accelerometer-quiet seconds = 45 counts ≈ 2.8 dps ≈ 0 when still]. Random-forest results do not depend on a constant scale factor."
+  baro: "column 0 = pressure in hPa (values 990-1027), column 1 = temperature in °C (18-34) [verified from values]; 10 Hz (200 samples / 20 s)"
+setup:
+  windows_labels_roles_splits: "same as D08/M01 (windows_v1, splits/fallalld_v1.json, label-uncertain, probes, overlap groups)"
+  model: "M01 random forest, identical settings (n_estimators 300, min_samples_leaf 2, balanced_subsample, seed 0, median imputer); RF only (as M01's best); no hyperparameter search"
+  threshold: "per outer fold: inner LOSO over training subjects with falls, highest score with recall >= 0.90 (same code: scripts/m01_demo_motion.run_model)"
+  acc_versions: [unclipped, e4_clipped]
+  gyro_baro_clipping: "none (no E4 equivalent)"
+gyro_features: "gyro counts -> dps, resampled 238 -> 32 Hz with the same resample_poly (Kaiser beta 5, padtype line); per 2 s window, wearsafe.features.motion_features on the 3-axis gyro, renamed gyro_* (magnitude mean/std/max/p95/rms/range, jerk-style mean/std/max, energy, dominant frequency, spectral entropy/energy) plus gyro_rotation_energy = mean(|w|^2)"
+baro_features: "CAUSAL: 4 s pressure window ENDING at the motion window end (samples [10*(end-4), 10*end), clipped at 0): baro_change = median(last 0.5 s) - median(first 0.5 s); baro_std = std over the window. No data after the window end"
+sensor_sets: ["ACC-only (M01 features_v2 RF, reused unchanged)", "ACC+gyro", "ACC+baro", "ACC+gyro+baro"]
+configurations: "4 sensor sets x 2 accelerometer versions = 8; all reported"
+metrics: "as M01 (PR-AUC primary, ROC-AUC, precision/recall at the inner-validation threshold, clip-level fall detection, clip false alarm on everyday clips + dedup, probe trigger rates per probe, per-subject mean +- std) plus per fall type and per activity (jogging falls vs jogging)"
+baselines: "as M01 (position-only, peak-only, saturation-only from M01) plus gyro-peak-only (gyro_mag_max) and baro-change-only (baro_change), LR pipeline as M01"
+stop_check: "any model PR-AUC > 0.98 or a shortcut within 0.05 PR-AUC of the best model of its accelerometer version -> investigate before reporting"
