@@ -1,0 +1,1049 @@
+file,stream,rule_id,reason,evidence,decision,decided_by
+fall/user28/user28_fall4.csv,all,R1_exact_duplicate,byte-identical to another file; true activity label unknowable,identical sha1 with fall/user28/user28_fall8.csv,exclude,user decision D00b-1
+fall/user28/user28_fall8.csv,all,R1_exact_duplicate,byte-identical to another file; true activity label unknowable,identical sha1 with fall/user28/user28_fall4.csv,exclude,user decision D00b-1
+adl/user29/user29_adl13.csv,all,R2_shared_core_data,acc/acg/gyro/hrt values shared with another file,shared with adl/user29/user29_adl14.csv: hrt hrt(first50),exclude,user decision D00b-2
+adl/user29/user29_adl14.csv,all,R2_shared_core_data,acc/acg/gyro/hrt values shared with another file,shared with adl/user29/user29_adl13.csv: hrt hrt(first50),exclude,user decision D00b-2
+adl/user40/user40_adl4.csv,mgm,R3_shared_mgm_only,only magnetometer values shared with another file,shared with adl/user5/user5_adl2.csv: mgm mgm(first50),drop_stream,user decision D00b-2
+adl/user5/user5_adl2.csv,mgm,R3_shared_mgm_only,only magnetometer values shared with another file,shared with adl/user40/user40_adl4.csv: mgm mgm(first50),drop_stream,user decision D00b-2
+adl/user1/user1_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:4 acg:7 gyro:6 mgm:3 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user1/user1_adl11.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:5 gyro:4 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user1/user1_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:2 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:4 gyro:3 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl14.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user1/user1_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user1/user1_adl16.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user1/user1_adl2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:5 acg:15 gyro:14 mgm:5 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:5 gyro:5 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:5 gyro:5 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl5.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:5 acg:11 gyro:10 mgm:5 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:5 gyro:6 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl7.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user1/user1_adl8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:4 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user1/user1_adl9.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user10/user10_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user10/user10_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user10/user10_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user10/user10_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user10/user10_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user10/user10_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user10/user10_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user11/user11_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user11/user11_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user11/user11_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user11/user11_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user11/user11_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user11/user11_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user11/user11_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user12/user12_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user12/user12_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user12/user12_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user12/user12_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user12/user12_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user12/user12_adl3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user12/user12_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user12/user12_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user13/user13_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user13/user13_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user13/user13_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user13/user13_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user13/user13_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user13/user13_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user13/user13_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user13/user13_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user14/user14_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user14/user14_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user14/user14_adl9.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user15/user15_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user15/user15_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user15/user15_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user15/user15_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user15/user15_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user15/user15_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user15/user15_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user16/user16_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user16/user16_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user16/user16_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user16/user16_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user16/user16_adl16.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user16/user16_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user16/user16_adl4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user16/user16_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user16/user16_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user17/user17_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user17/user17_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user17/user17_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user17/user17_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user17/user17_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user17/user17_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user17/user17_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user18/user18_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user18/user18_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user18/user18_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user18/user18_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user18/user18_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user18/user18_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user18/user18_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user19/user19_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:5 acg:3 gyro:3 mgm:5 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user19/user19_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user19/user19_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user19/user19_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user19/user19_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user19/user19_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user19/user19_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user19/user19_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user2/user2_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user2/user2_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user2/user2_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:13; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user2/user2_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user2/user2_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user2/user2_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user2/user2_adl15.csv,all,R8_malformed_rows,rows skipped by the parser,1 rows,keep_with_flag,approved plan step 4
+adl/user2/user2_adl16.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:1 gyro:1 mgm:6 hrt:3; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user2/user2_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user2/user2_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user2/user2_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user2/user2_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user20/user20_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user20/user20_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user20/user20_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user20/user20_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user20/user20_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user20/user20_adl2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),keep_with_flag,approved plan step 3
+adl/user20/user20_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user20/user20_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user21/user21_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user21/user21_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user21/user21_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user21/user21_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user21/user21_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user21/user21_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user21/user21_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user21/user21_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user22/user22_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user22/user22_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user22/user22_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user22/user22_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user22/user22_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user22/user22_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user22/user22_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user23/user23_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user23/user23_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user23/user23_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user23/user23_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user23/user23_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user23/user23_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user23/user23_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user24/user24_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user24/user24_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user24/user24_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user24/user24_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user24/user24_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user24/user24_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user24/user24_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user24/user24_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user24/user24_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user25/user25_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user25/user25_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user25/user25_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user25/user25_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user25/user25_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user25/user25_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user25/user25_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user26/user26_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user26/user26_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user26/user26_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user26/user26_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user26/user26_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user26/user26_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user26/user26_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user26/user26_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user27/user27_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl10.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user27/user27_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user27/user27_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:4 acg:4 gyro:4 mgm:2 hrt:3; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl14.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user27/user27_adl15.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user27/user27_adl16.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user27/user27_adl3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl5.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:4 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl7.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:1 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user27/user27_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user27/user27_adl8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),keep_with_flag,approved plan step 3
+adl/user27/user27_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user28/user28_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user28/user28_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user28/user28_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:4 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl14.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user28/user28_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user28/user28_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user28/user28_adl2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl5.csv,all,R8_malformed_rows,rows skipped by the parser,1 rows,keep_with_flag,approved plan step 4
+adl/user28/user28_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user28/user28_adl8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user28/user28_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user29/user29_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:2 gyro:2 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user29/user29_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user29/user29_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user29/user29_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),keep_with_flag,approved plan step 3
+adl/user29/user29_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user29/user29_adl14.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user29/user29_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user29/user29_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user29/user29_adl16.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user29/user29_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user29/user29_adl5.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:3 mgm:4 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user29/user29_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user29/user29_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user29/user29_adl8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user29/user29_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user3/user3_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user3/user3_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user3/user3_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user3/user3_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user3/user3_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user3/user3_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user3/user3_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user30/user30_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user30/user30_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user30/user30_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user30/user30_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user30/user30_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user30/user30_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user30/user30_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user31/user31_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user31/user31_adl11.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user31/user31_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user31/user31_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user31/user31_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user31/user31_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user31/user31_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user31/user31_adl8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user31/user31_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user32/user32_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user32/user32_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user32/user32_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user32/user32_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user32/user32_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user32/user32_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user32/user32_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user32/user32_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user33/user33_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user33/user33_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user33/user33_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user33/user33_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user33/user33_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user33/user33_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user33/user33_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user34/user34_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user34/user34_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user34/user34_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user34/user34_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user34/user34_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user34/user34_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user34/user34_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user35/user35_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user35/user35_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user35/user35_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user35/user35_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user35/user35_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user35/user35_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user35/user35_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user35/user35_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user36/user36_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user36/user36_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user36/user36_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user36/user36_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user36/user36_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user36/user36_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user36/user36_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user37/user37_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user37/user37_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user37/user37_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user37/user37_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user37/user37_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user37/user37_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user37/user37_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user37/user37_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user38/user38_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user38/user38_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user38/user38_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user38/user38_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user38/user38_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user38/user38_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user38/user38_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user39/user39_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user39/user39_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user39/user39_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user39/user39_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user39/user39_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user39/user39_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user39/user39_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user4/user4_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user4/user4_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user4/user4_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user4/user4_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user4/user4_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user4/user4_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user4/user4_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user4/user4_adl2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:2 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user4/user4_adl5.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user4/user4_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user4/user4_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user4/user4_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user40/user40_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user40/user40_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user40/user40_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user40/user40_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:5 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user40/user40_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user40/user40_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user40/user40_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user40/user40_adl4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user40/user40_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user40/user40_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user41/user41_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user41/user41_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user41/user41_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user41/user41_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user41/user41_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user41/user41_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user41/user41_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user5/user5_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:4 acg:2 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user5/user5_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user5/user5_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user5/user5_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user5/user5_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user5/user5_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user5/user5_adl2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user5/user5_adl3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user5/user5_adl5.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),keep_with_flag,approved plan step 3
+adl/user5/user5_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user5/user5_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user5/user5_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user6/user6_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user6/user6_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user6/user6_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user6/user6_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user6/user6_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user6/user6_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user6/user6_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user7/user7_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user7/user7_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user7/user7_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user7/user7_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user7/user7_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user7/user7_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user7/user7_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user8/user8_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user8/user8_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user8/user8_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user8/user8_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user8/user8_adl13.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),keep_with_flag,approved plan step 3
+adl/user8/user8_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user8/user8_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user8/user8_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user8/user8_adl2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user8/user8_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user8/user8_adl7.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user8/user8_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user8/user8_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+adl/user9/user9_adl1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:4 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user9/user9_adl10.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl10: stated 30s,keep_with_flag,user decision D00b-5
+adl/user9/user9_adl11.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl11: stated 30s,keep_with_flag,user decision D00b-5
+adl/user9/user9_adl12.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:4 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user9/user9_adl14.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl14: stated 30s,keep_with_flag,user decision D00b-5
+adl/user9/user9_adl15.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl15: stated 30s,keep_with_flag,user decision D00b-5
+adl/user9/user9_adl16.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl16: stated 30s,keep_with_flag,user decision D00b-5
+adl/user9/user9_adl2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user9/user9_adl3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),keep_with_flag,approved plan step 3
+adl/user9/user9_adl4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user9/user9_adl5.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),keep_with_flag,approved plan step 3
+adl/user9/user9_adl6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user9/user9_adl7.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:3 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user9/user9_adl7.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl7: stated 120s,keep_with_flag,user decision D00b-5
+adl/user9/user9_adl8.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index adl8: stated 120s,keep_with_flag,user decision D00b-5
+fall/user1/user1_fall1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user1/user1_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user1/user1_fall2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user1/user1_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user1/user1_fall4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:4 gyro:4 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user1/user1_fall5.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user1/user1_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user1/user1_fall6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user1/user1_fall7.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:3 gyro:5 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user1/user1_fall8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:3 gyro:4 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user10/user10_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user10/user10_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user11/user11_fall1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user11/user11_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user11/user11_fall4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user11/user11_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user12/user12_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user12/user12_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user12/user12_fall8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user13/user13_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user13/user13_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:1 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user13/user13_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user14/user14_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user14/user14_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user15/user15_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user15/user15_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user16/user16_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user16/user16_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:7 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user16/user16_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user17/user17_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user17/user17_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user18/user18_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user18/user18_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user19/user19_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user19/user19_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:3; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user19/user19_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user2/user2_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user2/user2_fall2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:5 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user2/user2_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user20/user20_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user20/user20_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user21/user21_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user21/user21_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user22/user22_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user22/user22_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user23/user23_fall1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user23/user23_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user23/user23_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user24/user24_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user24/user24_fall2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:3 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user24/user24_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user25/user25_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user25/user25_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user25/user25_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user25/user25_fall7.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user26/user26_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user26/user26_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user27/user27_fall1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:1 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user27/user27_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user27/user27_fall2.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:2 gyro:2 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user27/user27_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:2 gyro:1 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user27/user27_fall4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:2 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user27/user27_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user27/user27_fall6.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:2 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user27/user27_fall7.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:3 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user28/user28_fall1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user28/user28_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user28/user28_fall4.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user28/user28_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user28/user28_fall8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:2 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user29/user29_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user29/user29_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user3/user3_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user3/user3_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user30/user30_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user30/user30_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user31/user31_.fall1.csv,all,R5_name_anomaly,filename has '_.' before the label,maps_to_fall1,keep_with_flag,approved plan step 4
+fall/user31/user31_.fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user31/user31_.fall3.csv,all,R5_name_anomaly,filename has '_.' before the label,maps_to_fall3,keep_with_flag,approved plan step 4
+fall/user31/user31_.fall4.csv,all,R5_name_anomaly,filename has '_.' before the label,maps_to_fall4,keep_with_flag,approved plan step 4
+fall/user31/user31_.fall6.csv,all,R5_name_anomaly,filename has '_.' before the label,maps_to_fall6,keep_with_flag,approved plan step 4
+fall/user31/user31_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user32/user32_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user32/user32_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user33/user33_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user33/user33_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user34/user34_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user34/user34_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user35/user35_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user35/user35_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user36/user36_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user36/user36_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user37/user37_fall1.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user37/user37_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user37/user37_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:3; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user37/user37_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user38/user38_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user38/user38_fall1.csv,all,R8_malformed_rows,rows skipped by the parser,1 rows,keep_with_flag,approved plan step 4
+fall/user38/user38_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user39/user39_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user39/user39_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user4/user4_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user4/user4_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user40/user40_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user40/user40_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user41/user41_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user41/user41_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user5/user5_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user5/user5_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user6/user6_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user6/user6_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user7/user7_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user7/user7_fall3.csv,all,R4_multi_recording_ambiguous,file contains repeated block sets; split not unambiguous,acc:2 acg:2 gyro:2 mgm:2 hrt:2; ambiguous_2_segments(piece_durations_outside_band+rate_untrustworthy_no_low_motion_check),exclude,approved plan step 4
+fall/user7/user7_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user8/user8_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user8/user8_fall3.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:1 acg:1 gyro:1 mgm:1 hrt:2; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+fall/user8/user8_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user9/user9_fall1.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall1: stated 40s,keep_with_flag,user decision D00b-5
+fall/user9/user9_fall5.csv,all,R6_index_duration_mismatch,per-index median duration disagrees with paper Table 1,index fall5: stated 40s,keep_with_flag,user decision D00b-5
+fall/user9/user9_fall8.csv,all,R4b_timestamp_discontinuity,timestamp resets/gaps inside streams; not split,acc:3 acg:1 gyro:1 mgm:1 hrt:1; ambiguous_segments_disagree_across_streams,keep_with_flag,approved plan step 3
+adl/user1/user1_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/6,motion_only,user decision D00b-4
+adl/user1/user1_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/5,motion_only,user decision D00b-4
+adl/user1/user1_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/2,motion_only,user decision D00b-4
+adl/user1/user1_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/10,motion_only,user decision D00b-4
+adl/user1/user1_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user1/user1_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/10,motion_only,user decision D00b-4
+adl/user1/user1_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 83/108,motion_only,user decision D00b-4
+adl/user1/user1_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/25,motion_only,user decision D00b-4
+adl/user1/user1_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/37,motion_only,user decision D00b-4
+adl/user1/user1_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/23,motion_only,user decision D00b-4
+adl/user10/user10_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 69/92,motion_only,user decision D00b-4
+adl/user10/user10_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/13,motion_only,user decision D00b-4
+adl/user10/user10_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/17,motion_only,user decision D00b-4
+adl/user10/user10_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/25,motion_only,user decision D00b-4
+adl/user10/user10_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 28/38,motion_only,user decision D00b-4
+adl/user10/user10_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/16,motion_only,user decision D00b-4
+adl/user10/user10_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/11,motion_only,user decision D00b-4
+adl/user10/user10_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/7,motion_only,user decision D00b-4
+adl/user10/user10_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 32/52,motion_only,user decision D00b-4
+adl/user10/user10_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 31/45,motion_only,user decision D00b-4
+adl/user10/user10_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/34,motion_only,user decision D00b-4
+adl/user10/user10_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/27,motion_only,user decision D00b-4
+adl/user11/user11_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user11/user11_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+adl/user11/user11_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user11/user11_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user11/user11_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user11/user11_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user11/user11_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user12/user12_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user12/user12_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user12/user12_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+adl/user12/user12_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+adl/user12/user12_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user12/user12_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+adl/user12/user12_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user12/user12_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/7,motion_only,user decision D00b-4
+adl/user12/user12_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+adl/user13/user13_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user13/user13_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user13/user13_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user13/user13_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user13/user13_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user14/user14_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/24,motion_only,user decision D00b-4
+adl/user14/user14_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/15,motion_only,user decision D00b-4
+adl/user14/user14_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/9,motion_only,user decision D00b-4
+adl/user14/user14_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 122/169,motion_only,user decision D00b-4
+adl/user14/user14_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user14/user14_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/6,motion_only,user decision D00b-4
+adl/user14/user14_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/15,motion_only,user decision D00b-4
+adl/user14/user14_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 20/32,motion_only,user decision D00b-4
+adl/user14/user14_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 86/109,motion_only,user decision D00b-4
+adl/user14/user14_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user14/user14_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+adl/user15/user15_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user15/user15_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/4,motion_only,user decision D00b-4
+adl/user15/user15_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+adl/user15/user15_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user15/user15_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user15/user15_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user15/user15_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user15/user15_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+adl/user16/user16_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+adl/user16/user16_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user16/user16_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user16/user16_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user16/user16_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user16/user16_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+adl/user17/user17_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user17/user17_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/4,motion_only,user decision D00b-4
+adl/user17/user17_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+adl/user17/user17_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user17/user17_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user17/user17_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+adl/user18/user18_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user18/user18_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user18/user18_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user18/user18_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user18/user18_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user18/user18_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user19/user19_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user19/user19_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user19/user19_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user19/user19_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user19/user19_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user19/user19_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user19/user19_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user2/user2_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/14,motion_only,user decision D00b-4
+adl/user2/user2_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/10,motion_only,user decision D00b-4
+adl/user2/user2_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/10,motion_only,user decision D00b-4
+adl/user2/user2_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/13,motion_only,user decision D00b-4
+adl/user2/user2_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/8,motion_only,user decision D00b-4
+adl/user2/user2_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/13,motion_only,user decision D00b-4
+adl/user2/user2_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/23,motion_only,user decision D00b-4
+adl/user2/user2_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/14,motion_only,user decision D00b-4
+adl/user2/user2_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/20,motion_only,user decision D00b-4
+adl/user2/user2_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user20/user20_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user20/user20_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+adl/user20/user20_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user20/user20_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user20/user20_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+adl/user20/user20_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+adl/user20/user20_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+adl/user20/user20_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user21/user21_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 20/35,motion_only,user decision D00b-4
+adl/user21/user21_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user21/user21_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user21/user21_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user21/user21_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user21/user21_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user21/user21_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user21/user21_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/2,motion_only,user decision D00b-4
+adl/user22/user22_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user22/user22_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user22/user22_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+adl/user22/user22_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/7,motion_only,user decision D00b-4
+adl/user22/user22_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+adl/user22/user22_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user22/user22_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user22/user22_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user23/user23_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user23/user23_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+adl/user23/user23_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+adl/user23/user23_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+adl/user23/user23_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user24/user24_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+adl/user24/user24_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+adl/user24/user24_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+adl/user24/user24_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user24/user24_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user24/user24_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+adl/user24/user24_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user24/user24_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user24/user24_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user25/user25_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+adl/user25/user25_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+adl/user25/user25_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user25/user25_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user25/user25_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user25/user25_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user25/user25_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/2,motion_only,user decision D00b-4
+adl/user25/user25_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user26/user26_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user26/user26_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user26/user26_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user26/user26_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+adl/user26/user26_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user26/user26_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user26/user26_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user26/user26_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/2,motion_only,user decision D00b-4
+adl/user26/user26_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+adl/user27/user27_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+adl/user27/user27_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user27/user27_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user27/user27_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user27/user27_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user28/user28_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user28/user28_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/2,motion_only,user decision D00b-4
+adl/user28/user28_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user28/user28_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+adl/user28/user28_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+adl/user28/user28_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user28/user28_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+adl/user29/user29_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user29/user29_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user29/user29_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+adl/user29/user29_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+adl/user29/user29_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+adl/user3/user3_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user3/user3_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/2,motion_only,user decision D00b-4
+adl/user3/user3_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+adl/user3/user3_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+adl/user3/user3_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user3/user3_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user30/user30_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+adl/user30/user30_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user30/user30_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/2,motion_only,user decision D00b-4
+adl/user30/user30_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user30/user30_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user30/user30_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+adl/user30/user30_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+adl/user30/user30_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user31/user31_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/9,motion_only,user decision D00b-4
+adl/user31/user31_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user31/user31_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 51/76,motion_only,user decision D00b-4
+adl/user31/user31_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user31/user31_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/9,motion_only,user decision D00b-4
+adl/user31/user31_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/18,motion_only,user decision D00b-4
+adl/user31/user31_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 51/65,motion_only,user decision D00b-4
+adl/user31/user31_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/15,motion_only,user decision D00b-4
+adl/user31/user31_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+adl/user31/user31_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+adl/user31/user31_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 30/56,motion_only,user decision D00b-4
+adl/user32/user32_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user32/user32_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/13,motion_only,user decision D00b-4
+adl/user32/user32_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 97/135,motion_only,user decision D00b-4
+adl/user32/user32_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/5,motion_only,user decision D00b-4
+adl/user32/user32_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/12,motion_only,user decision D00b-4
+adl/user32/user32_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/6,motion_only,user decision D00b-4
+adl/user32/user32_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user32/user32_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/12,motion_only,user decision D00b-4
+adl/user32/user32_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 33/46,motion_only,user decision D00b-4
+adl/user32/user32_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user32/user32_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 22/50,motion_only,user decision D00b-4
+adl/user32/user32_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/13,motion_only,user decision D00b-4
+adl/user33/user33_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/10,motion_only,user decision D00b-4
+adl/user33/user33_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/10,motion_only,user decision D00b-4
+adl/user33/user33_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 23/43,motion_only,user decision D00b-4
+adl/user33/user33_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+adl/user33/user33_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/16,motion_only,user decision D00b-4
+adl/user33/user33_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+adl/user33/user33_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/12,motion_only,user decision D00b-4
+adl/user33/user33_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/14,motion_only,user decision D00b-4
+adl/user33/user33_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/15,motion_only,user decision D00b-4
+adl/user33/user33_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 30/52,motion_only,user decision D00b-4
+adl/user33/user33_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/37,motion_only,user decision D00b-4
+adl/user34/user34_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 90/117,motion_only,user decision D00b-4
+adl/user34/user34_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/21,motion_only,user decision D00b-4
+adl/user34/user34_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/11,motion_only,user decision D00b-4
+adl/user34/user34_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/16,motion_only,user decision D00b-4
+adl/user34/user34_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user34/user34_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/13,motion_only,user decision D00b-4
+adl/user34/user34_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user34/user34_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/15,motion_only,user decision D00b-4
+adl/user34/user34_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/18,motion_only,user decision D00b-4
+adl/user34/user34_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 37/58,motion_only,user decision D00b-4
+adl/user34/user34_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user35/user35_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/21,motion_only,user decision D00b-4
+adl/user35/user35_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/22,motion_only,user decision D00b-4
+adl/user35/user35_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/10,motion_only,user decision D00b-4
+adl/user35/user35_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user35/user35_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/16,motion_only,user decision D00b-4
+adl/user35/user35_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/11,motion_only,user decision D00b-4
+adl/user35/user35_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/33,motion_only,user decision D00b-4
+adl/user35/user35_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/20,motion_only,user decision D00b-4
+adl/user35/user35_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/2,motion_only,user decision D00b-4
+adl/user36/user36_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user36/user36_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/15,motion_only,user decision D00b-4
+adl/user36/user36_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/17,motion_only,user decision D00b-4
+adl/user36/user36_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+adl/user36/user36_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+adl/user36/user36_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/31,motion_only,user decision D00b-4
+adl/user36/user36_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user36/user36_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 20/33,motion_only,user decision D00b-4
+adl/user37/user37_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+adl/user37/user37_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/11,motion_only,user decision D00b-4
+adl/user37/user37_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/13,motion_only,user decision D00b-4
+adl/user37/user37_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/12,motion_only,user decision D00b-4
+adl/user37/user37_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/6,motion_only,user decision D00b-4
+adl/user37/user37_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user37/user37_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user37/user37_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 31/47,motion_only,user decision D00b-4
+adl/user37/user37_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/2,motion_only,user decision D00b-4
+adl/user37/user37_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 31/42,motion_only,user decision D00b-4
+adl/user37/user37_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/15,motion_only,user decision D00b-4
+adl/user38/user38_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/3,motion_only,user decision D00b-4
+adl/user38/user38_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/14,motion_only,user decision D00b-4
+adl/user38/user38_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 84/127,motion_only,user decision D00b-4
+adl/user38/user38_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+adl/user38/user38_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/10,motion_only,user decision D00b-4
+adl/user38/user38_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 97/122,motion_only,user decision D00b-4
+adl/user38/user38_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 20/31,motion_only,user decision D00b-4
+adl/user38/user38_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user38/user38_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 44/74,motion_only,user decision D00b-4
+adl/user38/user38_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/22,motion_only,user decision D00b-4
+adl/user39/user39_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/2,motion_only,user decision D00b-4
+adl/user39/user39_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/6,motion_only,user decision D00b-4
+adl/user39/user39_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/14,motion_only,user decision D00b-4
+adl/user39/user39_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/6,motion_only,user decision D00b-4
+adl/user39/user39_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/8,motion_only,user decision D00b-4
+adl/user39/user39_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/11,motion_only,user decision D00b-4
+adl/user39/user39_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user39/user39_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/36,motion_only,user decision D00b-4
+adl/user39/user39_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/16,motion_only,user decision D00b-4
+adl/user39/user39_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 38/48,motion_only,user decision D00b-4
+adl/user39/user39_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 31/43,motion_only,user decision D00b-4
+adl/user4/user4_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/20,motion_only,user decision D00b-4
+adl/user4/user4_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/11,motion_only,user decision D00b-4
+adl/user4/user4_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 69/95,motion_only,user decision D00b-4
+adl/user4/user4_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/8,motion_only,user decision D00b-4
+adl/user4/user4_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/12,motion_only,user decision D00b-4
+adl/user4/user4_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/12,motion_only,user decision D00b-4
+adl/user4/user4_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 57/94,motion_only,user decision D00b-4
+adl/user4/user4_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/28,motion_only,user decision D00b-4
+adl/user4/user4_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/27,motion_only,user decision D00b-4
+adl/user4/user4_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user40/user40_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/22,motion_only,user decision D00b-4
+adl/user40/user40_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/16,motion_only,user decision D00b-4
+adl/user40/user40_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/10,motion_only,user decision D00b-4
+adl/user40/user40_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 89/119,motion_only,user decision D00b-4
+adl/user40/user40_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/24,motion_only,user decision D00b-4
+adl/user40/user40_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/12,motion_only,user decision D00b-4
+adl/user40/user40_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/10,motion_only,user decision D00b-4
+adl/user40/user40_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user40/user40_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 31/41,motion_only,user decision D00b-4
+adl/user40/user40_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/31,motion_only,user decision D00b-4
+adl/user40/user40_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user40/user40_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 27/40,motion_only,user decision D00b-4
+adl/user40/user40_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/32,motion_only,user decision D00b-4
+adl/user41/user41_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/13,motion_only,user decision D00b-4
+adl/user41/user41_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/12,motion_only,user decision D00b-4
+adl/user41/user41_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/11,motion_only,user decision D00b-4
+adl/user41/user41_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/19,motion_only,user decision D00b-4
+adl/user41/user41_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/11,motion_only,user decision D00b-4
+adl/user41/user41_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/14,motion_only,user decision D00b-4
+adl/user41/user41_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/8,motion_only,user decision D00b-4
+adl/user41/user41_adl2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 90/122,motion_only,user decision D00b-4
+adl/user41/user41_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/23,motion_only,user decision D00b-4
+adl/user41/user41_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/16,motion_only,user decision D00b-4
+adl/user41/user41_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/20,motion_only,user decision D00b-4
+adl/user5/user5_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 26/39,motion_only,user decision D00b-4
+adl/user5/user5_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/11,motion_only,user decision D00b-4
+adl/user5/user5_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/11,motion_only,user decision D00b-4
+adl/user5/user5_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 29/38,motion_only,user decision D00b-4
+adl/user5/user5_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/22,motion_only,user decision D00b-4
+adl/user5/user5_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/8,motion_only,user decision D00b-4
+adl/user5/user5_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 96/121,motion_only,user decision D00b-4
+adl/user5/user5_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 41/66,motion_only,user decision D00b-4
+adl/user5/user5_adl6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user5/user5_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/10,motion_only,user decision D00b-4
+adl/user5/user5_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 28/37,motion_only,user decision D00b-4
+adl/user5/user5_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/12,motion_only,user decision D00b-4
+adl/user6/user6_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/10,motion_only,user decision D00b-4
+adl/user6/user6_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/18,motion_only,user decision D00b-4
+adl/user6/user6_adl12.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/5,motion_only,user decision D00b-4
+adl/user6/user6_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/19,motion_only,user decision D00b-4
+adl/user6/user6_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/15,motion_only,user decision D00b-4
+adl/user6/user6_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/18,motion_only,user decision D00b-4
+adl/user6/user6_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user6/user6_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/30,motion_only,user decision D00b-4
+adl/user6/user6_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 26/44,motion_only,user decision D00b-4
+adl/user6/user6_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/18,motion_only,user decision D00b-4
+adl/user7/user7_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+adl/user7/user7_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/13,motion_only,user decision D00b-4
+adl/user7/user7_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/5,motion_only,user decision D00b-4
+adl/user7/user7_adl13.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 90/127,motion_only,user decision D00b-4
+adl/user7/user7_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/15,motion_only,user decision D00b-4
+adl/user7/user7_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/9,motion_only,user decision D00b-4
+adl/user7/user7_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/9,motion_only,user decision D00b-4
+adl/user7/user7_adl3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/31,motion_only,user decision D00b-4
+adl/user7/user7_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 20/30,motion_only,user decision D00b-4
+adl/user7/user7_adl5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/37,motion_only,user decision D00b-4
+adl/user7/user7_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 69/93,motion_only,user decision D00b-4
+adl/user7/user7_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user8/user8_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/6,motion_only,user decision D00b-4
+adl/user8/user8_adl10.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user8/user8_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/13,motion_only,user decision D00b-4
+adl/user8/user8_adl14.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/11,motion_only,user decision D00b-4
+adl/user8/user8_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/9,motion_only,user decision D00b-4
+adl/user8/user8_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/7,motion_only,user decision D00b-4
+adl/user8/user8_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+adl/user8/user8_adl7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 67/93,motion_only,user decision D00b-4
+adl/user8/user8_adl8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 26/37,motion_only,user decision D00b-4
+adl/user8/user8_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/23,motion_only,user decision D00b-4
+adl/user9/user9_adl1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+adl/user9/user9_adl11.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+adl/user9/user9_adl15.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+adl/user9/user9_adl16.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+adl/user9/user9_adl4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+adl/user9/user9_adl9.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+fall/user1/user1_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+fall/user1/user1_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 20/26,motion_only,user decision D00b-4
+fall/user1/user1_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/14,motion_only,user decision D00b-4
+fall/user1/user1_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 75/95,motion_only,user decision D00b-4
+fall/user1/user1_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+fall/user10/user10_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/35,motion_only,user decision D00b-4
+fall/user10/user10_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/8,motion_only,user decision D00b-4
+fall/user10/user10_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/43,motion_only,user decision D00b-4
+fall/user10/user10_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 32/42,motion_only,user decision D00b-4
+fall/user10/user10_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+fall/user11/user11_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/4,motion_only,user decision D00b-4
+fall/user11/user11_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+fall/user11/user11_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/2,motion_only,user decision D00b-4
+fall/user12/user12_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+fall/user13/user13_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+fall/user13/user13_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+fall/user13/user13_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user13/user13_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+fall/user14/user14_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 25/37,motion_only,user decision D00b-4
+fall/user14/user14_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/17,motion_only,user decision D00b-4
+fall/user14/user14_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/14,motion_only,user decision D00b-4
+fall/user14/user14_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 35/49,motion_only,user decision D00b-4
+fall/user15/user15_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+fall/user15/user15_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+fall/user15/user15_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user15/user15_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user16/user16_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+fall/user16/user16_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+fall/user16/user16_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+fall/user16/user16_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user17/user17_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+fall/user17/user17_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+fall/user18/user18_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+fall/user18/user18_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+fall/user19/user19_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+fall/user19/user19_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/7,motion_only,user decision D00b-4
+fall/user19/user19_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+fall/user19/user19_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+fall/user2/user2_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/14,motion_only,user decision D00b-4
+fall/user2/user2_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/13,motion_only,user decision D00b-4
+fall/user20/user20_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+fall/user20/user20_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+fall/user21/user21_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+fall/user21/user21_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+fall/user21/user21_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+fall/user22/user22_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user22/user22_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+fall/user22/user22_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+fall/user23/user23_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+fall/user23/user23_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+fall/user23/user23_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+fall/user23/user23_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+fall/user24/user24_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/15,motion_only,user decision D00b-4
+fall/user24/user24_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/19,motion_only,user decision D00b-4
+fall/user25/user25_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 14/14,motion_only,user decision D00b-4
+fall/user26/user26_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+fall/user26/user26_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+fall/user26/user26_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+fall/user26/user26_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/6,motion_only,user decision D00b-4
+fall/user26/user26_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+fall/user26/user26_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user27/user27_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+fall/user27/user27_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/12,motion_only,user decision D00b-4
+fall/user27/user27_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/10,motion_only,user decision D00b-4
+fall/user27/user27_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/9,motion_only,user decision D00b-4
+fall/user28/user28_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 13/13,motion_only,user decision D00b-4
+fall/user28/user28_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+fall/user29/user29_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+fall/user29/user29_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+fall/user29/user29_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+fall/user3/user3_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user3/user3_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+fall/user3/user3_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+fall/user3/user3_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/17,motion_only,user decision D00b-4
+fall/user3/user3_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+fall/user3/user3_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/11,motion_only,user decision D00b-4
+fall/user3/user3_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 8/8,motion_only,user decision D00b-4
+fall/user3/user3_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+fall/user30/user30_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user30/user30_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/18,motion_only,user decision D00b-4
+fall/user31/user31_.fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/3,motion_only,user decision D00b-4
+fall/user31/user31_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 29/37,motion_only,user decision D00b-4
+fall/user31/user31_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/9,motion_only,user decision D00b-4
+fall/user31/user31_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/7,motion_only,user decision D00b-4
+fall/user32/user32_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+fall/user32/user32_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/25,motion_only,user decision D00b-4
+fall/user32/user32_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/14,motion_only,user decision D00b-4
+fall/user32/user32_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/14,motion_only,user decision D00b-4
+fall/user33/user33_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/22,motion_only,user decision D00b-4
+fall/user33/user33_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 22/32,motion_only,user decision D00b-4
+fall/user33/user33_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/22,motion_only,user decision D00b-4
+fall/user33/user33_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 30/43,motion_only,user decision D00b-4
+fall/user33/user33_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/23,motion_only,user decision D00b-4
+fall/user34/user34_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/3,motion_only,user decision D00b-4
+fall/user34/user34_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/14,motion_only,user decision D00b-4
+fall/user34/user34_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/21,motion_only,user decision D00b-4
+fall/user34/user34_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/4,motion_only,user decision D00b-4
+fall/user34/user34_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 19/25,motion_only,user decision D00b-4
+fall/user35/user35_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/6,motion_only,user decision D00b-4
+fall/user35/user35_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 29/39,motion_only,user decision D00b-4
+fall/user35/user35_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/23,motion_only,user decision D00b-4
+fall/user35/user35_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 24/32,motion_only,user decision D00b-4
+fall/user35/user35_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 23/36,motion_only,user decision D00b-4
+fall/user35/user35_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 25/32,motion_only,user decision D00b-4
+fall/user35/user35_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 23/31,motion_only,user decision D00b-4
+fall/user36/user36_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+fall/user36/user36_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4
+fall/user36/user36_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 5/5,motion_only,user decision D00b-4
+fall/user36/user36_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/10,motion_only,user decision D00b-4
+fall/user36/user36_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user37/user37_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/5,motion_only,user decision D00b-4
+fall/user37/user37_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 29/39,motion_only,user decision D00b-4
+fall/user37/user37_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/23,motion_only,user decision D00b-4
+fall/user37/user37_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/13,motion_only,user decision D00b-4
+fall/user37/user37_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/10,motion_only,user decision D00b-4
+fall/user38/user38_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/12,motion_only,user decision D00b-4
+fall/user38/user38_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 22/29,motion_only,user decision D00b-4
+fall/user38/user38_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 26/35,motion_only,user decision D00b-4
+fall/user38/user38_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/3,motion_only,user decision D00b-4
+fall/user38/user38_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/20,motion_only,user decision D00b-4
+fall/user38/user38_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/23,motion_only,user decision D00b-4
+fall/user38/user38_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/24,motion_only,user decision D00b-4
+fall/user38/user38_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/35,motion_only,user decision D00b-4
+fall/user39/user39_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/7,motion_only,user decision D00b-4
+fall/user39/user39_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/16,motion_only,user decision D00b-4
+fall/user39/user39_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/8,motion_only,user decision D00b-4
+fall/user39/user39_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/9,motion_only,user decision D00b-4
+fall/user39/user39_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/14,motion_only,user decision D00b-4
+fall/user39/user39_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/15,motion_only,user decision D00b-4
+fall/user39/user39_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 3/10,motion_only,user decision D00b-4
+fall/user39/user39_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 6/14,motion_only,user decision D00b-4
+fall/user4/user4_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 27/35,motion_only,user decision D00b-4
+fall/user4/user4_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 2/12,motion_only,user decision D00b-4
+fall/user4/user4_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 12/15,motion_only,user decision D00b-4
+fall/user4/user4_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 24/35,motion_only,user decision D00b-4
+fall/user4/user4_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/23,motion_only,user decision D00b-4
+fall/user4/user4_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/24,motion_only,user decision D00b-4
+fall/user40/user40_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/35,motion_only,user decision D00b-4
+fall/user40/user40_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/11,motion_only,user decision D00b-4
+fall/user40/user40_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 40/58,motion_only,user decision D00b-4
+fall/user40/user40_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 9/14,motion_only,user decision D00b-4
+fall/user40/user40_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/8,motion_only,user decision D00b-4
+fall/user40/user40_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/32,motion_only,user decision D00b-4
+fall/user40/user40_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 24/40,motion_only,user decision D00b-4
+fall/user40/user40_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 21/31,motion_only,user decision D00b-4
+fall/user41/user41_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 18/23,motion_only,user decision D00b-4
+fall/user41/user41_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/15,motion_only,user decision D00b-4
+fall/user41/user41_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/4,motion_only,user decision D00b-4
+fall/user41/user41_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 29/41,motion_only,user decision D00b-4
+fall/user41/user41_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/28,motion_only,user decision D00b-4
+fall/user41/user41_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/13,motion_only,user decision D00b-4
+fall/user41/user41_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/13,motion_only,user decision D00b-4
+fall/user5/user5_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/5,motion_only,user decision D00b-4
+fall/user5/user5_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/4,motion_only,user decision D00b-4
+fall/user5/user5_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 45/59,motion_only,user decision D00b-4
+fall/user5/user5_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 0/17,motion_only,user decision D00b-4
+fall/user5/user5_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 17/27,motion_only,user decision D00b-4
+fall/user5/user5_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 21/27,motion_only,user decision D00b-4
+fall/user5/user5_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 22/36,motion_only,user decision D00b-4
+fall/user6/user6_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/2,motion_only,user decision D00b-4
+fall/user6/user6_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 10/33,motion_only,user decision D00b-4
+fall/user6/user6_fall3.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 27/35,motion_only,user decision D00b-4
+fall/user6/user6_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 15/29,motion_only,user decision D00b-4
+fall/user6/user6_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/7,motion_only,user decision D00b-4
+fall/user6/user6_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/10,motion_only,user decision D00b-4
+fall/user6/user6_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 33/58,motion_only,user decision D00b-4
+fall/user7/user7_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/2,motion_only,user decision D00b-4
+fall/user7/user7_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 21/32,motion_only,user decision D00b-4
+fall/user7/user7_fall4.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/7,motion_only,user decision D00b-4
+fall/user7/user7_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 26/88,motion_only,user decision D00b-4
+fall/user7/user7_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 48/88,motion_only,user decision D00b-4
+fall/user7/user7_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 24/35,motion_only,user decision D00b-4
+fall/user7/user7_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 22/33,motion_only,user decision D00b-4
+fall/user8/user8_fall1.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 26/37,motion_only,user decision D00b-4
+fall/user8/user8_fall2.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 1/5,motion_only,user decision D00b-4
+fall/user8/user8_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 7/13,motion_only,user decision D00b-4
+fall/user8/user8_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 11/17,motion_only,user decision D00b-4
+fall/user8/user8_fall7.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 23/34,motion_only,user decision D00b-4
+fall/user8/user8_fall8.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 20/26,motion_only,user decision D00b-4
+fall/user9/user9_fall5.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 16/16,motion_only,user decision D00b-4
+fall/user9/user9_fall6.csv,hrt,R7_hr_insufficient,<80% valid HR rows or <20 valid HR rows,valid 4/4,motion_only,user decision D00b-4

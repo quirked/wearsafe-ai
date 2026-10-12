@@ -1,13 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D00 — Repository setup + rule updates — DONE, waiting for user review. Next milestone (D01) not started.
-- **Environment:** conda env `wearsafe` (Python 3.11.17), pinned in `requirements.txt` (+ full `requirements-lock.txt`).
-- **Data version:** raw only. Checksum manifest `metadata/raw_checksums.csv` (2,126 files, SHA-256). No interim/processed data yet.
+- **Current milestone:** D00b — BITS-2 forensics and exclusion list — DONE, waiting for user review. Next milestone not started.
+- **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
+- **Data version:** raw only. Checksum manifest **v2** `metadata/raw_checksums_v2.csv` (3,110 files; v1 kept). BITS-2 file manifest `metadata/bits2_file_manifest.csv` (984 files), exclusions `metadata/bits2_exclusions.csv`.
 - **Split version:** none.
-- **Last validated result:** D00 tests 12 passed / 1 skipped (fast mode); full SHA-256 raw check 3/3 passed (2026-10-12).
-- **Open items:** BITS-2 context classes TODO (needs the activity table from the paper); D02 item: per-sample `acc_saturated` flag (no decision yet). Label decisions 2026-10-12 recorded in `config/label_maps.yaml`.
-- **Next milestone:** D00b — BITS-2 forensics plan (not started).
+- **Last validated result:** D00b. BITS-2 motion-rate verdict "inconsistent" (no time-dependent BITS-2 features in v1). 5 files excluded, 979 motion_ok, 437 hr_ok. Tests 16 passed / 1 skipped; full SHA-256 3/3 (2026-10-12).
+- **Open items:** BITS-2 context map awaits user confirmation (report §8); D00b report §10 decisions; D02 item: per-sample `acc_saturated` flag.
 
 ---
 
@@ -207,3 +206,103 @@ Nothing under `data/` was created or modified. No unzipping was needed.
 12. Make `data/raw/bits2_website/` read-only like the other raw folders.
 
 **Next step:** execute D00b as planned, in tmux `sao` and env `wearsafe`.
+
+## 2026-10-12 01:30 — D00b — Operational definitions fixed before running the forensics script
+**What I did:** Wrote down how each approved criterion is computed, before any rate, duration or repetition result was calculated. Where the user's wording left room, my interpretation is marked **[my interpretation]** so the user can overrule it.
+
+**Decisions made (and why):**
+- **Time unit:** BITS-2 `t` is taken as nanoseconds **[inferred]**. The paper does not state the unit. In D00a, resolvable HR steps were exactly 1e9, which matches the stated 1 Hz.
+- **Estimator A, run length of rounded timestamps:** within one block of one stream, take runs of rows with an identical timestamp string. Only *interior* runs count: the previous run's value must be exactly v − step and the next run's v + step, where step = one unit of the last written significant digit. Each such run covers exactly one full step.
+  - rate_A = median(run length) / step_seconds over those runs.
+  - The primary stream is `acg` (the canonical ACC, decision 8). Other streams are reported too.
+- **Estimator B:** `acg` rows ÷ HR rows (all HR rows, valid or not), i.e. IMU Hz if HR is 1 Hz and spans the same time.
+- **(a) Consistency:**
+  - Spread = IQR / median of the per-file rate_A (`acg`); must be < 15%.
+  - A–B agreement **[my interpretation]**: per file, rel = |A − B| / ((A + B)/2). "Agree" if the median rel over files with both estimates is < 15%. The fraction of files with rel < 15% is also reported.
+  - "Consistent" requires both. The same test is applied per activity and per subject (groups with ≥ 3 estimates).
+- **(b) Match to paper:** median rate_A within ±10% of 20 Hz (18–22 Hz) counts as "≈20 Hz" (from the approved plan).
+- **Duration cross-check (decision 5):** per index, median over files of (HR rows ≈ seconds) / stated single-trial duration. The index "agrees" if this is 0.6–1.6. The ratio against 5 × duration is also reported.
+  - Disclosure: the per-index HR-row medians were already seen in D00a; the band was chosen to be generous.
+- **Unambiguous repetition split:** every stream (`acc`, `acg`, `gyro`, `mgm`, `hrt`) must show the same number of segments, separated by a timestamp reset (a decrease of more than one step) or a forward jump of more than 5 steps. Each piece must be 0.6–1.6 × the stated trial duration (by HR rows).
+  - The low-motion (≥ 2 s) check needs a trustworthy rate. If the verdict is "inconsistent", that check cannot pass, so **no split** is made and the file is flagged.
+- **Shared-data detection:** a values-only hash (no timestamps) of each stream in each file with ≥ 20 rows, plus a hash of the first 50 rows to catch partial copies. Compared across all files.
+- **Saturation:** the fraction of samples with |axis| ≥ 0.999 × the stream's observed maximum |axis| over all files.
+- **E4 comparison:** 2 g = 19.6133 m/s² (g = 9.80665).
+- **motion_ok** = the file is not excluded and has `acg` rows.
+- **hr_ok** (decision 4) = motion_ok AND ≥ 80% of HR rows valid AND ≥ 20 valid HR rows. HR rows dropped as malformed count as invalid.
+
+## 2026-10-12 02:05 — D00b — Amendments after a trial run (disclosed)
+**What I did:** Did a trial run of `scripts/d00b_bits2_forensics.py` with outputs written to scratchpad only. That run found a bug in one operational definition, so I amended it before the final run.
+
+**Decisions made (and why):**
+- **Gap rule:** "forward jump > 5 rounding steps" misfires on the few rows with full-precision timestamps, where one step is microseconds. Example: `fall/user16/user16_fall3.csv` `acg` was cut into 684 "segments".
+  - Amended to: gap = forward jump > max(5 steps, **1 s**). At any plausible IMU rate (≥ 1 Hz), a jump over 1 s is a real gap.
+  - This changes only which files get the `R4b_timestamp_discontinuity` flag. It does not change the rate verdict criteria or any exclusion rule.
+- **Added a report-only column** `repeated_blocks_identical`: for files with repeated block sets (e.g. `user7_fall3`), whether the repeats are value-identical copies.
+- **Disclosure:** the trial run's rate verdict was "inconsistent", and the fixed criteria above were not changed after seeing it.
+
+## 2026-10-12 02:40 — D00b — BITS-2 forensics and exclusion list
+**What I did:**
+- Read the BITS-2 paper (Nandi et al. 2024).
+- Made `data/raw/bits2_website/` read-only (decision 12).
+- Downloaded the website's "without HR" files into the new, read-only folder `data/raw/bits2_website_nohr/` (decision 11).
+- Built checksum manifest v2.
+- Extracted paper Table 2 to `metadata/bits2_subjects.csv` (decision 10).
+- Wrote the shared parser `src/wearsafe/bits2_io.py` (with tests) and `scripts/d00b_bits2_forensics.py`. Ran it in tmux `sao`, env `wearsafe`, on CPU. GPU not needed (CPU-only parsing); nvidia-smi not run, per user instruction.
+- Wrote `reports/D00b_bits2_forensics.md`.
+
+**Files created/changed:**
+- New code: `src/wearsafe/bits2_io.py`, `scripts/download_bits2_nohr.py`, `scripts/make_bits2_subjects.py`, `scripts/d00b_bits2_forensics.py`, `tests/test_bits2_io.py`.
+- Changed code: `src/wearsafe/raw_manifest.py` (adds `CURRENT_MANIFEST` = v2) and `tests/test_raw_data_unchanged.py` (now uses the current manifest).
+- Metadata: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv`, `metadata/bits2_subjects.csv`, `metadata/bits2_nohr_download.csv`, `metadata/raw_checksums_v2.csv`.
+- Reports: `reports/D00b_bits2_forensics.md`, `reports/D00b_bits2_forensics_tables.md`.
+- Raw data: added `data/raw/bits2_website_nohr/` (984 files, read-only); changed `data/raw/bits2_website/` permissions only.
+- Logs: `logs/2026-10-12_D00b_*.log` (not committed).
+
+**Checks run and results:**
+- Parser tests: 4/4. The parser's per-stream totals equal D00a's (acc 637,950; acg 627,774; gyro 638,732; mgm 616,824; hrt 51,903).
+- Manifest v2: all 2,126 v1 files have unchanged SHA-256; the 984 new entries are all in `bits2_website_nohr/`.
+- `pytest`: 16 passed, 1 skipped. Full SHA-256 mode: 3/3 passed.
+- Determinism: a second run of the forensics script reproduced all three outputs byte-for-byte.
+- Every one of the 984 files appears once in the manifest, and every exclusion row has a rule_id.
+
+**Results (details in reports/D00b_bits2_forensics.md):**
+- **Copies:** the website full copy is identical 984/984. The website "without HR" files are byte-identical to the merged files (984/984, they still contain HR). The 4 JS-built user31 names return 404.
+- **Rate:**
+  - acg estimator A: median 25.8 Hz, IQR/median 1.82 (n = 87 files).
+  - Estimator B: median 20.2 Hz. A–B median relative difference 0.85.
+  - The method check on HR gives exactly 1.00 Hz (142 files).
+  - **Verdict: "inconsistent".** Best-resolved files cluster near ~50 Hz.
+- **Repetitions:** ≈1 trial per file. No unambiguous split points, so no splits proposed. Under decision 7, ~984 recordings, never 4,920.
+- **Duration cross-check:** 15/24 indices agree, so the index mapping is accepted. 9 indices (adl7, adl8, adl10, adl11, adl14, adl15, adl16, fall1, fall5) are flagged (R6).
+- **Exclusions:**
+  - R1: user28 fall4/fall8 (exact duplicate).
+  - R2: user29 adl13/adl14 (identical HR series; **new finding**).
+  - R4: user7 fall3 (two recordings, ambiguous).
+  - Total 5 files excluded. R3: `mgm` dropped for user5_adl2 and user40_adl4. R5: user31 `_.fallN` mapped and flagged.
+- **HR:** 10.1% of rows invalid (status −1: 5,246). hr_ok 437/984; motion_only 542.
+- **ACC:**
+  - `acg` includes gravity (lying still 9.87 vs `acc` 0.14), which contradicts the paper text. Canonical ACC = `acg`.
+  - Full scale 78.45 m/s² = 8 g; saturation 0.009%.
+  - 288/328 fall files peak above the E4's 2 g.
+
+**Decisions made (and why):**
+- All exclusion rules follow user decisions D00b-1 to D00b-12 and the operational definitions logged before running. The post-trial amendment (gap floor of 1 s) is disclosed above.
+- No split was applied anywhere, and nothing was written to `config/`.
+
+**Problems / surprises:**
+- The paper's names for `acc`/`acg` are reversed relative to the data.
+- The paper's "two CSVs per activity" are identical files on the website.
+- The IMU often covers only the end part of the HR record.
+- user29 adl13/adl14 share HR.
+
+**Open questions for the user:** see report §10:
+1. rate-free features only for BITS-2 v1?
+2. BITS-2 windowing approach;
+3. adl7/adl8 handling;
+4. scope of event-centred HR analysis;
+5. the 123 R4b-flagged files;
+6. confirm the context map (§8);
+7. subjects with cardiac conditions.
+
+**Next step (waiting for user approval):** none started.

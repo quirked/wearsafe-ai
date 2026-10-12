@@ -11,9 +11,9 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
-from wearsafe.raw_manifest import file_entry, list_raw_files, read_manifest, sha256_of  # noqa: E402
+from wearsafe.raw_manifest import CURRENT_MANIFEST, file_entry, list_raw_files, read_manifest, sha256_of  # noqa: E402
 
-MANIFEST = REPO / "metadata" / "raw_checksums.csv"
+MANIFEST = REPO / CURRENT_MANIFEST
 RAW = REPO / "data" / "raw"
 FULL = os.environ.get("WEARSAFE_FULL_CHECKSUM") == "1"
 
@@ -22,7 +22,7 @@ FULL = os.environ.get("WEARSAFE_FULL_CHECKSUM") == "1"
 def manifest():
     if not RAW.is_dir():
         pytest.skip("data/raw/ not present on this machine")
-    assert MANIFEST.exists(), "metadata/raw_checksums.csv missing; run scripts/make_raw_manifest.py"
+    assert MANIFEST.exists(), f"{CURRENT_MANIFEST} missing; run scripts/make_raw_manifest.py --out {CURRENT_MANIFEST}"
     return read_manifest(MANIFEST)
 
 
