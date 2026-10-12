@@ -1118,3 +1118,22 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run Part A → (B, C) → report → commit → STOP.
+
+## 2026-10-12 06:39 — M01-demo — Motion run 1 aborted (CPU oversubscription); restarted as _run2
+**What I did:**
+- Stopped my own 4 motion-grid processes after about 2 minutes. Each used ~115 threads (BLAS threads on top of RF workers): load average 133 on 40 cores, which also slowed other users' jobs.
+- No other user's process and no tmux session was touched. My first stop command also ended its own shell (the process pattern matched that shell's command line); this was harmless, and the steps were redone.
+- No results had been produced (only empty or partial `models/` folders). The partial folder `results/2026-10-12_M01_demo_v0/motion/` is kept (not deleted) and is NOT used.
+- Restarted with `OMP_NUM_THREADS = OPENBLAS_NUM_THREADS = MKL_NUM_THREADS = 2` and RF `n_jobs=8` per process, writing to `results/2026-10-12_M01_demo_v0_run2/`. The scripts gained a `--run` suffix argument; the design is unchanged.
+
+**Files created/changed:** `scripts/m01_demo_motion.py`, `scripts/m01_demo_eval.py`, `scripts/m01_demo_context.py` (`--run` argument only), `PROJECT_LOG.md`.
+
+**Checks run and results:** none (restart only).
+
+**Decisions made (and why):** thread limits, to stay within this machine's fair share.
+
+**Problems / surprises:** the CPU oversubscription and the self-ending stop command, both described above.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: continue the sprint.

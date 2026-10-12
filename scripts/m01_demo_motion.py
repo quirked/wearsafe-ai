@@ -93,8 +93,9 @@ def main():
     ap.add_argument("--features", required=True, choices=["v1", "v2"])
     ap.add_argument("--n-jobs", type=int, default=8)
     ap.add_argument("--date", default=time.strftime("%Y-%m-%d"))
+    ap.add_argument("--run", default="", help="suffix of the results folder, e.g. _run2")
     args = ap.parse_args()
-    out = REPO / f"results/{args.date}_M01_demo_v0/motion/{args.version}_{args.features}"
+    out = REPO / f"results/{args.date}_M01_demo_v0{args.run}/motion/{args.version}_{args.features}"
     if out.exists():
         raise FileExistsError(f"{out} exists; refusing to overwrite")
     (out / "models").mkdir(parents=True)
