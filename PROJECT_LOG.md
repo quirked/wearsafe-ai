@@ -1503,3 +1503,27 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run M02 after A02.
+
+## 2026-10-12 09:37 — A02 — EDA results (ANALYSIS ONLY, PRELIMINARY)
+**What I did:** Ran `scripts/a02_eda.py` in tmux window `sao:a02` with 4 threads (log `logs/2026-10-12_A02.log`). Wrote `reports/A02_eda.md`, `reports/A02_tables.md` and `reports/figures/A02/`; outputs in `results/2026-10-12_A02_eda/`.
+
+**Files created/changed:** the files above; `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **Data check:** EDA is 4.0 Hz in both datasets, 0 NaN.
+  - PPG-DaLiA: 0–40.3 µS; near-zero (< 0.05 µS) samples 0.08% on average (max 0.77%).
+  - WESAD: 0.045–15.9 µS.
+- **TEST, quick response (1–5 s):** 93.2% of events vs 72.4% of controls.
+  - Per activity, events vs controls: cycling 94 / 94, driving 98 / 100, table soccer 100 / 100, stairs 70 / 35, transient 94 / 63, walking 92 / 74.
+  - Baseline SCR rate (per minute): sitting 3.1, working 13.1, cycling 38.6, table soccer 37.4.
+  - Artefact events: 0.9%.
+- **WESAD:** SCR/min stress 20.9 vs baseline 7.6 (amusement 6.2, meditation 4.4); tonic 3.4 vs 1.3 µS; Cohen's d 2.84 ± 1.90, > 0 in 15 of 15 subjects.
+- **Tests:** `tests/test_eda.py` 3/3 passed.
+
+**Decisions made (and why):** none adopted.
+
+**Problems / surprises:** the pre-registered 0.01 µS SCR threshold yields very high everyday SCR rates (this limitation is stated in the report).
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** M02 (running).
