@@ -1921,3 +1921,33 @@ Tested on spare port 8502 with the theme flags (log `logs/2026-10-12_demo_app_v5
 **Next step (waiting for user approval):** a v5 retry. Proposed fixes:
 - always render a fixed widget per card (or a fixed st.empty slot) so the element tree stays the same across reruns;
 - check the chart in a screenshot cropped to the chart.
+
+## 2026-10-12 11:40 — DEMO — Light theme for demo app (v4 restarted)
+**What I did:**
+- Created `.streamlit/config.toml` (it did not exist before) with the light theme: base light, primary #D86A8A, background #FFF7F9, secondary #FFFFFF, text #3D2C3A, sans serif.
+- Restarted the live v4 app on 8501 in `sao:demo_app`:
+  - Ctrl-C stopped only that Streamlit process;
+  - the restart uses the same command, run from the project root, plus the theme flags.
+  - Log: `logs/2026-10-12_demo_app_v4_light_streamlit.log`.
+- Appended a light-theme note to the README section "How to run the demo".
+- No app code, model, result or config was changed.
+
+**Files created/changed:**
+- `.streamlit/config.toml` (new)
+- `reports/figures/demo_v4/light_theme.png` (new)
+- `README.md` (append only)
+- `PROJECT_LOG.md`
+
+**Checks run and results:**
+- PASS: `curl http://127.0.0.1:8501` returns HTTP 200; the health check is ok.
+- PASS: the Live demo tab loads with 0 errors.
+- PASS: the header background is rgb(255,247,249), the same light pink as the page.
+- PASS: in the screenshot, the top bar, tabs, dropdown and slider are all light, with readable text and no dark areas.
+
+**Decisions made (and why):** none beyond the request.
+
+**Problems / surprises:** none. The v5 failure noted at 11:28 is unchanged; v5 is still not live.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** none; wait for the user.
