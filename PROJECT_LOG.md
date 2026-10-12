@@ -1445,3 +1445,22 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** restart the demo app, then STOP.
+
+## 2026-10-12 09:18 — A01 — Demo app restarted
+**What I did:** Restarted the Streamlit app with the exact recorded command, in its own tmux window `sao:demo_app`, on 127.0.0.1:8501.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry only).
+
+**Checks run and results:**
+- Health check ok; `/` returns HTML.
+- Headless check: both demos (everyday cycling, fall) load.
+- The A01 window closed on its own when the analysis finished.
+- A01 results were not added to the app.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
