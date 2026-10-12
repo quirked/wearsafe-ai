@@ -1803,3 +1803,25 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** whether to build v4 after the demo.
 
 **Next step (waiting for user approval):** Stage 2 (GitHub push checks).
+
+## 2026-10-12 11:03 — Repo — Pushed to GitHub (private repo)
+**What I did:** Added remote `origin` = https://github.com/quirked/wearsafe-ai and ran `git push -u origin master`. It succeeded with the existing credentials; no history was rewritten. The running app was unaffected (health ok).
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry only).
+
+**Checks run and results (pre-push):**
+- `.gitignore` excludes `data/`, `results/`, `*.pkl`, `*.parquet`, `*.zip`, `*.h5`, `*.npy` and log files.
+- 0 tracked files under `data/raw`, `data/interim` or `data/processed`.
+- No tracked file > 50 MB. The largest are the paper PDFs: 4.70, 3.21, 2.93 and 1.37 MB.
+- The banned SMOTE file is not tracked.
+- Secret-pattern search: the only hit is a variable named `tokens` in a test (benign).
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:**
+- The tracked `docs/papers/*.pdf` include IEEE-published papers whose licence restricts redistribution. That is acceptable in a private repo; remove them before making the repo public.
+- A second push (of this log entry only) was blocked by the session's permission check, so this entry is committed locally only.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
