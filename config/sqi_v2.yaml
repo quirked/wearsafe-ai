@@ -1,0 +1,10 @@
+# SQI cut-off v2 (tag demo_v0, PRELIMINARY). Written BEFORE any computation (PROJECT_LOG). v1 (0.90) stays unchanged.
+version: 2
+candidates: [0.50, 0.60, 0.70, 0.80, 0.90]
+selection_data: "PPG-DaLiA DEV subjects (config/fusion_v1_partition.json), D03 30 s physiology windows passing the motion-aware gate (acc_mag_std over the window <= 0.5671 m/s^2, fusion v0) with a wrist HR estimate (>= 2 valid IBIs, HR 30-220)"
+error_measure: "|hr_mean (wrist, D03 features) - mean ECG reference HR of the 8 s reference windows inside| (results/2026-10-12_D03_bvp_hr_vs_ecg_v1/per_window_30s.csv)"
+selection_rule: "LOWEST cut-off c such that windows with ppg_sqi >= c have MAE <= 5 bpm AND >= 85% within +-10 bpm; if none qualifies keep 0.90 and say so"
+wesad_used: false
+m03_v2_gate: "same as M03 except SQI >= c_v2: ppg_sqi >= c_v2 AND >= 2 valid IBIs AND HR 30-220 AND acc_mag_std <= 0.5671"
+m03_v2_reuse: "WESAD windows/features reused from results/2026-10-12_M03_still_racing_demo_v0/wesad_windows.parquet (same code); models, LOSO, threshold rule, check-in rule, deploy rule imported from scripts/m03_still_racing.py"
+everyday_report: "PPG-DaLiA TEST subjects only (dev used for the choice); all 15 also shown with a note"

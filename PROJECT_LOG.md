@@ -1695,3 +1695,22 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 10:39 — SQI v2 / M03 v2 — Pre-registered (before any computation)
+**What I did:** Wrote `config/sqi_v2.yaml` before computing anything (tag demo_v0, PRELIMINARY).
+
+**Files created/changed:** `config/sqi_v2.yaml`, `PROJECT_LOG.md`.
+
+**Checks run and results:** none yet.
+
+**Decisions made (and why):**
+- **Candidates:** 0.50–0.90.
+- **Selection data:** PPG-DaLiA DEV subjects, gated 30 s windows.
+- **Rule:** the lowest cut-off with MAE ≤ 5 bpm AND ≥ 85% within ±10 bpm; else keep 0.90. WESAD is not used.
+- **Re-use (mine):** the M03 WESAD windows and M03's functions are re-used, for the same code and to save time.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: compute the dev choice, then the rest.
