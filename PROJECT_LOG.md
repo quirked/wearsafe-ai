@@ -1419,3 +1419,29 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run A01.
+
+## 2026-10-12 09:18 — A01 — Results (ANALYSIS ONLY, PRELIMINARY)
+**What I did:**
+- Ran `scripts/a01_post_event_hr.py` in a new tmux window `sao:a01` with 4 threads (log `logs/2026-10-12_A01.log`).
+- Wrote `reports/A01_post_event_hr.md`, `reports/A01_tables.md` and `reports/figures/A01/`; outputs in `results/2026-10-12_A01_post_event_hr/`.
+- No model, rule, threshold or app change.
+
+**Files created/changed:** the files above; `scripts/a01_post_event_hr.py`; `PROJECT_LOG.md`.
+
+**Checks run and results** (TEST: 561 V0-base events, 23.6 h):
+- **Recovery:** 34.8% recovered within 120 s; median 42 s (IQR 26–73.5), p90 101.6 s.
+- **Coverage:** a wrist change was computable for 15.5% of events.
+- **ECG change, fixed 30 s after the alarm:** rises ≥ 10 / 15 / 20 bpm in 15.3 / 8.7 / 4.1% of events; controls 9.3 / 4.3 / 3.3%.
+- **ECG change aligned to recovery:** 5.1 / 2.6 / 1.5%.
+- **Wrist change (of the computable):** 12.6 / 8.0 / 5.7%.
+- **Wrist vs ECG change:** correlation 0.7, MAE 5.8 bpm (n = 87).
+- **Controls:** 399 of 561 drawn.
+- **Tests:** `tests/test_post_event.py` 3/3 passed.
+
+**Decisions made (and why):** none adopted.
+
+**Problems / surprises:** the controls shortfall above.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** restart the demo app, then STOP.
