@@ -1762,3 +1762,29 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** Stage 2, if time allows.
+
+## 2026-10-12 10:52 — Demo v3 — "Heart racing while still" check live (app/wearsafe_demo_v3.py on 8501)
+**What I did:**
+- Built the heart-check replay (`scripts/m03_v2_demo_replay.py`, `results/2026-10-12_M03_v2_demo_replay/heart.joblib`).
+- Created `app/wearsafe_demo_v3.py` from v2 with `scripts/make_app_v3.py`; v2 is unchanged.
+- Tested v3 on port 8502, then swapped 8501 from v2 to v3 in `sao:demo_app`. Took 2 screenshots (`reports/figures/demo_v3/`).
+
+**Files created/changed:** the files above; `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **Replay:** the refitted deploy LR (identical data and settings, v2 gate) reproduces the offline PPGDALIA_S03 scores (max |diff| 0.0) and gate flags.
+- **In the app's everyday segments:** one heart check-in occurs while sitting (165 s), which is an unnecessary check-in shown honestly; walking, cycling and table soccer show "Can't check now (moving)".
+- **v3 on 8502:** heart card, heart-reason alert, the fall-demo note and the About section all render, with 0 exceptions.
+- **Live on 8501:** health ok; everyday, fall and About load.
+- **Jargon grep:** only internal paths and keys (lines 26, 36, 92), none on screen.
+
+**Decisions made (and why):**
+- **Model:** the M03 v2 gate (SQI 0.50), from the pre-registered rule, and logistic regression (the M03 headline model). It was not picked by looking at the results.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
+- **v3 start command:** `OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 MKL_NUM_THREADS=4 ~/miniconda3/envs/wearsafe/bin/python -m streamlit run app/wearsafe_demo_v3.py --server.port 8501 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false > logs/2026-10-12_demo_app_v3_streamlit.log 2>&1`
+- **Fallback:** the same command with `app/wearsafe_demo_v2.py`.
