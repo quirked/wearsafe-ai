@@ -1,11 +1,11 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D00c DONE and user decisions after D00c recorded (2026-10-12). Design change ACCEPTED: FallAllD wrist = main motion source, UP-Fall = low-rate stress test, BITS-2 = supporting. No milestone in progress; D03 not started.
+- **Current milestone:** D03 smoke test (S03, S06) DONE (45/45 checks), waiting for approval of the full D03 run. Design change after D00c accepted (FallAllD wrist = main motion source).
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
 - **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
 - **Split version:** none.
-- **Last validated result:** D02 full run, 2026-10-12. Train candidates (motion/context/physiology): 65079 / 25920 / 4155. Deterministic re-run identical. Tests 42 passed / 1 skipped.
+- **Last validated result:** D03 smoke 2026-10-12: features for 13,989 / 5,594 / 930 windows (motion / context / physiology); wrist HR vs ECG MAE 2.70 bpm (sitting) to 32.82 bpm (stairs); deterministic. Tests 53 passed / 1 skipped.
 - **Open items:** next FallAllD milestone must first verify 4096 counts/g (median low-motion |acc| within 1 ± 0.05 g, else STOP); harmonised format per `config/motion_harmonisation_v1.yaml`; position-only baseline and device-discrimination checks are required (CLAUDE.md §2.3); optional D03 report-only distance-to-boundary table.
 ---
 
@@ -664,3 +664,48 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run the smoke test (trial run to scratch, then the official run), then stop.
+
+## 2026-10-12 05:12 — D03 — Smoke test done: features + wrist-PPG vs ECG (S03, S06)
+**What I did:**
+- Ran the D03 smoke test in tmux `sao`, env `wearsafe`, on CPU (no GPU needed).
+- A trial run into the scratchpad came first, then the official run, with no code changes in between. The trial outputs served as the determinism comparison. Log: `logs/2026-10-12_D03_smoke.log`.
+- Generated the tables with `scripts/d03_report.py`.
+
+**Files created/changed:**
+- **Features:** `data/processed/{motion,context,physiology}/ppg_dalia_features_smoke_v1.parquet`, plus `data/processed/ppg_dalia_features_smoke_v1_run/`.
+- **HR comparison:** `results/2026-10-12_D03_bvp_hr_vs_ecg_smoke_v1/`.
+- **Reports:** `reports/D03_ppg_dalia_features_smoke.md`, `reports/D03_ppg_dalia_smoke_v1_tables.md`.
+
+**Checks run and results:**
+- **Invariant checks:** 45/45 passed:
+  - one feature row per D02 window, in the same order;
+  - 0 NaN in motion features;
+  - dominant_freq and entropy in range;
+  - no forbidden columns among the features;
+  - no ECG HR in the feature tables;
+  - physiology NaN only where `physiology_uncertain`;
+  - HR within 30–220 bpm and SQI within [0, 1];
+  - `hr_rel_baseline` NaN before 300 s.
+- **Determinism:** all 3 feature tables and all 13 result CSVs are identical to the trial run.
+- **pytest:** 53 passed, 1 skipped. This includes the end-to-end causality test and the strictly-past baseline test.
+- **Wrist HR vs ECG (8 s/2 s, both subjects):**
+  - overall MAE 11.18 bpm, bias −9.12 bpm, coverage 99.97%;
+  - per activity MAE: sitting 2.70, working 4.32, driving 5.51, lunch 7.34, transient 11.47, walking 12.08, cycling 20.91, table soccer 25.44, stairs 32.82.
+  - Per subject × activity results are in the tables §5.
+- **SQI:** informative (Spearman −0.507 with |err|). MAE is 2.38 bpm at SQI ≥ 0.95 and 19.69 at 0.5–0.7.
+- **SQI 0.9 threshold:** keeps 34.4% of 8 s windows (MAE 4.29). The report-only sensitivity was produced and not used to change anything.
+- **physiology_uncertain:** 86.4% of 30 s windows for S03 and 59.9% for S06.
+- **Label-edge table (report-only):** near activity edges, motion variability differs strongly from the activity core, beyond the 10 s margin. Relative to the ≥ 40 s core, 20–40 s from an edge: lunch 4.4×, driving 1.6×, sitting 1.3×, working 1.9×. This is written into the report's limitations; the 10 s rule and all training roles are unchanged.
+
+**Decisions made (and why):** none new. All parameters were fixed before the run (see the D03 start entry).
+
+**Problems / surprises:**
+- The `physiology_uncertain` rate is high under the fixed 0.9 threshold.
+- `hr_rel_baseline` is NaN in 34% of windows, mostly because there was no good-quality window in the previous 5 minutes.
+- S06's vigorous-activity errors are 1.4–4.2× those of S03.
+- The label-edge noise lasts up to 20–40 s.
+- I corrected two figures in my report draft before committing (an S06/S03 ratio range and the bin sizes). Every number now matches the generated tables.
+
+**Open questions for the user:** whether to run the full D03 (15 subjects, tag `v1`).
+
+**Next step (waiting for user approval):** full D03 run. Not started.
