@@ -1382,3 +1382,20 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 09:17 — A01 — Demo app stopped for the A01 analysis (restart command recorded)
+**What I did:** Stopped only the Streamlit demo process (PID 318577, mine, listening on 127.0.0.1:8501) with SIGINT (= Ctrl-C). The tmux session `sao` and its windows were not touched; no other process was affected; nothing was deleted.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry only).
+
+**Checks run and results:** port 8501 released after the stop.
+
+**Decisions made (and why):** none.
+- **Exact restart command** (repo root, in a tmux window of session `sao`):
+  `OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 MKL_NUM_THREADS=4 ~/miniconda3/envs/wearsafe/bin/python -m streamlit run app/wearsafe_demo.py --server.port 8501 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false > logs/2026-10-12_demo_app_streamlit.log 2>&1`
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** the user's instructions: run A01, then restart the app by 10:00 UTC.
