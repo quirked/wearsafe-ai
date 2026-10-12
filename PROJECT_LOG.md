@@ -1,12 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** M01-demo (demo sprint, tag demo_v0, PRELIMINARY) — DONE, waiting for the user. D08 DONE.
+- **Current milestone:** F00/F01-demo (fusion v0, demo_v0, PRELIMINARY) — DONE; next: Prompt 3 (app). M01-demo and D08 DONE.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
 - **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2). PPG-DaLiA features v1: `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet` (config `features_v1.yaml`). FallAllD v1: `data/interim/fallalld/*_v1/`, features `data/processed/motion/fallalld_{unclipped,e4_clipped}_features-{v1,v2}_v1.parquet`.
 - **Split version:** `splits/fallalld_v1.json` (FallAllD wrist LOSO, 13 folds); `splits/ppg_dalia_v1.json` (PPG-DaLiA LOSO, 15 folds).
-- **Last validated result:** M01-demo 2026-10-12 (PRELIMINARY): FallAllD RF PR-AUC 0.83 (unclipped) / 0.77 (e4_clipped), ADL-clip false alarm 11–14%; PPG-DaLiA context RF macro-F1 0.72; device check AUC 0.72–0.84. Results in `results/2026-10-12_M01_demo_v0_run2/`.
-- **Open items:** shortcut baselines (position-only (a)/(b comparative)/(c), peak-only, saturation-only) and dedup + clip-level metrics are required at the first motion-model milestone; findings for later 1–4 (v2 SQI threshold, 30 s margin experiment, motion-aware physiology gate, longer HR baseline).
+- **Last validated result:** F01-demo 2026-10-12 (PRELIMINARY): PPG-DaLiA false prompts/h V0-base 23.8, V0-stillness 2.4; FallAllD fall-clip detection 93.6% / 50.6%; streaming engine reproduces offline outputs. M01-demo: RF PR-AUC 0.83 / 0.77.
+- **Open items:** position test (b) owed before any non-demo claim; false-prompt reduction (pre-registered); trained arousal model; findings for later 1–4.
 ---
 
 ## 2026-10-11 23:55 — D00a — Data inventory (look-only)
@@ -1214,3 +1214,37 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run F01, then stop.
+
+## 2026-10-12 07:02 — F00/F01-demo — Fusion v0 results (demo_v0, PRELIMINARY)
+**What I did:**
+- Ran `scripts/f01_demo.py` in tmux `sao`, env `wearsafe`, on CPU with 8 threads (log `logs/2026-10-12_F01demo.log`).
+- Built `src/wearsafe/fusion.py` and the streaming engine `src/wearsafe/inference.py`, plus `tests/test_inference.py`.
+- Wrote `reports/F01_demo_v0.md` (+ the generated `_tables.md`).
+
+**Files created/changed:** the files above; `results/2026-10-12_F01_demo_v0/`; `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **PPG-DaLiA** (15 subjects, 35.97 h; motion model = FallAllD e4_clipped v2 RF deploy, threshold 0.1622):
+  - **V0-base: 23.8 false prompts/h** (per subject 24.1 ± 8.8; 11.1–36.4);
+  - **V0-stillness: 2.4/h** (2.4 ± 1.4; 0.4–5.9);
+  - HIGH prompts: 0 in both. Physiology at V0-base prompts: uncertain 828, normal 15, unknown 13.
+- **Per activity, V0-base / stillness (prompts per hour):** table soccer 80.9 / 22.6, cycling 69.3 / 0, transient 33.2 / 1.7, driving 32.6 / 5.8, walking 28.0 / 0, stairs 22.2 / 0, lunch 5.7 / 2.1, working 2.8 / 0.4, sitting 0.4 / 0.
+- **FallAllD held-out clip level:**
+  - V0-base: falls 93.6%, ADL clips 14.1% (dedup 8.4%), probes 28.6%;
+  - V0-stillness: falls 50.6%, ADL 7.0% (dedup 2.1%), probes 17.1%.
+- **Gate thresholds** (sitting p95 of other subjects): 0.510–0.581 m/s²; the all-subject (app) value is 0.567.
+- **Streaming engine:** reproduces the offline outputs for PPGDALIA_S03 (900 s, streamed 1 s at a time): motion probability (≤ 1e-12), alarms, physiology status, prompts (both variants) and deploy-context predictions (4/4 tests).
+- **pytest:** 75 passed, 1 skipped (`test_inference` takes ~3 min).
+
+**Decisions made (and why):** none beyond the fixed rules (`config/fusion_v0.yaml`). Both variants are reported; neither was chosen.
+
+**Problems / surprises:**
+- The V0-base false-prompt rate is high (24/h).
+- V0-stillness halves fall detection (51%).
+- The placeholder physiology rule is almost always "uncertain" at prompts, so HIGH never fires.
+- Device-gap caveat: device-discrimination AUC 0.72–0.84 (M01). PPG-DaLiA is clipped at ±2 g, so rates may be optimistic for wider-range watches.
+
+**Open questions for the user:** Prompt 3 (the app).
+
+**Next step (waiting for user approval):** STOP.
+- Still owed before any non-demo claim: position test (b) (listed in the F01 report under "Still to do").
