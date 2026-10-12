@@ -1,11 +1,11 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** F00/F01-demo (fusion v0, demo_v0, PRELIMINARY) — DONE; next: Prompt 3 (app). M01-demo and D08 DONE.
+- **Current milestone:** F02-demo (fusion v1 candidates, demo_v1, PRELIMINARY, post-hoc but held-out) — DONE; next: demo app.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
 - **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2). PPG-DaLiA features v1: `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet` (config `features_v1.yaml`). FallAllD v1: `data/interim/fallalld/*_v1/`, features `data/processed/motion/fallalld_{unclipped,e4_clipped}_features-{v1,v2}_v1.parquet`.
 - **Split version:** `splits/fallalld_v1.json` (FallAllD wrist LOSO, 13 folds); `splits/ppg_dalia_v1.json` (PPG-DaLiA LOSO, 15 folds).
-- **Last validated result:** F01-demo 2026-10-12 (PRELIMINARY): PPG-DaLiA false prompts/h V0-base 23.8, V0-stillness 2.4; FallAllD fall-clip detection 93.6% / 50.6%; streaming engine reproduces offline outputs. M01-demo: RF PR-AUC 0.83 / 0.77.
+- **Last validated result:** F02-demo TEST 2026-10-12: prompts/h V0-base 23.8 (falls 94.5%), V0-stillness 2.4 (49.8%), V1-tiered 15.6 (82.7%), V1-change 15.1 (77.1%). F01: streaming engine reproduces offline outputs.
 - **Open items:** position test (b) owed before any non-demo claim; false-prompt reduction (pre-registered); trained arousal model; findings for later 1–4.
 ---
 
@@ -1301,3 +1301,36 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run the TEST partition.
+
+## 2026-10-12 07:28 — F02-demo — TEST results (demo_v1, PRELIMINARY, post-hoc but held-out)
+**What I did:**
+- Evaluated every variant, with its dev-chosen parameters, on the TEST partition only (`scripts/f02_demo.py --phase test`, log `logs/2026-10-12_F02demo_test.log`).
+- Added `tests/test_fusion_v1.py` and wrote `reports/F02_demo_v1.md` (+ the generated test and dev tables).
+
+**Files created/changed:** `results/2026-10-12_F02_demo_v1/test_*.csv`, `reports/F02_demo_v1.md`, `reports/F02_demo_v1_test_tables.md`, `tests/test_fusion_v1.py`, `PROJECT_LOG.md`.
+
+**Checks run and results** (PPG-DaLiA prompts/h; FallAllD fall-clip detection):
+
+| Variant | Prompts/h | Falls detected | Notes |
+|---|---|---|---|
+| V0-base | 23.81 | 94.5% | |
+| V0-stillness | 2.42 | 49.8% | |
+| V1-merge | 23.81 | 94.5% | = V0-base, as expected |
+| V1-tiered | 15.58 | 82.7% | 80.5% of prompts delayed 5 s |
+| V1-change | 15.11 | 77.1% | all prompts delayed 5 s |
+| V1-combined | 15.58 | 82.7% | = V1-tiered |
+
+- Everyday clips prompted (dedup): V0-base 11.3% (6.6%); V0-stillness 6.2% (1.7%); V1 variants 9.0% (4.6%).
+- `tests/test_fusion_v1.py`: a streaming change decision on PPGDALIA_S03 (test subject) reproduces the offline rate exactly.
+- pytest: full suite passes (see the commit).
+
+**Decisions made (and why):** none.
+- Recommended per the pre-registered rule: V0-stillness. Best V1 (fallback): V1-change.
+
+**Problems / surprises:**
+- No V1 variant reaches ≤ 3/h.
+- Table soccer (~75/h) and cycling (~52/h) dominate the remaining false prompts.
+
+**Open questions for the user:** which variant the demo app shows by default (it offers the toggle).
+
+**Next step (waiting for user approval):** STOP; the demo app is next.
