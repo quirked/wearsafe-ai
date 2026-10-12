@@ -1248,3 +1248,28 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 
 **Next step (waiting for user approval):** STOP.
 - Still owed before any non-demo claim: position test (b) (listed in the F01 report under "Still to do").
+
+## 2026-10-12 07:21 — F02-demo — Dev/test partition and pre-registered v1 variants (before any v1 evaluation)
+**What I did:** Started F02-lite (tag `demo_v1`). Fixed the dev/test partition and the candidate variants before computing anything.
+
+**Files created/changed:** `config/fusion_v1_partition.json`, `config/fusion_v1.yaml`, `PROJECT_LOG.md`.
+
+**Checks run and results:** the partition has no overlap between dev and test.
+
+**Decisions made (and why):**
+- **Partition** (`config/fusion_v1_partition.json`; `numpy.random.RandomState(2026).permutation` per sorted list):
+  - **PPG-DaLiA dev:** S01, S10, S12, S14, S15. **Test:** S02, S03, S04, S05, S06, S07, S08, S09, S11, S13.
+  - **FallAllD dev:** S05, S09, S14, S15 (with falls) + S04, S12 (without). **Test:** S01, S02, S03, S06, S13 (with falls) + S10, S11 (without).
+  - **v0 results on all subjects were already seen.** v1 numbers on the test partition are therefore **post-hoc but held-out**, and every report must state this.
+- **Candidate variants:** `config/fusion_v1.yaml` (V1-merge, V1-tiered, V1-change, V1-combined + the V0 references).
+- **My operationalisations (overrulable):**
+  - **Change:** pre = [t−12, t−2) (≥ 5 s needed), post = [t, t+5); relative std change (floor 0.05 m/s²) or dominant-frequency change (floor 0.5 Hz) > tol.
+  - **Tiered grid:** T_high × tol.
+  - **T:** the v0 threshold (FallAllD fold thresholds; PPG-DaLiA deploy 0.1622).
+- **V1-merge**, as specified, equals the v0 30 s refractory, so it is expected to reproduce V0-base exactly (reported as such).
+
+**Problems / surprises:** none yet.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run the dev selection, record the choices, then test.

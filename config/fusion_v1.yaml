@@ -1,0 +1,33 @@
+# Fusion v1 candidates (F02-lite, tag demo_v1, PRELIMINARY). Written BEFORE any v1 evaluation (PROJECT_LOG).
+# Selection on the DEV partition only (config/fusion_v1_partition.json); final numbers on TEST only, labelled
+# "post-hoc but held-out" (v0 results on all subjects were already seen).
+version: 1
+tag: demo_v1
+base: config/fusion_v0.yaml
+motion: "same predictions as v0: e4_clipped + features_v2 RF (FallAllD out-of-fold scores with fold thresholds; PPG-DaLiA deploy model, threshold 0.1622)"
+decision_clock_s: 1
+refractory_s: 30            # all variants keep the v0 rule: no new prompt within 30 s of a prompt (keyed on alarm time)
+change:                     # shared definition (V1-change, V1-tiered, V1-combined); mine where not specified
+  alarm_window: "[t-2, t) (decision time t = alarm window end)"
+  pre_segment: "[max(0, t-12), t-2)  (10 s before the alarm window); requires >= 5 s, else 'change' is false"
+  post_segment: "[t, t+5)  (5 s after the alarm window); requires the full 5 s, else 'change' is false (delayed decision, +5 s latency)"
+  measures: "acc_mag_std and dominant_freq of |a| from wearsafe.features.motion_features on each segment (32 Hz)"
+  rule: "change = |std_post - std_pre| / max(std_pre, 0.05 m/s^2) > tol  OR  |f_post - f_pre| / max(f_pre, 0.5 Hz) > tol"
+  tol_grid: [0.3, 0.5, 0.7]
+variants:
+  V0-base: "reference: prompt at every alarm (30 s refractory)"
+  V0-stillness: "reference: prompt if acc_mag_std over [t, t+5) <= gate (0.567 m/s^2 all-subject sitting p95; PPG-DaLiA uses the v0 LOSO gate)"
+  V1-merge: "a new alarm cannot start a new prompt while a prompt is open or within 30 s after one (15 s countdown + 15 s cooldown). No parameters. NOTE: as specified this equals the v0 30 s refractory, so it is expected to reproduce V0-base"
+  V1-tiered: "p >= T_high -> prompt immediately; T <= p < T_high -> prompt only if change (delayed 5 s)"
+  V1-change: "prompt only if change (delayed 5 s)"
+  V1-combined: "V1-tiered + V1-merge (same change definition)"
+grids:
+  T_high: "score quantiles of DEV FallAllD fall-positive windows (out-of-fold RF scores) such that 30%, 50%, 70% of them exceed it (i.e. the 70th, 50th, 30th percentiles)"
+  V1-tiered: "T_high x tol (3 x 3)"
+  V1-change: "tol (3)"
+  V1-combined: "T_high x tol (3 x 3)"
+selection:                  # dev only
+  rule: "maximise FallAllD dev clip-level fall detection subject to PPG-DaLiA dev false prompts <= 3 per hour; ties -> fewer prompts"
+  fallback: "if no setting meets <= 3/h: lowest prompts/hour among settings with >= 80% fall detection (stated)"
+  recommended: "ONE variant chosen by the same rule on dev, among the selected settings of all variants"
+latency: "added decision latency: 0 s for immediate prompts, 5 s for change/stillness prompts; reported per variant"

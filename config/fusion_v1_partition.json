@@ -1,0 +1,105 @@
+{
+  "name": "fusion_v1_partition",
+  "created": "2026-10-12 07:21:33",
+  "procedure": "for each sorted subject list separately: order = numpy.random.RandomState(2026).permutation(len(list)); dev = first k, test = rest",
+  "ppg_dalia": {
+    "dev": [
+      "PPGDALIA_S01",
+      "PPGDALIA_S10",
+      "PPGDALIA_S12",
+      "PPGDALIA_S14",
+      "PPGDALIA_S15"
+    ],
+    "test": [
+      "PPGDALIA_S02",
+      "PPGDALIA_S03",
+      "PPGDALIA_S04",
+      "PPGDALIA_S05",
+      "PPGDALIA_S06",
+      "PPGDALIA_S07",
+      "PPGDALIA_S08",
+      "PPGDALIA_S09",
+      "PPGDALIA_S11",
+      "PPGDALIA_S13"
+    ],
+    "permuted_order": [
+      "PPGDALIA_S14",
+      "PPGDALIA_S12",
+      "PPGDALIA_S15",
+      "PPGDALIA_S01",
+      "PPGDALIA_S10",
+      "PPGDALIA_S03",
+      "PPGDALIA_S08",
+      "PPGDALIA_S13",
+      "PPGDALIA_S06",
+      "PPGDALIA_S04",
+      "PPGDALIA_S05",
+      "PPGDALIA_S09",
+      "PPGDALIA_S11",
+      "PPGDALIA_S07",
+      "PPGDALIA_S02"
+    ]
+  },
+  "fallalld": {
+    "with_falls": {
+      "dev": [
+        "FALLALLD_S05",
+        "FALLALLD_S09",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S06",
+        "FALLALLD_S13"
+      ],
+      "permuted_order": [
+        "FALLALLD_S14",
+        "FALLALLD_S05",
+        "FALLALLD_S15",
+        "FALLALLD_S09",
+        "FALLALLD_S06",
+        "FALLALLD_S01",
+        "FALLALLD_S03",
+        "FALLALLD_S13",
+        "FALLALLD_S02"
+      ]
+    },
+    "without_falls": {
+      "dev": [
+        "FALLALLD_S04",
+        "FALLALLD_S12"
+      ],
+      "test": [
+        "FALLALLD_S10",
+        "FALLALLD_S11"
+      ],
+      "permuted_order": [
+        "FALLALLD_S12",
+        "FALLALLD_S04",
+        "FALLALLD_S11",
+        "FALLALLD_S10"
+      ]
+    },
+    "dev": [
+      "FALLALLD_S04",
+      "FALLALLD_S05",
+      "FALLALLD_S09",
+      "FALLALLD_S12",
+      "FALLALLD_S14",
+      "FALLALLD_S15"
+    ],
+    "test": [
+      "FALLALLD_S01",
+      "FALLALLD_S02",
+      "FALLALLD_S03",
+      "FALLALLD_S06",
+      "FALLALLD_S10",
+      "FALLALLD_S11",
+      "FALLALLD_S13"
+    ]
+  },
+  "note": "v0 results on all subjects were already seen; v1 numbers on the test partition are post-hoc but held-out"
+}
