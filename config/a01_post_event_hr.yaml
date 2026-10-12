@@ -1,0 +1,16 @@
+# A01 — heart rate after false-alarm jolts (PPG-DaLiA only). ANALYSIS ONLY; changes no model/rule/threshold/app.
+# Written BEFORE any A01 result (PROJECT_LOG). Items marked (mine) are my operationalisations.
+version: 1
+events: "every V0-base prompt on PPG-DaLiA (F01 results/2026-10-12_F01_demo_v0/ppg_dalia_decisions.parquet, prompt_base); alarm time ta = decision time (alarm window end)"
+event_tags: "also prompted under V1-tiered / V1-change (F02 dev-selected params, fusion_v1.decide on F02 measures) and V0-stillness (prompt_stillness), keyed on the same alarm time"
+controls: "per subject x activity, the same number of decision seconds as events, drawn without replacement from non-alarm seconds >= 60 s from any alarm second (p >= T); numpy RandomState(2026); shortfalls reported"
+partition: "config/fusion_v1_partition.json — final numbers on TEST subjects; dev reported separately; nothing selected or adopted"
+wrist_hr_windows: "D03 8 s / 2 s windows (results/2026-10-12_D03_bvp_hr_vs_ecg_v1/per_window_8s.csv): window k ends at e = 2k + 8 s; hr_bvp, ppg_sqi, hr_ref (ECG)"
+reliable: "window ending at e: ppg_sqi >= 0.9 AND acc_mag_std of |a| over the same 8 s <= gate (F01 sitting-p95 gate, leave-subject-out value) AND hr_bvp available"
+recovery: "first reliable window with end e > ta (mine: strictly after the alarm) and e <= ta + 120 s; recovery time = e - ta; none -> 'not recovered' (reported, never dropped)"
+pre_hr: "median hr of reliable windows with end in [ta - 60, ta - 5] s; none -> 'missing' (never imputed)"
+post_hr: "median hr of reliable windows with end in [e_rec, e_rec + 30] s"
+change: "post - pre (bpm), only where both exist"
+ecg_truth: "SAME windows and time ranges with hr_ref (ECG): pre = median hr_ref of ALL windows with end in [ta-60, ta-5] (mine: no reliability filter for ECG); post = median hr_ref of ALL windows with end in [e_rec, e_rec+30] (only where the wrist recovered); also (mine) a fixed-delay ECG change for EVERY event: post = median hr_ref of windows ending in [ta, ta+30]"
+rises_bpm: [10, 15, 20]
+recovery_bins_s: [10, 20, 30, 60, 120]

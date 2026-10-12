@@ -1399,3 +1399,23 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** the user's instructions: run A01, then restart the app by 10:00 UTC.
+
+## 2026-10-12 09:17 — A01 — Definitions pre-registered (before any A01 result)
+**What I did:** Wrote `config/a01_post_event_hr.yaml` before computing any A01 result. It is an analysis only: no model, rule, threshold, fusion variant or app file changes.
+
+**Files created/changed:** `config/a01_post_event_hr.yaml`, `PROJECT_LOG.md`.
+
+**Checks run and results:** none yet.
+
+**Decisions made (and why)** (my operationalisations, overrulable):
+- Recovery uses windows ending strictly after the alarm.
+- The ECG pre/post use all windows in the same time ranges, with no reliability filter.
+- An extra fixed-delay ECG change ([ta, ta+30]) is computed for every event.
+- The gate is F01's leave-subject-out sitting p95.
+- Machine load ~14 from other users, so A01 runs with 4 threads.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run A01.
