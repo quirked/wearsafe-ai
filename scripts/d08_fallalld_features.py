@@ -20,14 +20,16 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
+from wearsafe import fallalld_io as fio  # noqa: E402
 from wearsafe import features as F  # noqa: E402
+from wearsafe import motion_harmonise as mh  # noqa: E402
 from wearsafe.schemas import FORBIDDEN_FEATURE_COLUMNS  # noqa: E402
 
 CFG = REPO / "config/fallalld_v1.yaml"
 VERSIONS = ("unclipped", "e4_clipped")
 CARRY = ["window_id", "dataset", "subject_id", "record_id", "activity_id", "trial_no", "original_label", "kind",
          "window_start", "window_end", "window_role", "motion_event_class", "eval_role", "position_matched",
-         "contains_impact_time"]
+         "contains_impact_time", "clip_level_class", "overlap_group_id", "dedup_representative"]
 
 
 class InvariantError(RuntimeError):
@@ -99,25 +101,49 @@ def main():
         print(f"{v}: {len(feats)} windows, {time.time() - t0:.0f}s", flush=True)
     check((tables[("unclipped", "v1")].window_id.to_numpy() == tables[("e4_clipped", "v1")].window_id.to_numpy()).all(),
           "same rows in the same order for both versions", results, "ALL")
-    # edge-artefact check on cyclic ADL clips: first/last window vs interior, median acc_mag_mean
+    # edge-artefact check (REDEFINED after the D08 smoke stop, user decision 1): converted edge window vs the SAME
+    # window on the native 238 Hz signal (e4: clipped at 238 Hz, not quantised). Per version, median over cyclic-ADL
+    # clips of |acc_mag_mean(converted) / acc_mag_mean(native) - 1|, first and last window, must be < 1%.
+    w_all, _ = fio.wrist_records(REPO)
+    raw = dict(zip(w_all.record_id, w_all.Acc))
+    nat = cfg["native_hz"]
     edge_rows = []
     for v in VERSIONS:
         t = tables[(v, "v1")]
         c = t[t.activity_id.isin(cfg["cyclic_adl_ids"])]
         last = c.window_start.max()
-        interior = c[(c.window_start > 0) & (c.window_start < last)].acc_mag_mean.median()
+        rel = {}
+        for r in c.itertuples():
+            g = mh.counts_to_g(raw[r.record_id], cfg["counts_per_g"])
+            if v == "e4_clipped":
+                g = mh.e4_clip(g)
+            seg = g[int(round(r.window_start * nat)):int(round(r.window_end * nat))]
+            native_mean = float(np.sqrt((seg ** 2).sum(axis=1)).mean() * mh.G)
+            rel.setdefault(r.window_start, []).append(abs(r.acc_mag_mean / native_mean - 1))
+        interior = np.concatenate([np.array(x) for k, x in rel.items() if 0 < k < last])
         for pos, name in ((0.0, "first"), (last, "last")):
-            m = c[c.window_start == pos].acc_mag_mean.median()
-            rel = abs(m - interior) / interior
-            edge_rows.append({"version": v, "edge": name, "edge_median": m, "interior_median": interior,
-                              "rel_diff": rel, "n_clips": int((c.window_start == pos).sum())})
-            check(rel < cfg["prechecks"]["edge_artefact_max_rel_diff"],
-                  f"edge-artefact: {name}-window median acc_mag_mean within 1% of interior ({rel:.4%})", results, v)
+            x = np.array(rel[pos])
+            edge_rows.append({"version": v, "edge": name, "n_clips": len(x), "median_abs_rel_diff": float(np.median(x)),
+                              "p95_abs_rel_diff": float(np.percentile(x, 95)),
+                              "interior_median_abs_rel_diff": float(np.median(interior))})
+            check(np.median(x) < cfg["prechecks"]["edge_artefact_max_rel_diff"],
+                  f"edge-artefact (redefined): {name} window, converted vs native 238 Hz, median |rel diff| "
+                  f"{np.median(x):.4%} < 1%", results, v)
+    # clip-centre intensity pattern (dataset property, report only): median acc_mag_mean per window start / interior
+    prof_rows = []
+    for v in VERSIONS:
+        t = tables[(v, "v1")]
+        c = t[t.activity_id.isin(cfg["cyclic_adl_ids"])]
+        interior = c[(c.window_start > 0) & (c.window_start < c.window_start.max())].acc_mag_mean.median()
+        for st, g in c.groupby("window_start"):
+            prof_rows.append({"version": v, "window_start": st, "median_acc_mag_mean": g.acc_mag_mean.median(),
+                              "pct_vs_interior": 100 * (g.acc_mag_mean.median() / interior - 1)})
     out_root.joinpath("motion").mkdir(parents=True, exist_ok=True)
     for key, p in outs.items():
         tables[key].to_parquet(p, index=False)
     run_dir.mkdir(parents=True)
     pd.DataFrame(edge_rows).to_csv(run_dir / "edge_check.csv", index=False)
+    pd.DataFrame(prof_rows).to_csv(run_dir / "clip_centre_profile.csv", index=False)
     info = {"script": "scripts/d08_fallalld_features.py",
             "git_commit": subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True,
                                          text=True).stdout.strip(),

@@ -150,6 +150,7 @@ WINDOW_META_COLUMNS = (
     "hr_ref_k0", "hr_ref_k1", "n_hr_ref", "has_hr_ref", "hr_ref_bpm",
     "seconds_to_nearest_boundary", "window_name",
     "record_id", "activity_id", "trial_no", "window_role", "kind", "version",
+    "position_matched", "contains_impact_time", "clip_level_class", "overlap_group_id", "dedup_representative",
 )
 
 # Columns that must never be used as model inputs (CLAUDE.md §2.3: no label-derived features;

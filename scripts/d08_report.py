@@ -22,7 +22,7 @@ from d02_smoke_report import md  # noqa: E402
 
 VERSIONS = ("unclipped", "e4_clipped")
 ROLE_COLOR = {"fall_positive": "tab:red", "fall_clip_context": "tab:gray", "adl": "tab:blue",
-              "hard_negative_probe": "tab:orange"}
+              "hard_negative_probe": "tab:orange", "label_uncertain_fall": "tab:purple"}
 
 
 def plot_record(sig, win, record_id, sid, path):
@@ -93,8 +93,15 @@ def main():
                                      axis=1)
     rc = recs.groupby(["subject_id", "kind"]).size().unstack(fill_value=0).reset_index()
     S.append(md(rc) + "\n")
-    S.append(md(t[["subject_id", "fall_positive", "fall_clip_context", "adl", "hard_negative_probe",
-                   "train_candidate", "positive:negative"]]) + "\n")
+    S.append(md(t[["subject_id", "fall_positive", "fall_clip_context", "label_uncertain_fall", "adl",
+                   "hard_negative_probe", "train_candidate", "positive:negative"]]) + "\n")
+    S.append("### 2b. Deduplicated view (one clip per overlap group; user decision 4)\n")
+    d = recs.assign(rep=recs.dedup_representative.astype(bool))
+    dd = d.groupby("subject_id").agg(clips=("record_id", "size"), overlap_groups=("overlap_group_id", "nunique"),
+                                     clips_in_shared_groups=("overlap_group_id",
+                                                             lambda s: int(s.map(s.value_counts()).gt(1).sum())))
+    dw = win[win.dedup_representative].groupby(["subject_id", "window_role"]).size().unstack(fill_value=0)
+    S.append(md(dd.join(dw.add_prefix("dedup_")).reset_index()) + "\n")
 
     S.append("## 3. e4_clipped saturation (fraction of 32 Hz samples with any axis at the E4 rail)\n")
     rows = []
@@ -121,16 +128,22 @@ def main():
             for v in VERSIONS]
     S.append(md(pd.DataFrame(rows)) + "\n")
 
-    S.append("## 6. Edge-artefact check (cyclic ADL clips; first/last vs interior window, median acc_mag_mean)\n")
+    S.append("## 6. Edge-artefact check (REDEFINED: converted edge window vs the same window at native 238 Hz; "
+             "median |relative difference| over cyclic ADL clips; limit < 1%)\n")
     S.append(md(pd.read_csv(frun / "edge_check.csv").round(5)) + "\n")
 
-    S.append("## 7. Smoke fall clips whose detected peak (unclipped 32 Hz) lies outside [9, 11) — report only\n")
-    o = recs[recs.peak_outside_positive_window]
+    S.append("## 7. Smoke fall clips listed in metadata/fallalld_label_uncertain_v1.csv\n")
+    lu = pd.read_csv(REPO / "metadata/fallalld_label_uncertain_v1.csv")
+    o = lu[lu.record_id.isin(recs.record_id)]
     S.append(f"{len(o)} of {int((recs.kind == 'fall').sum())} smoke fall clips.\n\n"
-             + (md(o[["record_id", "original_label", "peak_t_unclipped_32hz"]]) if len(o) else "") + "\n")
+             + (md(o[["record_id", "original_label", "status", "peak_t_238hz", "peak_t_32hz"]]) if len(o) else "") + "\n")
+    S.append("## 7b. Clip-centre intensity pattern (dataset property; cyclic ADL clips; median window acc_mag_mean "
+             "vs interior)\n")
+    prof = pd.read_csv(frun / "clip_centre_profile.csv")
+    S.append(md(prof.pivot(index="window_start", columns="version", values="pct_vs_interior").round(2).reset_index()) + "\n")
 
     S.append("## 8. Example clips (figures)\n")
-    fall = recs[(recs.kind == "fall") & ~recs.peak_outside_positive_window].iloc[0]
+    fall = recs[(recs.kind == "fall") & ~recs.peak_outside_positive_window & ~recs.label_uncertain].iloc[0]
     examples = [fall.record_id]
     for act in (20, 13):     # walking slowly (cyclic), sitting down (transient)
         r = recs[(recs.kind == "adl") & (recs.activity_id == act)]

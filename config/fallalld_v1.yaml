@@ -60,7 +60,8 @@ cyclic_adl_ids: [2, 6, 11, 20, 22, 24, 25, 30, 33, 35, 36]
 # User decisions on the D08 smoke stop (2026-10-12):
 label_uncertain:
   file: metadata/fallalld_label_uncertain_v1.csv
-  rule: "fall clip whose native 238 Hz peak (argmax |a|) lies outside [9, 11) s"
+  rule: "fall clip whose detected peak (argmax |a|) lies outside [9, 11) s at BOTH 32 Hz (unclipped) and native 238 Hz (the 25 of the 39 user-reviewed clips)"
+  rule_correction: "first draft said native 238 Hz only; that also caught 8 clips outside the 39 the user reviewed (238 Hz peak just outside, 32 Hz peak inside); corrected before any output (PROJECT_LOG)"
   role: label_uncertain_fall      # all 19 windows; excluded from training and window-level metrics; clip-level fall
 overlap_groups:
   file: metadata/fallalld_overlap_groups_v1.csv

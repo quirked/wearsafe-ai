@@ -11,6 +11,7 @@ import sys
 import time
 from pathlib import Path
 
+import pandas as pd
 import yaml
 
 REPO = Path(__file__).resolve().parents[1]
@@ -26,16 +27,22 @@ def main():
         raise FileExistsError(f"{OUT} exists; refusing to overwrite")
     cfg = yaml.safe_load(open(REPO / "config/fallalld_v1.yaml"))
     w, _ = fio.wrist_records(REPO)
+    lu = pd.read_csv(REPO / cfg["label_uncertain"]["file"])
+    uncertain = set(lu.loc[lu.status == "label_uncertain_fall", "record_id"])
+    og = pd.read_csv(REPO / cfg["overlap_groups"]["file"])
     per = cfg["windows"]["per_record"]
     subjects = sorted(w.subject_id.unique())
     counts = {}
     for sid, g in w.groupby("subject_id"):
+        nu = int(g.record_id.isin(uncertain).sum())
         nf = int((g.kind == "fall").sum())
         probes = int(g.ActivityID.isin(cfg["probe_ids"]).sum())
         nadl = int((g.kind == "adl").sum()) - probes
-        counts[sid] = {"fall_clips": nf, "adl_clips": nadl, "probe_clips": probes,
-                       "positive_windows": nf, "fall_clip_context_windows": nf * (per - 1),
-                       "adl_windows": nadl * per, "probe_windows": probes * per}
+        ogs = og[og.subject_id == sid]
+        counts[sid] = {"fall_clips": nf, "label_uncertain_fall_clips": nu, "adl_clips": nadl, "probe_clips": probes,
+                       "positive_windows": nf - nu, "fall_clip_context_windows": (nf - nu) * (per - 1),
+                       "label_uncertain_windows": nu * per, "adl_windows": nadl * per, "probe_windows": probes * per,
+                       "overlap_groups": int(ogs.overlap_group_id.nunique())}
     with_f = [s for s in subjects if counts[s]["fall_clips"] > 0]
     without_f = [s for s in subjects if counts[s]["fall_clips"] == 0]
     folds = loso_folds(subjects)
@@ -52,6 +59,10 @@ def main():
                                  "listed per fold as inner_validation_subjects",
         "metrics_rule": "fall detection metrics on subjects with falls; false-positive metrics on all subjects; pooled "
                         "out-of-fold predictions for overall PR-AUC (config/evaluation_v1.yaml)",
+        "dedup_rule": "every evaluation also reports a deduplicated check: one clip per overlap_group_id (lowest record_id; "
+                      "metadata/fallalld_overlap_groups_v1.csv). Overlap groups are within-subject only, so LOSO is leakage-safe.",
+        "label_uncertain_rule": "label_uncertain_fall clips: excluded from training and window-level metrics; fall clips in "
+                                "clip-level metrics (metadata/fallalld_label_uncertain_v1.csv)",
         "per_subject_counts": counts, "folds": folds,
         "checks": {"subject_in_two_splits": False, "every_subject_tested_once": True, "problems": problems},
         "source_sha256": hashlib.sha256((REPO / fio.UNZIPPED / "FallAllD.pkl").read_bytes()).hexdigest(),

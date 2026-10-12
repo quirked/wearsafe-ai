@@ -71,6 +71,11 @@ def main():
            "padtype": cfg["resample"]["padtype"]}
     results = []
     w, info = fio.wrist_records(REPO)
+    lu = pd.read_csv(REPO / cfg["label_uncertain"]["file"])
+    uncertain = set(lu.loc[lu.status == "label_uncertain_fall", "record_id"])
+    og = pd.read_csv(REPO / cfg["overlap_groups"]["file"]).set_index("record_id")
+    check(len(uncertain) == 25, f"25 label_uncertain_fall clips in {cfg['label_uncertain']['file']}", results, "ALL")
+    check(set(og.index) == set(w.record_id), "every wrist record has an overlap_group_id", results, "ALL")
     check(len(w) == 2515 and (w.kind == "fall").sum() == 523 and (w.kind == "adl").sum() == 1992,
           f"wrist record counts equal the D00c audit (2515 / 523 falls / 1992 ADLs; got {len(w)})", results, "ALL")
     aud = audit_counts()
@@ -124,7 +129,10 @@ def main():
             mag = np.sqrt((un["acc_m_s2"] ** 2).sum(axis=1))
             t_pk = float(np.argmax(mag)) / fs
             rec = {"record_id": r.record_id, "subject_id": sid, "activity_id": int(r.ActivityID),
-                   "trial_no": int(r.TrialNo), "original_label": r.original_label, "kind": r.kind}
+                   "trial_no": int(r.TrialNo), "original_label": r.original_label, "kind": r.kind,
+                   "label_uncertain": r.record_id in uncertain,
+                   "overlap_group_id": og.at[r.record_id, "overlap_group_id"],
+                   "dedup_representative": bool(og.at[r.record_id, "dedup_representative"])}
             win_parts.append(record_windows(rec, cfg, fs, n_out))
             rec_rows.append({**rec, "raw_acc_sha256": h_in, "n_in": n_in, "n_out": n_out,
                              "peak_t_unclipped_32hz": t_pk,
@@ -144,10 +152,18 @@ def main():
           "every window has 64 samples within [0, 640)", results, "windows")
     check(win.window_id.is_unique, "window_id unique", results, "windows")
     check(win.groupby("window_id").record_id.nunique().max() == 1, "no window spans two records", results, "windows")
-    fallw = win[win.kind == "fall"]
-    check(set(fallw.loc[fallw.window_role == "fall_positive", "window_start"]) == {9.0}
+    fallw = win[(win.kind == "fall") & ~win.record_id.isin(uncertain)]
+    check(set(fallw.loc[fallw.window_role == "fall_positive", "window_start"]) <= {9.0}
           and (fallw.groupby("record_id").window_role.apply(lambda s: (s == "fall_positive").sum()) == 1).all(),
-          "exactly one positive window per fall clip, starting at 9 s", results, "labels")
+          "exactly one positive window per (non-label-uncertain) fall clip, starting at 9 s", results, "labels")
+    unc_w = win[win.record_id.isin(uncertain)]
+    check((unc_w.window_role == "label_uncertain_fall").all() and not unc_w.eval_role.eq("train_candidate").any()
+          and (unc_w.clip_level_class == "fall").all() and (win.window_role == "label_uncertain_fall").sum() == len(unc_w),
+          "label-uncertain clips: all windows label_uncertain_fall, never train_candidate, clip-level fall",
+          results, "labels")
+    check(win.overlap_group_id.notna().all() and
+          (win.groupby("record_id").overlap_group_id.nunique() == 1).all(),
+          "every window carries its record's overlap_group_id", results, "labels")
     check(not win.loc[win.activity_id.isin(cfg["probe_ids"]), "eval_role"].eq("train_candidate").any()
           and (win.loc[win.activity_id.isin(cfg["probe_ids"]), "window_role"] == "hard_negative_probe").all(),
           "probes 15/23: all windows hard_negative_probe, never train_candidate", results, "labels")
@@ -156,9 +172,12 @@ def main():
           "fall_clip_context never train_candidate and has no motion class", results, "labels")
     for sid, g in win.groupby("subject_id"):
         r = recs[recs.subject_id == sid]
-        nf, na = int((r.kind == "fall").sum()), int(((r.kind == "adl") & ~r.activity_id.isin(cfg["probe_ids"])).sum())
+        nu = int(r.record_id.isin(uncertain).sum())
+        nf = int((r.kind == "fall").sum()) - nu
+        na = int(((r.kind == "adl") & ~r.activity_id.isin(cfg["probe_ids"])).sum())
         npb = int(r.activity_id.isin(cfg["probe_ids"]).sum())
-        exp = {"fall_positive": nf, "fall_clip_context": nf * (per - 1), "adl": na * per, "hard_negative_probe": npb * per}
+        exp = {"fall_positive": nf, "fall_clip_context": nf * (per - 1), "adl": na * per,
+               "hard_negative_probe": npb * per, "label_uncertain_fall": nu * per}
         got_c = {k: int((g.window_role == k).sum()) for k in exp}
         check(got_c == exp, f"window role counts equal the formula {exp}", results, sid)
     tmp_sig.rename(out_sig)

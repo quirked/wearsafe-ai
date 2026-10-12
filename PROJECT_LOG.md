@@ -944,3 +944,23 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: re-run the smoke build on S01 + S04 with the redefined checks, commit, STOP.
+
+## 2026-10-12 06:12 — D08 — Correction: label-uncertain rule (caught by a cross-check, before any output)
+**What I did:** Corrected my operationalisation of the label-uncertain rule.
+- My first rule ("native 238 Hz peak outside [9, 11)") gave **33** clips. The metadata script's cross-check (it expects the 25 the user reviewed) stopped the run, and nothing was written.
+- The 8 extra clips have a 238 Hz peak just outside [9, 11) but a 32 Hz peak inside, so they were not among the 39 clips the user decided on.
+- **Corrected rule:** label_uncertain_fall = peak outside [9, 11) at BOTH 32 Hz and 238 Hz (= the 25).
+- The 8 extra clips keep normal labels and are listed in `metadata/fallalld_label_uncertain_v1.csv` with status `info_238hz_outside_32hz_inside`, for the user's information.
+
+**Files created/changed:** `config/fallalld_v1.yaml` (rule text + correction note), `scripts/d08_fallalld_metadata.py`, `PROJECT_LOG.md`.
+
+**Checks run and results:** the cross-check expects 25 / 14 clips.
+
+**Decisions made (and why):** none new.
+- The decision log entry above (D08 user decisions on the smoke stop, item 3, "my operationalisation") is superseded by this rule.
+
+**Problems / surprises:** the 8 extra clips.
+
+**Open questions for the user:** whether the 8 clips need any handling (currently normal labels).
+
+**Next step (waiting for user approval):** re-run the metadata script, then the smoke build.

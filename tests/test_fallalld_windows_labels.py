@@ -66,3 +66,15 @@ def test_saturation_features_v2():
     assert np.isnan(F.saturation_features_v2(first, 32, sat)["pre_peak_min_mag"])
     none = F.saturation_features_v2(acc, 32, np.zeros((64, 3), bool))
     assert none["sat_longest_run_s"] == 0 and none["sat_n_runs"] == 0 and none["sat_max_axes"] == 0
+
+
+def test_label_uncertain_fall_clip():
+    r = rec("fall", 102)
+    r.update(label_uncertain=True, overlap_group_id="G1", dedup_representative=False)
+    w = record_windows(r, CFG, 32, 640)
+    assert (w.window_role == "label_uncertain_fall").all() and len(w) == 19
+    assert (w.eval_role == "excluded_label_uncertain").all() and w.motion_event_class.isna().all()
+    assert (w.clip_level_class == "fall").all()                     # still a fall clip in clip-level metrics
+    assert (w.overlap_group_id == "G1").all() and not w.dedup_representative.any()
+    normal = record_windows(rec("fall", 102), CFG, 32, 640)
+    assert (normal.window_role == "fall_positive").sum() == 1 and normal.dedup_representative.all()
