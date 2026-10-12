@@ -1558,3 +1558,18 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 09:59 — M02 — Training stopped at the time box
+**What I did:** Stopped the unfinished M02 training with Ctrl-C in its own tmux window `sao:m02` (my process only; the demo app window was not touched), to stop cleanly at the time box and free CPU before the demo.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry only).
+
+**Checks run and results:** the demo app health check is ok.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:** the partially created folder for the configuration in progress is kept as is, has no oof file, and is not used.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
