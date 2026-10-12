@@ -478,3 +478,111 @@ Held-run lengths (consecutive repeated rows): n 97475, median 1, p95 1, max 4; r
 Peak time quantiles (s): p5 1.23, p25 1.60, p50 1.89, p75 2.24, p95 7.66
 
 Tag at the peak sample: {4: 48, 3: 48, 1: 46, 5: 46, 2: 45, 11: 18, 20: 3, 8: 1}
+
+# Part D — corrected table C2 (appended by scripts/inspect/d00c_c2_fix.py; replaces the empty C2 above)
+
+Bug in C2: a stray `.head(0)` in d00c_followup.py dropped all rows. The distribution line under C2 was computed separately and is correct.
+
+## D1. FallAllD wrist: TrialNo per activity [verified in files]
+
+| ActivityID | name | records | subjects | trial_min | trial_median | trial_max |
+|---|---|---|---|---|---|---|
+| 1 | Start clap hands | 50 | 13 | 1 | 2.0 | 4 |
+| 2 | Clap hands | 50 | 13 | 1 | 2.0 | 4 |
+| 3 | Stop clap hands | 50 | 13 | 1 | 2.0 | 4 |
+| 4 | Clap hands 1 | 50 | 13 | 1 | 2.0 | 4 |
+| 5 | Start wave hands | 50 | 13 | 1 | 2.0 | 4 |
+| 6 | wave hands | 50 | 13 | 1 | 2.0 | 4 |
+| 7 | Stop wave hands | 50 | 13 | 1 | 2.0 | 4 |
+| 8 | Raising hand up | 50 | 13 | 1 | 2.0 | 4 |
+| 9 | Moving hand down | 49 | 13 | 1 | 2.0 | 4 |
+| 10 | Move hand up -> down | 25 | 13 | 1 | 1.0 | 2 |
+| 11 | Hand shaking | 50 | 13 | 1 | 2.0 | 4 |
+| 12 | Beating a table | 49 | 13 | 1 | 2.0 | 4 |
+| 13 | Sitting down | 140 | 12 | 1 | 7.0 | 12 |
+| 14 | Standing up | 140 | 12 | 1 | 7.0 | 12 |
+| 15 | Fail to stand up | 35 | 12 | 1 | 2.0 | 3 |
+| 16 | Lying down | 70 | 12 | 1 | 4.0 | 6 |
+| 17 | Turning while lying | 70 | 12 | 1 | 4.0 | 6 |
+| 18 | Rising up | 70 | 12 | 1 | 4.0 | 6 |
+| 19 | Start walking | 66 | 12 | 1 | 4.0 | 6 |
+| 20 | Walking slowly | 69 | 12 | 1 | 4.0 | 6 |
+| 21 | Stop walking | 68 | 12 | 1 | 4.0 | 6 |
+| 22 | Walking quickly | 34 | 12 | 1 | 2.0 | 3 |
+| 23 | Stumbling | 35 | 12 | 1 | 2.0 | 3 |
+| 24 | Jogging slowly | 32 | 12 | 1 | 2.0 | 3 |
+| 25 | Jogging quickly | 30 | 11 | 1 | 2.0 | 3 |
+| 26 | Jumping slightly | 46 | 12 | 1 | 3.0 | 4 |
+| 27 | Jumping strongly | 46 | 12 | 1 | 3.0 | 4 |
+| 28 | Bending down | 45 | 12 | 1 | 3.0 | 4 |
+| 29 | Start going upstairs | 25 | 13 | 1 | 2.0 | 2 |
+| 30 | Going upstairs | 25 | 13 | 1 | 2.0 | 2 |
+| 31 | Stop going upstairs | 25 | 13 | 1 | 2.0 | 2 |
+| 32 | Start going downstairs | 25 | 13 | 1 | 2.0 | 2 |
+| 33 | Going downstairs | 25 | 13 | 1 | 2.0 | 2 |
+| 34 | Stop going downstairs | 25 | 13 | 1 | 2.0 | 2 |
+| 35 | Upstairs quickly | 25 | 13 | 1 | 2.0 | 2 |
+| 36 | Downstairs quickly | 23 | 12 | 1 | 2.0 | 2 |
+| 37 | Start ascending, lift | 25 | 13 | 1 | 2.0 | 2 |
+| 38 | Stop ascending, lift | 25 | 13 | 1 | 2.0 | 2 |
+| 39 | Start descending, lift | 25 | 13 | 1 | 2.0 | 2 |
+| 40 | Stop descending, lift | 25 | 13 | 1 | 2.0 | 2 |
+| 41 | Standing, moving bus | 34 | 3 | 1 | 6.5 | 14 |
+| 42 | Sitting, moving bus | 29 | 3 | 1 | 7.0 | 14 |
+| 43 | Start jogging | 31 | 12 | 1 | 2.0 | 3 |
+| 44 | Stop jogging | 31 | 12 | 1 | 2.0 | 3 |
+| 101 | Fall F, walking, trip | 18 | 9 | 1 | 1.5 | 3 |
+| 102 | Fall F, walking, trip, rec. | 18 | 9 | 1 | 1.5 | 3 |
+| 103 | Fall F, walking, slip | 16 | 9 | 1 | 1.5 | 2 |
+| 104 | Fall F, walking, slip, rec. | 14 | 7 | 1 | 1.5 | 2 |
+| 105 | Fall F, walking, slip, rot. | 21 | 8 | 1 | 2.0 | 5 |
+| 106 | Fall F, walking, slip, rot., rec. | 12 | 7 | 1 | 1.5 | 2 |
+| 107 | Fall B, walking, slip | 32 | 9 | 1 | 2.5 | 5 |
+| 108 | Fall B, walking, slip, rec. | 28 | 9 | 1 | 2.0 | 6 |
+| 109 | Fall B, walking, slip, rot. | 20 | 8 | 1 | 2.0 | 5 |
+| 110 | Fall B, walking, slip rot., rec. | 11 | 7 | 1 | 2.0 | 3 |
+| 111 | Fall F, walking, syncope | 8 | 8 | 1 | 1.0 | 1 |
+| 112 | Fall B, walking, syncope | 7 | 7 | 1 | 1.0 | 1 |
+| 113 | Fall L, walking, syncope | 16 | 8 | 1 | 2.0 | 3 |
+| 114 | Fall, syncope, table | 16 | 8 | 1 | 1.5 | 2 |
+| 115 | Fall F, try sit | 8 | 8 | 1 | 1.0 | 1 |
+| 116 | Fall F, try sit, rec. | 9 | 8 | 1 | 1.0 | 2 |
+| 117 | Fall B, try sit | 8 | 7 | 1 | 1.0 | 2 |
+| 118 | Fall B, try sit, rec. | 8 | 7 | 1 | 1.0 | 2 |
+| 119 | Fall L, try sit | 14 | 8 | 1 | 2.0 | 3 |
+| 120 | Fall L, try sit, rec. | 11 | 7 | 1 | 1.0 | 3 |
+| 121 | Fall F, jog, trip | 18 | 9 | 1 | 1.5 | 2 |
+| 122 | Fall F, jog, trip, rec. | 15 | 9 | 1 | 2.0 | 2 |
+| 123 | Fall F, jog, slip | 18 | 9 | 1 | 1.5 | 2 |
+| 124 | Fall F, jog, slip, rev. | 18 | 9 | 1 | 1.5 | 2 |
+| 125 | Fall F, jog, slip, rot. | 19 | 8 | 1 | 2.0 | 5 |
+| 126 | Fall F, jog, slip, rot., rec. | 13 | 8 | 1 | 2.0 | 2 |
+| 127 | Fall L, bed | 31 | 8 | 1 | 3.0 | 6 |
+| 128 | Fall L, bed, rec. | 25 | 8 | 1 | 2.0 | 6 |
+| 129 | Fall F, chair, syncope | 8 | 8 | 1 | 1.0 | 1 |
+| 130 | Fall B, chair, syncope | 7 | 7 | 1 | 1.0 | 1 |
+| 131 | Fall L, chair, syncope | 16 | 8 | 1 | 1.5 | 2 |
+| 132 | Fall F, syncope | 8 | 8 | 1 | 1.0 | 1 |
+| 133 | Fall B, syncope | 7 | 7 | 1 | 1.0 | 1 |
+| 134 | Fall L, syncope | 14 | 8 | 1 | 1.5 | 2 |
+| 135 | Fall, syncope, slide over a wall | 11 | 7 | 1 | 1.0 | 2 |
+
+## D2. FallAllD wrist: max TrialNo per subject [verified in files]
+
+| SubjectID | records | activities | max_trial |
+|---|---|---|---|
+| 1 | 236 | 76 | 12 |
+| 2 | 239 | 77 | 14 |
+| 3 | 242 | 78 | 14 |
+| 4 | 108 | 44 | 14 |
+| 5 | 216 | 75 | 12 |
+| 6 | 234 | 73 | 12 |
+| 9 | 218 | 76 | 12 |
+| 10 | 159 | 41 | 12 |
+| 11 | 155 | 41 | 12 |
+| 12 | 163 | 42 | 12 |
+| 13 | 139 | 46 | 6 |
+| 14 | 225 | 77 | 12 |
+| 15 | 181 | 65 | 12 |
+
+(subject, activity) groups whose TrialNo values are not exactly 1..n: 72 of 811

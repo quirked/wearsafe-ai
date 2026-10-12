@@ -9,3 +9,15 @@ false_alerts_per_user_hour:
     only, never on the subjects used to report false alerts.
   ppg_dalia: subject_held_out_predictions_only    # e.g. LOSO
   fusion_threshold_tuning: validation_subjects_only
+
+fallalld_motion:                  # user decision 11 after D00c (PROJECT_LOG 2026-10-12 04:57)
+  training: "falls vs ADLs within FallAllD wrist only; PPG-DaLiA used only for false-alert evaluation"
+  cv: leave_one_subject_out
+  fall_detection_metrics: "computed on subjects who performed falls"
+  false_positive_metrics: "computed on all subjects"
+  overall_pr_auc: "pooled out-of-fold predictions"
+  hard_negative_probes: [15, 23]   # Fail to stand up, Stumbling: evaluation only (decision 4)
+
+required_checks:                  # CLAUDE.md §2.3 rules added after D00c
+  position_only_baseline: "every motion model is compared with a position-only baseline, which must perform at chance level"
+  device_discrimination: "before training/evaluating on mixed datasets/devices, report whether a simple classifier can tell the datasets apart from the same features"

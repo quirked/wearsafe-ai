@@ -22,7 +22,7 @@ def test_vocabularies_match_schema():
         assert set(MAPS["classes"][key]) == allowed
 
 
-@pytest.mark.parametrize("dataset", ["ppg_dalia", "wesad", "bits2"])
+@pytest.mark.parametrize("dataset", ["ppg_dalia", "wesad", "bits2", "fallalld", "upfall"])
 def test_mapped_values_are_valid_or_null_or_todo(dataset):
     for key, allowed in ALLOWED.items():
         mapping = MAPS[dataset].get(key)
@@ -111,3 +111,26 @@ def test_evaluation_rule_recorded():
     ev = yaml.safe_load((REPO / "config" / "evaluation_v1.yaml").read_text())
     assert "NOT used to train or tune ANY" in ev["false_alerts_per_user_hour"]["rule"]
     assert "EVALUATION RULE" in (REPO / "CLAUDE.md").read_text()
+
+
+def test_decisions_after_d00c_recorded():
+    fad, upf = MAPS["fallalld"], MAPS["upfall"]
+    assert fad["devices_used"] == ["Wrist"] and upf["devices_used"] == ["Wrist"]          # decision 5
+    assert fad["training_v1"]["excluded_ids"] == [15, 23]                                 # decision 4
+    assert {k: v["role"] for k, v in fad["eval_role"].items()} == {15: "hard_negative_probe", 23: "hard_negative_probe"}
+    assert MAPS["units"]["fallalld"]["wrist_acc"]["counts_per_g"] == 4096                  # decision 2
+    assert MAPS["units"]["fallalld"]["wrist_acc"]["factor"] == pytest.approx(schemas.STANDARD_GRAVITY / 4096)
+    assert "[inferred]" in MAPS["units"]["fallalld"]["wrist_acc"]["status"]
+    assert set(upf["original_label"]) == set(range(1, 12))
+    assert set(upf["motion_event_class"]) == set(upf["original_label"].values())
+    assert fad["gyro_used_v1"] is False and upf["gyro_used_v1"] is False                    # decision 10
+    h = yaml.safe_load((REPO / "config" / "motion_harmonisation_v1.yaml").read_text())
+    assert h["rate_hz"] == 32 and set(h["versions"]) == {"unclipped", "e4_clipped"}        # decision 8
+    assert h["versions"]["e4_clipped"]["clip_g"] == [-2.0, 127 / 64]
+    assert h["versions"]["e4_clipped"]["clip_m_s2"] == pytest.approx(
+        [g * schemas.STANDARD_GRAVITY for g in h["versions"]["e4_clipped"]["clip_g"]])
+    ev = yaml.safe_load((REPO / "config" / "evaluation_v1.yaml").read_text())
+    assert ev["fallalld_motion"]["cv"] == "leave_one_subject_out"                          # decision 11
+    rules = (REPO / "CLAUDE.md").read_text()
+    assert "CLIP-POSITION RULE" in rules and "DEVICE-DISCRIMINATION RULE" in rules           # decisions 6, 9
+    assert "## 44. Design changes after audits (2026-10-12)" in (REPO / "docs/WearSafe_AI_Context.md").read_text()

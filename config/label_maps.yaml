@@ -144,11 +144,71 @@ bits2:
     rule: "exclude a timestamp-break file only if every stream (acc, acg, gyro, mgm, hrt) has the same number (>=2) of segments"
     status: "defined, not yet applied"
 
+# ---- user decisions after D00c (PROJECT_LOG 2026-10-12 04:57); data not processed yet ----
+fallalld:
+  source: "data/interim/_unzipped/fallalld/FallAllD.pkl (original only; SMOTE pkl BANNED, CLAUDE.md §2.3)"
+  label_source: "activity_info.pkl (= paper Fig. 8 order); paper Fig. 4 numbering IGNORED (decision 3)"
+  devices_used: [Wrist]                # decision 5: neck/waist not used
+  original_label: "ActivityID + activity_info.pkl name, kept verbatim"
+  event_type:                          # verified in D00c: IDs 1-44 ADL, 101-135 falls
+    adl_ids: [1, 44]
+    fall_ids: [101, 135]
+  motion_event_class:                  # falls are abrupt-event PROXIES, never attacks
+    adl: normal_adl
+    fall: abrupt_event_proxy
+  context_class: null
+  arousal_class: null
+  training_v1:
+    motion: "falls vs ADLs within FallAllD wrist only (decision 11)"
+    excluded_ids: [15, 23]             # decision 4: 15 'Fail to stand up', 23 'Stumbling'
+  eval_role:
+    15: {role: hard_negative_probe, note: "Fail to stand up; excluded from motion training"}
+    23: {role: hard_negative_probe, note: "Stumbling; excluded from motion training"}
+  gyro_used_v1: false                  # decision 10
+
+upfall:
+  source: "data/interim/_unzipped/upfall/up-fail-complete-dataset.csv (wearable columns only)"
+  role: "separate low-rate stress test (~12 Hz effective ACC); NOT realistic validation (decision 1)"
+  devices_used: [Wrist]                # decision 5: WristAccelerometer only (left wrist)
+  labels: "trial-level Activity column only; per-sample Tag NOT used in v1; Tag 20 is part of its trial (decision 7)"
+  original_label:
+    1: falling_forward_hands
+    2: falling_forward_knees
+    3: falling_backwards
+    4: falling_sideward
+    5: falling_sitting_empty_chair
+    6: walking
+    7: standing
+    8: sitting
+    9: picking_up_object
+    10: jumping
+    11: laying
+  motion_event_class:
+    falling_forward_hands: abrupt_event_proxy
+    falling_forward_knees: abrupt_event_proxy
+    falling_backwards: abrupt_event_proxy
+    falling_sideward: abrupt_event_proxy
+    falling_sitting_empty_chair: abrupt_event_proxy
+    walking: normal_adl
+    standing: normal_adl
+    sitting: normal_adl
+    picking_up_object: normal_adl
+    jumping: normal_adl
+    laying: normal_adl
+  context_class: null
+  arousal_class: null
+  gyro_used_v1: false                  # decision 10
+
 units:                       # original -> canonical (context doc §20; D00a §4)
   ppg_dalia:
     wrist_acc: {original: g, canonical: m/s^2, factor: 9.80665}
   wesad:
     wrist_acc: {original: "1/64 g", canonical: m/s^2, factor: 0.15322890625}   # 9.80665 / 64
+  fallalld:
+    wrist_acc: {original: "int16 counts", canonical: m/s^2, counts_per_g: 4096, factor: 0.00239420166015625,
+                status: "[inferred] from ±8 g full scale on int16; D00c gravity check 0.992 g; MUST be verified in the next FallAllD milestone: median |acc| in low-motion periods across many ADL records within 1 ± 0.05 g, else STOP (decision 2)"}
+  upfall:
+    wrist_acc: {original: g, canonical: m/s^2, factor: 9.80665}
   bits2:
     acc: {original: "m/s^2 (inferred, gravity removed)", canonical: m/s^2, factor: 1.0}
     acg: {original: "m/s^2 (inferred, incl. gravity)", canonical: m/s^2, factor: 1.0}
@@ -162,7 +222,7 @@ open_items:                  # decision 2026-10-12 #6
     decision: "none yet"
   - milestone: D00c
     item: "audit FallAllD (data/raw/fallalld/) and UP-Fall (data/raw/upfall/); SMOTE pkl banned (CLAUDE.md §2.3)"
-    decision: "none yet"
+    decision: "DONE 2026-10-12; decisions after D00c recorded (PROJECT_LOG 04:57)"
   - milestone: "motion branch (after D00c)"
     item: "PROPOSED design change, pending audits: BITS-2 supporting dataset; FallAllD main motion-training candidate; UP-Fall external validation; device harmonisation experiment (common rate + clip to ±2 g, identical for all datasets, always reported with the unharmonised version)"
-    decision: "proposed, pending audits; not applied"
+    decision: "ACCEPTED after D00c (2026-10-12): FallAllD wrist main motion source; UP-Fall separate low-rate stress test; BITS-2 supporting; harmonisation in config/motion_harmonisation_v1.yaml"

@@ -1,0 +1,27 @@
+# Harmonised motion format, version 1 (user decisions 8 and 10 after D00c, PROJECT_LOG 2026-10-12 04:57).
+# Proposal fixed as a rule; NOT applied to any data yet.
+version: 1
+signal: "3-axis wrist ACC in m/s^2 (+ magnitude); gyroscope NOT used in v1 motion models (the E4 has none)"
+gyro_used_v1: false
+rate_hz: 32                        # E4 native rate
+versions:
+  unclipped: "resampled to 32 Hz (anti-aliased where downsampling), full range kept"
+  e4_clipped:
+    description: "as unclipped, then each axis clipped to the E4 rails"
+    clip_g: [-2.0, 1.984375]       # -128/64 and +127/64 g (E4 int8 rails, D00a); my interpretation of "±2 g"
+    clip_m_s2: [-19.6133, 19.46007109375]
+rules:
+  - "Any evaluation that involves PPG-DaLiA or WESAD uses e4_clipped."
+  - "The same harmonisation is applied identically to every dataset; results are always reported alongside the unharmonised version."
+  - "Before training/evaluating on mixed datasets/devices: run and report a device-discrimination check (CLAUDE.md §2.3)."
+upfall_low_rate:
+  rate_hz: 12                      # ~11.9 new ACC values/s verified in D00c; UP-Fall is never upsampled and presented as 32 Hz
+  note: "separate low-rate stress-test version; any comparison partner is resampled to the same rate"
+datasets:
+  fallalld: {native_hz: 238, source_unit: "int16 counts (4096 counts/g, inferred)"}
+  ppg_dalia: {native_hz: 32, source_unit: g, note: "already clipped at ±2 g by the device"}
+  wesad: {native_hz: 32, source_unit: "1/64 g counts", note: "already clipped at ±2 g by the device"}
+  upfall: {native_hz: "~18 rows/s, ~12 new ACC values/s", source_unit: g}
+caveat: >-
+  False-alert rates measured on PPG-DaLiA may be optimistic for wider-range watches, because PPG-DaLiA's own
+  data is clipped at ±2 g (user note, decision 8).

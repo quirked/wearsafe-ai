@@ -478,3 +478,39 @@ There is no genuine attack-labelled wearable dataset in the primary training set
 ## 43. Short handoff summary
 
 WearSafe AI is currently best understood as a context-aware, multimodal wearable safety-anomaly system. The product target is physical danger, but the research prototype does not claim real attack classification. The strongest current data design uses PPG-DaLiA for normal context, WESAD for arousal, and BITS-2 for synchronized abrupt-event motion + HR, with UP-Fall as external validation and FallAllD optional later. The system should be built dataset-first with strict smoke tests and subject-independent splits, then classical component models, then late fusion, then false-alert evaluation, and finally a replay-based live prototype.
+
+## 44. Design changes after audits (2026-10-12)
+
+Appended after the D00b (BITS-2) and D00c (FallAllD, UP-Fall) audits; user decisions recorded in `PROJECT_LOG.md`. Sections 8–10 and 40 are left as written; where they differ, this section is current.
+
+**Dataset roles (accepted):**
+- **FallAllD (wrist device only)** = main motion-training source (falls vs ADLs within FallAllD).
+  Reasons:
+  - the data matches its paper exactly: 238 Hz, 20 s clips, counts per device;
+  - ±8 g range with no saturation;
+  - 35 fall types without a mattress, plus wrist-specific confusers (clapping, beating a table);
+  - no duplicate ACC records.
+  Limits:
+  - only 13 wrist subjects, 9 of them with falls;
+  - ACC conversion 4096 counts/g is inferred and must be verified;
+  - falls are centred at 10.0 s of each clip, a shortcut that windowing must hide;
+  - lab-simulated falls are proxies, never attacks.
+- **UP-Fall (wrist only)** = separate low-rate stress test, not realistic validation.
+  Reason: the released data was resampled to camera timestamps, so wrist ACC gives about 12 new values per second; falls were onto a mattress; only 5 fall types; trial-level labels only.
+- **BITS-2** = supporting dataset. It is not a main abrupt-motion source, because its IMU sampling rate is inconsistent. It gets time-independent motion features and coarse HR comparisons only.
+- **PPG-DaLiA** = normal-life context data and false-alert evaluation (subject-held-out only). It is not used as motion-training negatives.
+- **WESAD** = arousal, unchanged.
+
+**Motion branch rules:**
+- **Harmonised format:** ACC in m/s² at 32 Hz, in two versions: `unclipped` and `e4_clipped` (±2 g). `e4_clipped` is used for any evaluation involving PPG-DaLiA or WESAD. UP-Fall gets a separate ~12 Hz version.
+- **Optimism caveat:** false-alert rates on PPG-DaLiA may be optimistic for wider-range watches, because PPG-DaLiA is itself clipped at ±2 g.
+- **No gyroscope in v1 motion models**, because the E4 has none.
+- **Required checks:**
+  - a position-only baseline, which must be at chance level;
+  - a device-discrimination check before any model uses mixed datasets or devices.
+- **FallAllD evaluation:**
+  - leave-one-subject-out;
+  - fall metrics on subjects who performed falls;
+  - false-positive metrics on all subjects;
+  - pooled out-of-fold predictions for PR-AUC.
+- **Hard-negative probes:** "Stumbling" and "Fail to stand up" are excluded from training and kept as evaluation probes.

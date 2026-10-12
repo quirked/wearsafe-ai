@@ -1,12 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D00c — FallAllD + UP-Fall audit (look-only) — DONE, waiting for user review (report §7, decisions 1–9). D02 is DONE (15 subjects). D03 is not started.
+- **Current milestone:** D00c DONE and user decisions after D00c recorded (2026-10-12). Design change ACCEPTED: FallAllD wrist = main motion source, UP-Fall = low-rate stress test, BITS-2 = supporting. No milestone in progress; D03 not started.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
 - **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
 - **Split version:** none.
 - **Last validated result:** D02 full run, 2026-10-12. Train candidates (motion/context/physiology): 65079 / 25920 / 4155. Deterministic re-run identical. Tests 42 passed / 1 skipped.
-- **Open items:** D00c decisions (design change: FallAllD main motion source / UP-Fall low-rate stress test; unit factor 4,096 counts/g; label source; harmonised rate); optional D03 report-only distance-to-boundary table.
+- **Open items:** next FallAllD milestone must first verify 4096 counts/g (median low-motion |acc| within 1 ± 0.05 g, else STOP); harmonised format per `config/motion_harmonisation_v1.yaml`; position-only baseline and device-discrimination checks are required (CLAUDE.md §2.3); optional D03 report-only distance-to-boundary table.
 ---
 
 ## 2026-10-11 23:55 — D00a — Data inventory (look-only)
@@ -559,3 +559,74 @@ User decisions on the D00b questions (user's wording kept):
 9. the device-discrimination check.
 
 **Next step (waiting for user approval):** none started. D03 is not started.
+
+## 2026-10-12 04:57 — D00c — User decisions after D00c (recorded; no data processed)
+**What I did:**
+- Recorded the user's decisions on D00c report §7.
+- Added two rules to CLAUDE.md §2.3 (inserted, nothing removed).
+- Appended §44 to `docs/WearSafe_AI_Context.md`.
+- Added config entries.
+- Wrote a corrected table C2 for the D00c tables file as a new appended section. The old empty table is kept.
+
+**Files created/changed:** `PROJECT_LOG.md`, `CLAUDE.md`, `docs/WearSafe_AI_Context.md` (§44 appended), `config/label_maps.yaml` (new `fallalld` and `upfall` blocks), `config/motion_harmonisation_v1.yaml` (new), `config/evaluation_v1.yaml` (FallAllD evaluation added), `scripts/inspect/d00c_c2_fix.py` (new), `reports/D00c_fallalld_upfall_audit_tables.md` (Part D appended), `tests/test_schemas_and_label_maps.py`.
+
+**Checks run and results:** see the commit; pytest is run after the edits.
+
+**Decisions made (and why)** (user, after D00c):
+1. **Design change ACCEPTED:**
+   - FallAllD wrist is the main motion-training source.
+   - UP-Fall is a separate low-rate stress test, not realistic validation.
+   - BITS-2 is a supporting dataset (as decided after D00b).
+   - Summarised in context doc §44; §8–§10 and §40 are not edited.
+2. **FallAllD ACC conversion: 4096 counts/g, tagged [inferred].**
+   - Verify it in the next FallAllD milestone: the median ACC magnitude in low-motion periods across many ADL records must be within 1 ± 0.05 g. Otherwise STOP and report.
+3. **Label source:** `activity_info.pkl` is the FallAllD label source. Fig. 4 numbering is ignored; the differences from Fig. 8 are wording only.
+4. **Near-fall ADLs:** "Stumbling" (ID 23) and "Fail to stand up" (ID 15) are excluded from motion training and kept as hard-negative evaluation probes.
+5. **Devices:** wrist device only for FallAllD and UP-Fall. Neck/waist are not used.
+6. **RULE (CLAUDE.md §2.3):** FallAllD clip position must not be revealed; every motion model is checked against a position-only baseline that must perform at chance level.
+7. **UP-Fall labels:** trial-level labels only. Tag 20 is treated as part of its trial, and per-sample tags are not used in v1.
+8. **Harmonised motion format:**
+   - ACC in m/s² at 32 Hz, in two versions, `unclipped` and `e4_clipped` (±2 g). Any evaluation involving PPG-DaLiA or WESAD uses `e4_clipped`.
+   - UP-Fall gets a separate ~12 Hz version.
+   - **Note (user):** false-alert rates measured on PPG-DaLiA may be optimistic for wider-range watches, because PPG-DaLiA's own data is clipped at ±2 g.
+9. **RULE (CLAUDE.md §2.3):** run and report a device-discrimination check before training or evaluating any model on data that mixes two datasets or devices.
+10. **Gyroscope:** not used in v1 motion models (the E4 has none).
+11. **FallAllD evaluation:**
+    - leave-one-subject-out;
+    - fall-detection metrics on the subjects who performed falls;
+    - false-positive metrics on all subjects;
+    - pooled out-of-fold predictions for overall PR-AUC.
+    - Motion training is falls vs ADLs within FallAllD only; PPG-DaLiA is used only for false-alert evaluation.
+
+**My interpretation, for the user to overrule:**
+- In decision 8, "±2 g" for `e4_clipped` means the exact E4 rails [−2.0 g, +127/64 g = +1.984375 g] per axis, as observed in PPG-DaLiA (D00a).
+- In decision 4, "excluded from motion training" means neither positive nor negative training examples.
+
+**Problems / surprises:** the C2 bug was a stray `.head(0)` in `scripts/inspect/d00c_followup.py`. That script is left unchanged, so it still describes how Part C was produced. The corrected table comes from the new `scripts/inspect/d00c_c2_fix.py` (Part D).
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** none started.
+
+## 2026-10-12 05:05 — D00c — Checks after recording the D00c decisions
+**What I did:**
+- Ran the C2 fix (`scripts/inspect/d00c_c2_fix.py`, log `logs/2026-10-12_D00c_c2_fix.log`). It read the extracted FallAllD pickles only and appended Part D to the tables file.
+- Added tests for the recorded decisions.
+
+**Files created/changed:** as listed in the 04:57 entry.
+
+**Checks run and results:**
+- YAML parses.
+- pytest: 45 passed, 1 skipped (the full SHA-256 test is opt-in).
+- The new test caught an arithmetic slip in my first draft of `config/motion_harmonisation_v1.yaml` (`clip_m_s2` upper bound written as 19.45989). It is corrected to 127/64 × 9.80665 = 19.46007109375 m/s² before commit.
+- Part D (corrected C2):
+  - wrist trial numbers per activity, and max TrialNo per subject (6–14);
+  - 72 of 811 wrist (subject, activity) groups have trial numbers that are not exactly 1..n, which suggests gaps in the trial numbering [inferred]. This is a note only; no action.
+
+**Decisions made (and why):** none new.
+
+**Problems / surprises:** the trial-numbering gaps above.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** none started.
