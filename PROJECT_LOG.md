@@ -1,12 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D08 — FallAllD wrist motion dataset — SMOKE DONE (S01 + S04, 36/36 checks, gravity check PASS 0.990 g), waiting for approval of the full build. D03 DONE. D05 stays BITS-2 (not started).
+- **Current milestone:** D08 — FallAllD wrist motion dataset — DONE (13 subjects, 69/69 + 8/8 split checks), waiting for user review. No next milestone started. D05 stays BITS-2 (not started).
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
-- **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2). PPG-DaLiA features v1: `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet` (config `features_v1.yaml`).
+- **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2). PPG-DaLiA features v1: `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet` (config `features_v1.yaml`). FallAllD v1: `data/interim/fallalld/*_v1/`, features `data/processed/motion/fallalld_{unclipped,e4_clipped}_features-{v1,v2}_v1.parquet`.
 - **Split version:** `splits/fallalld_v1.json` (FallAllD wrist LOSO, 13 folds).
-- **Last validated result:** D08 smoke 2026-10-12: 344 records / 6,536 windows per version; edge check (vs native 238 Hz) ≤ 0.19%; deterministic. Tests 70 passed / 2 skipped. D03 full: wrist HR vs ECG MAE 10.64 ± 4.83 bpm.
-- **Open items:** findings for later (v2 SQI threshold chosen on training subjects only; 10 s vs 30 s label-edge margin experiment); next FallAllD milestone must first verify 4096 counts/g; position-only baseline and device-discrimination checks are required (CLAUDE.md §2.3).
+- **Last validated result:** D08 full 2026-10-12: 2,515 records / 47,785 windows per version (498 positive, 36,518 ADL); deterministic; split checks 8/8. Tests 71 passed / 1 skipped.
+- **Open items:** shortcut baselines (position-only (a)/(b comparative)/(c), peak-only, saturation-only) and dedup + clip-level metrics are required at the first motion-model milestone; findings for later 1–4 (v2 SQI threshold, 30 s margin experiment, motion-aware physiology gate, longer HR baseline).
 ---
 
 ## 2026-10-11 23:55 — D00a — Data inventory (look-only)
@@ -1018,3 +1018,46 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run the full build, then stop.
+
+## 2026-10-12 06:25 — D08 — Full build done: FallAllD wrist, 13 subjects (v1)
+**What I did:**
+- Ran the full D08 build in tmux `sao`, env `wearsafe`, on CPU.
+- A scratch trial and the official run went in parallel with identical code; the official run then ran `scripts/d08_check_splits.py`.
+- Generated the tables with `scripts/d08_report.py --tag v1`.
+- Logs: `logs/2026-10-12_D08_full.log`, `logs/2026-10-12_D08_full_trial.log`.
+
+**Files created/changed:**
+- **Data:** `data/interim/fallalld/{normalized_signals,windows}_v1/`, `data/processed/motion/fallalld_*_features-{v1,v2}_v1.parquet`, `data/processed/fallalld_features_v1_run/`.
+- **Metadata:** `metadata/fallalld_records_v1.csv`.
+- **Reports:** `reports/D08_fallalld_full.md`, `reports/D08_fallalld_v1_tables.md`, `reports/figures/D08_v1/`.
+- **Code:** `scripts/d08_report.py`, a heading text fix after the run (see Problems).
+
+**Checks run and results:**
+- **Build and features:** 69/69 checks passed.
+- **Splits:** 8/8 final checks of `splits/fallalld_v1.json` passed:
+  - no subject in two splits, each tested once;
+  - subjects, per-subject window counts and overlap-group counts equal the build and metadata;
+  - inner validation = training subjects with falls;
+  - no overlap group spans subjects;
+  - the source SHA-256 matches.
+- **Determinism:** 32/32 files identical to the trial.
+- **Windows:** 2,515 records → 47,785 windows per version.
+  - fall_positive 498, fall_clip_context 8,964, label_uncertain_fall 475, adl 36,518, hard_negative_probe 1,330;
+  - positive:negative ≈ 1:73 overall; 1:35 (S15) to 1:99 (S13) per subject with falls.
+- **Overlap groups:** 1,343 (59–151 per subject).
+- **e4_clipped:**
+  - 74.1% of fall_positive windows and 9.4% of ADL windows contain saturation;
+  - 78.4% of fall and 29.4% of ADL records touch the rail;
+  - the median fall-window peak is 41.9 (unclipped) vs 25.1 m/s².
+- **Edge check vs native 238 Hz:** ≤ 0.15% median.
+- **features_v2 NaN** (by rule): post_peak_stillness 12.6–14.5%, pre_peak_min_mag 5.2–9.0%.
+- **pytest:** 71 passed, 1 skipped.
+
+**Decisions made (and why):** none new.
+
+**Problems / surprises:**
+- In the generated tables file, the §7 heading still says "Smoke fall clips"; the content is the full run. The script text is now fixed; the generated file is not edited.
+
+**Open questions for the user:** next milestone (e.g. first motion models with the planned shortcut baselines).
+
+**Next step (waiting for user approval):** none started.

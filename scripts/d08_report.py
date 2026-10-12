@@ -140,7 +140,7 @@ def main():
              "median |relative difference| over cyclic ADL clips; limit < 1%)\n")
     S.append(md(pd.read_csv(frun / "edge_check.csv").round(5)) + "\n")
 
-    S.append("## 7. Smoke fall clips listed in metadata/fallalld_label_uncertain_v1.csv\n")
+    S.append("## 7. Fall clips (this run) listed in metadata/fallalld_label_uncertain_v1.csv\n")
     lu = pd.read_csv(REPO / "metadata/fallalld_label_uncertain_v1.csv")
     o = lu[lu.record_id.isin(recs.record_id)]
     S.append(f"{len(o)} of {int((recs.kind == 'fall').sum())} smoke fall clips.\n\n"
