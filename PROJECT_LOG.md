@@ -1,12 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D02 — PPG-DaLiA normalisation + windowing — DONE (15 subjects, 1310/1310 checks), waiting for user review. D03 is not started. D01 is covered by D00a. D00c (FallAllD + UP-Fall audit) is pending.
+- **Current milestone:** D00c — FallAllD + UP-Fall audit (look-only) — DONE, waiting for user review (report §7, decisions 1–9). D02 is DONE (15 subjects). D03 is not started.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
 - **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
 - **Split version:** none.
 - **Last validated result:** D02 full run, 2026-10-12. Train candidates (motion/context/physiology): 65079 / 25920 / 4155. Deterministic re-run identical. Tests 42 passed / 1 skipped.
-- **Open items:** proposed design change (BITS-2 supporting; FallAllD/UP-Fall pending D00c; device harmonisation experiment); optional D03 report-only distance-to-boundary table (user to decide).
+- **Open items:** D00c decisions (design change: FallAllD main motion source / UP-Fall low-rate stress test; unit factor 4,096 counts/g; label source; harmonised rate); optional D03 report-only distance-to-boundary table.
 ---
 
 ## 2026-10-11 23:55 — D00a — Data inventory (look-only)
@@ -499,3 +499,63 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** whether to add the report-only distance-to-boundary table in D03.
 
 **Next step (waiting for user approval):** D03. Not started.
+
+## 2026-10-12 04:52 — D00c — FallAllD and UP-Fall inventory and audit (look-only)
+**What I did:**
+- Listed both zips without extracting.
+- Extracted only the allowed members into `data/interim/_unzipped/{fallalld,upfall}/` (read-only copies).
+  - Every extracted file's SHA-256 equals the zip stream, and CRC32 matches.
+  - The banned `FallAllD_40SamplesPerSec_ActivityIdsFiltered.pkl` (241,792,100 B) was listed only: not extracted, not loaded.
+- Read both papers, rendering the FallAllD Fig. 4/Fig. 8 activity lists as images. There is no readme in either zip.
+- Scanned the pickle opcodes, then loaded both FallAllD pickles with a restricted unpickler (pandas/numpy only).
+- Audited the FallAllD wrist data and the UP-Fall wrist data.
+- Ran in tmux `sao`, env `wearsafe`, CPU only. Logs: `logs/2026-10-12_D00c_*.log`.
+- No preprocessing, windowing, features or models.
+
+**Files created/changed:**
+- **Scripts:** `scripts/inspect/d00c_extract.py`, `d00c_audit.py`, `d00c_followup.py`, `explore_fallalld.py`, `inspect_fallalld_structure.py`, `pickle_globals.py`; `scripts/inspect/common.py` (added `RestrictedUnpickler`).
+- **Metadata:** `metadata/fallalld_file_manifest.csv`, `metadata/upfall_file_manifest.csv`.
+- **Reports:** `reports/D00c_fallalld_upfall_audit.md`, `reports/D00c_fallalld_upfall_audit_tables.md`.
+- **Extracted copies:** `data/interim/_unzipped/` (not in git). `data/raw/` was not touched.
+
+**Checks run and results:**
+- **FallAllD structure:** 6,605 records × 4 sensors = 26,420 (= the paper's "files").
+  - Every record is 20 s: Acc/Gyr 4,760, Mag 1,600, Bar 200 samples, i.e. 238/80/10 Hz.
+  - Falls/ADLs per device equal paper Fig. 8 exactly; wrist has 523 falls + 1,992 ADLs.
+- **FallAllD wrist subjects:** 13 subjects, only **9 with falls** (the paper says 10). No S7/S8; S4, S10, S11 and S12 are ADL-only. Waist has 13/11 subjects (the paper says 14/12).
+- **FallAllD activity IDs:** the data follows `activity_info.pkl` (= the Fig. 8 order); IDs 1–12 are wrist-only hand activities. **Paper Fig. 4's explicit numbering does not match the data.** 65/79 names match Fig. 8 exactly; the other 14 differ in wording only.
+- **FallAllD units:** int16 counts. The paper gives no factor; 4,096 counts/g is inferred (±8 g on int16), and measured still-wrist gravity is 4,064 counts (0.992 g).
+  - 0 samples at the rails.
+  - 100% of wrist falls and 50.5% of wrist ADLs peak above 2 g (median fall peak 7.74 g).
+- **FallAllD duplicates:** ACC/Gyr/Bar have no duplicates. One Mag pair is identical (S12 waist, falls 113/120 trial 1).
+- **FallAllD impact timing:** wrist fall peaks sit at the clip centre (median 10.00 s; 96.6% in 8–12 s).
+- **UP-Fall contents:** the complete CSV holds raw wearable data (not only features): 294,678 rows (the paper says 296,364), 559/561 trials. The missing S8 A11 T2–T3 match paper Table 7. The 3 feature CSVs cover one trial only.
+- **UP-Fall wrist rate:** resampled to camera timestamps [stated in paper]; rows at 15–21 Hz per trial, irregular. ~33% of ACC rows repeat the previous row on every IMU (gyro repeats <1%), so **~11.9 new ACC values per second** (median per trial).
+- **UP-Fall wrist range:** max 9.26 g; the range is not stated in the paper.
+  - 95.7% of fall trials and 31.9% of ADL trials peak above 2 g.
+  - Median fall peak 3.66 g (a mattress was used).
+- **UP-Fall Tag 20:** occurs only in activity 2, for 4 subjects; undocumented.
+- **pytest:** 42 passed, 1 skipped (the raw-data-unchanged fast test passes).
+
+**Decisions made (and why):** none on the design. The recommendation is in the report (§5); the user decides.
+
+**Problems / surprises:**
+- Paper Fig. 4 numbering conflicts with the data and with `activity_info.pkl`.
+- The FallAllD unit factor is not published.
+- The fall-impact clip-centre position is a possible shortcut.
+- UP-Fall's effective ACC rate is ~12 Hz.
+- Table C2 in the tables file is empty (a `.head(0)` bug in `d00c_followup.py`; the line under it is correct).
+- The tables file was appended once by the follow-up script (Part C); Parts A–B are unchanged.
+
+**Open questions for the user:** report §7, decisions 1–9:
+1. accept the design change;
+2. the 4,096 counts/g factor;
+3. `activity_info.pkl` as the label source;
+4. near-fall ADLs 15/23;
+5. neck/waist use;
+6. the clip-position rule;
+7. UP-Fall Tag 20 and trial vs sample labels;
+8. harmonised rate (32 Hz + ~12 Hz variant);
+9. the device-discrimination check.
+
+**Next step (waiting for user approval):** none started. D03 is not started.

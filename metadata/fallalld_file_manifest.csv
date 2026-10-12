@@ -1,0 +1,4 @@
+dataset,zip_path,member,size_bytes,compressed_bytes,crc32,status,extracted_path,sha256_zip_stream,sha256_extracted,sha256_match,crc_match
+fallalld,data/raw/fallalld/fallalld.zip,FallAllD.pkl,462659624,339308291,bb52684b,extracted,data/interim/_unzipped/fallalld/FallAllD.pkl,5ada697ff106525c0a4ab4e88d6993f2ea732a59e95747c792a73fd3686788dd,5ada697ff106525c0a4ab4e88d6993f2ea732a59e95747c792a73fd3686788dd,True,True
+fallalld,data/raw/fallalld/fallalld.zip,FallAllD_40SamplesPerSec_ActivityIdsFiltered.pkl,241792100,230067777,c95b6705,BANNED_not_extracted_not_loaded (CLAUDE.md §2.3),,,,,
+fallalld,data/raw/fallalld/fallalld.zip,activity_info.pkl,2097,819,e2310be6,extracted,data/interim/_unzipped/fallalld/activity_info.pkl,af7b04c9a08bd75a17ff241ecccc7497a09cebfe1561c97d24785a45081d5baf,af7b04c9a08bd75a17ff241ecccc7497a09cebfe1561c97d24785a45081d5baf,True,True
