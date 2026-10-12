@@ -110,6 +110,14 @@ def main():
                      "mean_saturated_frac": g.e4_saturated_frac.mean(),
                      "records_with_any_saturation_pct": 100 * (g.e4_saturated_frac > 0).mean()})
     S.append(md(pd.DataFrame(rows).round(4)) + "\n")
+    ps = recs.groupby(["subject_id", "kind"]).e4_saturated_frac.agg(
+        records="size", mean_saturated_frac="mean",
+        records_with_any_pct=lambda x: 100 * (x > 0).mean()).unstack("kind").round(4)
+    ps.columns = [f"{a}_{b}" for a, b in ps.columns]
+    sw = feats[("e4_clipped", "v2")].groupby(["subject_id", "window_role"]).acc_saturated_frac.apply(
+        lambda x: round(100 * (x > 0).mean(), 2)).unstack("window_role").add_prefix("windows_saturated_pct_")
+    S.append("Per subject (e4_clipped): records, mean saturated fraction, % records with any saturation, and % windows "
+             "with any saturation by role:\n\n" + md(ps.join(sw).reset_index()) + "\n")
     rows = []
     for v in VERSIONS:
         f = feats[(v, "v2")]

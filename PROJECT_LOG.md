@@ -996,3 +996,25 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** handling of the 8 info-only clips; approval of the full D08 build.
 
 **Next step (waiting for user approval):** full D08 build on all 13 wrist subjects (tag `v1`). Not started.
+
+## 2026-10-12 06:21 — D08 — User decisions: 8 info-only clips; full build approved
+**What I did:**
+- Recorded the user's decision on the 8 info-only clips.
+- Added a per-subject saturation table to `scripts/d08_report.py` before the full run (report only; no change to data code).
+
+**Files created/changed:** `PROJECT_LOG.md`, `scripts/d08_report.py`.
+
+**Checks run and results:** none (recording only).
+
+**Decisions made (and why):**
+1. **The 8 "for information" clips keep normal labels** (user). These are status `info_238hz_outside_32hz_inside` in `metadata/fallalld_label_uncertain_v1.csv`. Their 32 Hz peak (what the model sees) is inside [9, 11).
+2. **Full D08 build approved:** all 13 wrist subjects, tag `v1`; same code and checks; both versions (unclipped, e4_clipped); both feature sets (v1, v2). It includes:
+   - the determinism re-run;
+   - per-subject class-balance, saturation and overlap-group tables;
+   - the final checks of `splits/fallalld_v1.json`.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run the full build, then stop.
