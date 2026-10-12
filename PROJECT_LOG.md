@@ -1273,3 +1273,31 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: run the dev selection, record the choices, then test.
+
+## 2026-10-12 07:24 — F02-demo — DEV selection recorded (before any test evaluation)
+**What I did:** Ran the dev grid (log `logs/2026-10-12_F02demo_dev.log`).
+
+**Files created/changed:** `results/2026-10-12_F02_demo_v1/{dev_grid.csv,selection.json,selection_correction.json}`, `reports/F02_demo_v1_dev_tables.md`, `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **T_high grid** (30/50/70% of dev fall-positive windows exceed): 0.861 / 0.724 / 0.527.
+
+**Decisions made (and why):** all choices were made on DEV only.
+- **Per-variant choices** (dev PPG-DaLiA prompts/h, dev FallAllD fall detection):
+  - V0-base 23.8/h, 92.5%;
+  - V0-stillness 2.34/h, 51.5% (meets ≤ 3/h);
+  - V1-merge 23.8/h, 92.5% (identical to V0-base, as expected);
+  - V1-tiered (T_high 0.861, tol 0.7) 16.4/h, 85.9%;
+  - V1-change (tol 0.7) 14.9/h, 81.5%;
+  - V1-combined (T_high 0.861, tol 0.7) 16.4/h, 85.9%.
+- **No V1 setting met ≤ 3/h on dev.** Each V1 variant used the fallback (lowest prompts/h with ≥ 80% falls), as the rule says.
+- **Recommended variant:**
+  - Under the pre-registered rule in `config/fusion_v1.yaml` (same rule over ALL variants): **V0-stillness**, the only variant meeting ≤ 3/h.
+  - My script had restricted the recommendation to V1 variants and wrote V1-change. That is a deviation from the config, corrected before the test run in `selection_correction.json` (`selection.json` is not overwritten).
+  - Both are reported: the official recommendation is V0-stillness; the best V1 variant (fallback) is V1-change.
+
+**Problems / surprises:** the deviation above.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run the TEST partition.
