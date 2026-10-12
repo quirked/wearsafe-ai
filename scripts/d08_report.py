@@ -143,7 +143,7 @@ def main():
     S.append("## 7. Fall clips (this run) listed in metadata/fallalld_label_uncertain_v1.csv\n")
     lu = pd.read_csv(REPO / "metadata/fallalld_label_uncertain_v1.csv")
     o = lu[lu.record_id.isin(recs.record_id)]
-    S.append(f"{len(o)} of {int((recs.kind == 'fall').sum())} smoke fall clips.\n\n"
+    S.append(f"{len(o)} of {int((recs.kind == 'fall').sum())} fall clips in this run.\n\n"
              + (md(o[["record_id", "original_label", "status", "peak_t_238hz", "peak_t_32hz"]]) if len(o) else "") + "\n")
     S.append("## 7b. Clip-centre intensity pattern (dataset property; cyclic ADL clips; median window acc_mag_mean "
              "vs interior)\n")
