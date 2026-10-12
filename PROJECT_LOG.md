@@ -1,11 +1,11 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D03 — PPG-DaLiA features + wrist-PPG vs ECG — DONE (15 subjects, 318/318 checks), waiting for user review. No next milestone started.
+- **Current milestone:** D08 — FallAllD wrist motion dataset — SMOKE DONE (S01 + S04, 36/36 checks, gravity check PASS 0.990 g), waiting for approval of the full build. D03 DONE. D05 stays BITS-2 (not started).
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
 - **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2). PPG-DaLiA features v1: `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet` (config `features_v1.yaml`).
-- **Split version:** none.
-- **Last validated result:** D03 full 2026-10-12: wrist HR vs ECG MAE 10.64 ± 4.83 bpm across subjects (sitting 3.50, stairs 28.38); deterministic. Tests 53 passed / 1 skipped.
+- **Split version:** `splits/fallalld_v1.json` (FallAllD wrist LOSO, 13 folds).
+- **Last validated result:** D08 smoke 2026-10-12: 344 records / 6,536 windows per version; edge check (vs native 238 Hz) ≤ 0.19%; deterministic. Tests 70 passed / 2 skipped. D03 full: wrist HR vs ECG MAE 10.64 ± 4.83 bpm.
 - **Open items:** findings for later (v2 SQI threshold chosen on training subjects only; 10 s vs 30 s label-edge margin experiment); next FallAllD milestone must first verify 4096 counts/g; position-only baseline and device-discrimination checks are required (CLAUDE.md §2.3).
 ---
 
@@ -964,3 +964,35 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** whether the 8 clips need any handling (currently normal labels).
 
 **Next step (waiting for user approval):** re-run the metadata script, then the smoke build.
+
+## 2026-10-12 06:17 — D08 — Smoke re-run done (S01 + S04): all checks pass
+**What I did:**
+- Generated `metadata/fallalld_label_uncertain_v1.csv` and `metadata/fallalld_overlap_groups_v1.csv` (+ pairs) for all wrist records (`scripts/d08_fallalld_metadata.py`).
+- Re-ran the smoke build with the redefined checks in tmux `sao`, env `wearsafe`, on CPU: a scratch trial, then the official run, with no code changes in between.
+- Built the split manifest.
+- Logs: `logs/2026-10-12_D08_metadata_rerun.log`, `logs/2026-10-12_D08_smoke_rerun.log`.
+
+**Files created/changed:**
+- **Data:** `data/interim/fallalld/{normalized_signals,windows}_smoke_v1/`, `data/processed/motion/fallalld_*_features-{v1,v2}_smoke_v1.parquet`, `data/processed/fallalld_features_smoke_v1_run/`.
+- **Metadata and splits:** `metadata/fallalld_records_smoke_v1.csv`, `splits/fallalld_v1.json`.
+- **Reports:** `reports/D08_fallalld_smoke.md`, `reports/D08_fallalld_smoke_v1_tables.md`, `reports/figures/D08_smoke_v1/`.
+- **Code:** `src/wearsafe/overlap.py` (new), `fallalld_windows.py`, `schemas.py`; `scripts/d08_fallalld_{metadata,build,features,splits}.py`, `d08_report.py`; `tests/test_overlap.py` (new), `tests/test_fallalld_windows_labels.py`.
+
+**Checks run and results:**
+- **Metadata:** 25 label_uncertain_fall clips + 14 kept + 8 info-only clips. 1,570 overlap pairs (= the pre-checks), 1,343 groups; no group spans two subjects.
+- **Smoke checks:** 36/36 passed (19 build + 17 features).
+- **Edge check (redefined):** converted vs native 238 Hz, median |rel diff| first/last window = 0.065% / 0.057% (unclipped) and 0.187% / 0.148% (e4_clipped); limit 1%.
+- **Determinism:** 10/10 output files identical to the scratch trial.
+- **Splits:** 13 folds, 9 subjects with falls and 4 without; no subject in two splits.
+- **pytest:** 70 passed, 2 skipped.
+- **Class balance:** S01 has 73 positive : 2,983 ADL windows. S04 has 1,976 ADL windows and no positives.
+- **e4_clipped:** 72.6% of fall-positive windows contain saturation vs 7.8% of ADL windows. The median fall-window peak falls from 40.9 (unclipped) to 24.7 m/s².
+- **Clip-centre profile** (cyclic ADLs, smoke subjects): +2.9 to +4.1% at 7–10 s, about −2% near the edges. Reported as a dataset property.
+
+**Decisions made (and why):** none new.
+
+**Problems / surprises:** the 8 info-only clips (238 Hz peak outside, 32 Hz inside) keep normal labels pending the user.
+
+**Open questions for the user:** handling of the 8 info-only clips; approval of the full D08 build.
+
+**Next step (waiting for user approval):** full D08 build on all 13 wrist subjects (tag `v1`). Not started.

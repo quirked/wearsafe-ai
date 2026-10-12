@@ -1,0 +1,761 @@
+{
+  "name": "fallalld_v1",
+  "dataset": "fallalld",
+  "device": "Wrist",
+  "scheme": "leave_one_subject_out",
+  "subjects": [
+    "FALLALLD_S01",
+    "FALLALLD_S02",
+    "FALLALLD_S03",
+    "FALLALLD_S04",
+    "FALLALLD_S05",
+    "FALLALLD_S06",
+    "FALLALLD_S09",
+    "FALLALLD_S10",
+    "FALLALLD_S11",
+    "FALLALLD_S12",
+    "FALLALLD_S13",
+    "FALLALLD_S14",
+    "FALLALLD_S15"
+  ],
+  "subjects_with_falls": [
+    "FALLALLD_S01",
+    "FALLALLD_S02",
+    "FALLALLD_S03",
+    "FALLALLD_S05",
+    "FALLALLD_S06",
+    "FALLALLD_S09",
+    "FALLALLD_S13",
+    "FALLALLD_S14",
+    "FALLALLD_S15"
+  ],
+  "subjects_without_falls": [
+    "FALLALLD_S04",
+    "FALLALLD_S10",
+    "FALLALLD_S11",
+    "FALLALLD_S12"
+  ],
+  "inner_validation_rule": "inner leave-one-subject-out among the TRAINING subjects with falls (tuning only); listed per fold as inner_validation_subjects",
+  "metrics_rule": "fall detection metrics on subjects with falls; false-positive metrics on all subjects; pooled out-of-fold predictions for overall PR-AUC (config/evaluation_v1.yaml)",
+  "dedup_rule": "every evaluation also reports a deduplicated check: one clip per overlap_group_id (lowest record_id; metadata/fallalld_overlap_groups_v1.csv). Overlap groups are within-subject only, so LOSO is leakage-safe.",
+  "label_uncertain_rule": "label_uncertain_fall clips: excluded from training and window-level metrics; fall clips in clip-level metrics (metadata/fallalld_label_uncertain_v1.csv)",
+  "per_subject_counts": {
+    "FALLALLD_S01": {
+      "fall_clips": 73,
+      "label_uncertain_fall_clips": 0,
+      "adl_clips": 157,
+      "probe_clips": 6,
+      "positive_windows": 73,
+      "fall_clip_context_windows": 1314,
+      "label_uncertain_windows": 0,
+      "adl_windows": 2983,
+      "probe_windows": 114,
+      "overlap_groups": 151
+    },
+    "FALLALLD_S02": {
+      "fall_clips": 55,
+      "label_uncertain_fall_clips": 5,
+      "adl_clips": 178,
+      "probe_clips": 6,
+      "positive_windows": 50,
+      "fall_clip_context_windows": 900,
+      "label_uncertain_windows": 95,
+      "adl_windows": 3382,
+      "probe_windows": 114,
+      "overlap_groups": 151
+    },
+    "FALLALLD_S03": {
+      "fall_clips": 65,
+      "label_uncertain_fall_clips": 5,
+      "adl_clips": 171,
+      "probe_clips": 6,
+      "positive_windows": 60,
+      "fall_clip_context_windows": 1080,
+      "label_uncertain_windows": 95,
+      "adl_windows": 3249,
+      "probe_windows": 114,
+      "overlap_groups": 135
+    },
+    "FALLALLD_S04": {
+      "fall_clips": 0,
+      "label_uncertain_fall_clips": 0,
+      "adl_clips": 104,
+      "probe_clips": 4,
+      "positive_windows": 0,
+      "fall_clip_context_windows": 0,
+      "label_uncertain_windows": 0,
+      "adl_windows": 1976,
+      "probe_windows": 76,
+      "overlap_groups": 59
+    },
+    "FALLALLD_S05": {
+      "fall_clips": 53,
+      "label_uncertain_fall_clips": 3,
+      "adl_clips": 157,
+      "probe_clips": 6,
+      "positive_windows": 50,
+      "fall_clip_context_windows": 900,
+      "label_uncertain_windows": 57,
+      "adl_windows": 2983,
+      "probe_windows": 114,
+      "overlap_groups": 125
+    },
+    "FALLALLD_S06": {
+      "fall_clips": 71,
+      "label_uncertain_fall_clips": 5,
+      "adl_clips": 157,
+      "probe_clips": 6,
+      "positive_windows": 66,
+      "fall_clip_context_windows": 1188,
+      "label_uncertain_windows": 95,
+      "adl_windows": 2983,
+      "probe_windows": 114,
+      "overlap_groups": 127
+    },
+    "FALLALLD_S09": {
+      "fall_clips": 56,
+      "label_uncertain_fall_clips": 2,
+      "adl_clips": 156,
+      "probe_clips": 6,
+      "positive_windows": 54,
+      "fall_clip_context_windows": 972,
+      "label_uncertain_windows": 38,
+      "adl_windows": 2964,
+      "probe_windows": 114,
+      "overlap_groups": 109
+    },
+    "FALLALLD_S10": {
+      "fall_clips": 0,
+      "label_uncertain_fall_clips": 0,
+      "adl_clips": 153,
+      "probe_clips": 6,
+      "positive_windows": 0,
+      "fall_clip_context_windows": 0,
+      "label_uncertain_windows": 0,
+      "adl_windows": 2907,
+      "probe_windows": 114,
+      "overlap_groups": 64
+    },
+    "FALLALLD_S11": {
+      "fall_clips": 0,
+      "label_uncertain_fall_clips": 0,
+      "adl_clips": 149,
+      "probe_clips": 6,
+      "positive_windows": 0,
+      "fall_clip_context_windows": 0,
+      "label_uncertain_windows": 0,
+      "adl_windows": 2831,
+      "probe_windows": 114,
+      "overlap_groups": 67
+    },
+    "FALLALLD_S12": {
+      "fall_clips": 0,
+      "label_uncertain_fall_clips": 0,
+      "adl_clips": 157,
+      "probe_clips": 6,
+      "positive_windows": 0,
+      "fall_clip_context_windows": 0,
+      "label_uncertain_windows": 0,
+      "adl_windows": 2983,
+      "probe_windows": 114,
+      "overlap_groups": 60
+    },
+    "FALLALLD_S13": {
+      "fall_clips": 22,
+      "label_uncertain_fall_clips": 0,
+      "adl_clips": 114,
+      "probe_clips": 3,
+      "positive_windows": 22,
+      "fall_clip_context_windows": 396,
+      "label_uncertain_windows": 0,
+      "adl_windows": 2166,
+      "probe_windows": 57,
+      "overlap_groups": 65
+    },
+    "FALLALLD_S14": {
+      "fall_clips": 62,
+      "label_uncertain_fall_clips": 0,
+      "adl_clips": 157,
+      "probe_clips": 6,
+      "positive_windows": 62,
+      "fall_clip_context_windows": 1116,
+      "label_uncertain_windows": 0,
+      "adl_windows": 2983,
+      "probe_windows": 114,
+      "overlap_groups": 119
+    },
+    "FALLALLD_S15": {
+      "fall_clips": 66,
+      "label_uncertain_fall_clips": 5,
+      "adl_clips": 112,
+      "probe_clips": 3,
+      "positive_windows": 61,
+      "fall_clip_context_windows": 1098,
+      "label_uncertain_windows": 95,
+      "adl_windows": 2128,
+      "probe_windows": 57,
+      "overlap_groups": 111
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "test": [
+        "FALLALLD_S01"
+      ],
+      "train": [
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 73,
+        "label_uncertain_fall_clips": 0,
+        "adl_clips": 157,
+        "probe_clips": 6,
+        "positive_windows": 73,
+        "fall_clip_context_windows": 1314,
+        "label_uncertain_windows": 0,
+        "adl_windows": 2983,
+        "probe_windows": 114,
+        "overlap_groups": 151
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 1,
+      "test": [
+        "FALLALLD_S02"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 55,
+        "label_uncertain_fall_clips": 5,
+        "adl_clips": 178,
+        "probe_clips": 6,
+        "positive_windows": 50,
+        "fall_clip_context_windows": 900,
+        "label_uncertain_windows": 95,
+        "adl_windows": 3382,
+        "probe_windows": 114,
+        "overlap_groups": 151
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 2,
+      "test": [
+        "FALLALLD_S03"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 65,
+        "label_uncertain_fall_clips": 5,
+        "adl_clips": 171,
+        "probe_clips": 6,
+        "positive_windows": 60,
+        "fall_clip_context_windows": 1080,
+        "label_uncertain_windows": 95,
+        "adl_windows": 3249,
+        "probe_windows": 114,
+        "overlap_groups": 135
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 3,
+      "test": [
+        "FALLALLD_S04"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 0,
+        "label_uncertain_fall_clips": 0,
+        "adl_clips": 104,
+        "probe_clips": 4,
+        "positive_windows": 0,
+        "fall_clip_context_windows": 0,
+        "label_uncertain_windows": 0,
+        "adl_windows": 1976,
+        "probe_windows": 76,
+        "overlap_groups": 59
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 4,
+      "test": [
+        "FALLALLD_S05"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 53,
+        "label_uncertain_fall_clips": 3,
+        "adl_clips": 157,
+        "probe_clips": 6,
+        "positive_windows": 50,
+        "fall_clip_context_windows": 900,
+        "label_uncertain_windows": 57,
+        "adl_windows": 2983,
+        "probe_windows": 114,
+        "overlap_groups": 125
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 5,
+      "test": [
+        "FALLALLD_S06"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 71,
+        "label_uncertain_fall_clips": 5,
+        "adl_clips": 157,
+        "probe_clips": 6,
+        "positive_windows": 66,
+        "fall_clip_context_windows": 1188,
+        "label_uncertain_windows": 95,
+        "adl_windows": 2983,
+        "probe_windows": 114,
+        "overlap_groups": 127
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 6,
+      "test": [
+        "FALLALLD_S09"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 56,
+        "label_uncertain_fall_clips": 2,
+        "adl_clips": 156,
+        "probe_clips": 6,
+        "positive_windows": 54,
+        "fall_clip_context_windows": 972,
+        "label_uncertain_windows": 38,
+        "adl_windows": 2964,
+        "probe_windows": 114,
+        "overlap_groups": 109
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 7,
+      "test": [
+        "FALLALLD_S10"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 0,
+        "label_uncertain_fall_clips": 0,
+        "adl_clips": 153,
+        "probe_clips": 6,
+        "positive_windows": 0,
+        "fall_clip_context_windows": 0,
+        "label_uncertain_windows": 0,
+        "adl_windows": 2907,
+        "probe_windows": 114,
+        "overlap_groups": 64
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 8,
+      "test": [
+        "FALLALLD_S11"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 0,
+        "label_uncertain_fall_clips": 0,
+        "adl_clips": 149,
+        "probe_clips": 6,
+        "positive_windows": 0,
+        "fall_clip_context_windows": 0,
+        "label_uncertain_windows": 0,
+        "adl_windows": 2831,
+        "probe_windows": 114,
+        "overlap_groups": 67
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 9,
+      "test": [
+        "FALLALLD_S12"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 0,
+        "label_uncertain_fall_clips": 0,
+        "adl_clips": 157,
+        "probe_clips": 6,
+        "positive_windows": 0,
+        "fall_clip_context_windows": 0,
+        "label_uncertain_windows": 0,
+        "adl_windows": 2983,
+        "probe_windows": 114,
+        "overlap_groups": 60
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 10,
+      "test": [
+        "FALLALLD_S13"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 22,
+        "label_uncertain_fall_clips": 0,
+        "adl_clips": 114,
+        "probe_clips": 3,
+        "positive_windows": 22,
+        "fall_clip_context_windows": 396,
+        "label_uncertain_windows": 0,
+        "adl_windows": 2166,
+        "probe_windows": 57,
+        "overlap_groups": 65
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S14",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 11,
+      "test": [
+        "FALLALLD_S14"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S15"
+      ],
+      "test_counts": {
+        "fall_clips": 62,
+        "label_uncertain_fall_clips": 0,
+        "adl_clips": 157,
+        "probe_clips": 6,
+        "positive_windows": 62,
+        "fall_clip_context_windows": 1116,
+        "label_uncertain_windows": 0,
+        "adl_windows": 2983,
+        "probe_windows": 114,
+        "overlap_groups": 119
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S15"
+      ]
+    },
+    {
+      "fold": 12,
+      "test": [
+        "FALLALLD_S15"
+      ],
+      "train": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S04",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S10",
+        "FALLALLD_S11",
+        "FALLALLD_S12",
+        "FALLALLD_S13",
+        "FALLALLD_S14"
+      ],
+      "test_counts": {
+        "fall_clips": 66,
+        "label_uncertain_fall_clips": 5,
+        "adl_clips": 112,
+        "probe_clips": 3,
+        "positive_windows": 61,
+        "fall_clip_context_windows": 1098,
+        "label_uncertain_windows": 95,
+        "adl_windows": 2128,
+        "probe_windows": 57,
+        "overlap_groups": 111
+      },
+      "inner_validation_subjects": [
+        "FALLALLD_S01",
+        "FALLALLD_S02",
+        "FALLALLD_S03",
+        "FALLALLD_S05",
+        "FALLALLD_S06",
+        "FALLALLD_S09",
+        "FALLALLD_S13",
+        "FALLALLD_S14"
+      ]
+    }
+  ],
+  "checks": {
+    "subject_in_two_splits": false,
+    "every_subject_tested_once": true,
+    "problems": []
+  },
+  "source_sha256": "5ada697ff106525c0a4ab4e88d6993f2ea732a59e95747c792a73fd3686788dd",
+  "config_sha256": "3465998b8acfbf9421421c7108755cb93e414ee3fd3c62d38339efbb26262378",
+  "git_commit": "0b213e64c9fc92ea5555fe07489461b49a194190",
+  "created": "2026-10-12 06:16:22"
+}
