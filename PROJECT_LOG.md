@@ -1356,3 +1356,29 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 08:34 — Env — Tests after the Streamlit install; requirements updated
+**What I did:**
+- Re-ran the full test suite in the `wearsafe` env (8 threads).
+- Added the demo dependencies to `requirements.txt` and regenerated `requirements-lock.txt` from `pip freeze`.
+- The running Streamlit app in tmux `sao` was not touched; its health check is ok.
+
+**Files created/changed:** `requirements.txt`, `requirements-lock.txt`, `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **pytest: 76 passed, 1 skipped** (the opt-in full SHA-256 test). Nothing broke after the downgrades.
+- **Streamlit app:** `/_stcore/health` = ok.
+
+**Decisions made (and why):**
+- **requirements.txt:** added `streamlit==1.45.1` and `playwright==1.49.1`.
+- **requirements-lock.txt:** regenerated; one header comment added. Changes vs before:
+  - **pillow 12.3.0 → 11.3.0** (downgraded by streamlit);
+  - **packaging 26.3 → 24.2** (downgraded by streamlit);
+  - added: streamlit 1.45.1, playwright 1.49.1, typing_extensions 4.16.0 and the other streamlit/playwright dependencies (altair, pydeck, tornado, protobuf, …).
+- No models, results or rules were changed.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.

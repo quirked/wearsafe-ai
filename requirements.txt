@@ -12,3 +12,6 @@ neurokit2==0.2.13
 matplotlib==3.11.2
 pytest==9.1.1
 PyYAML==6.0.3
+# Demo app (added 2026-10-12): streamlit for app/wearsafe_demo.py, playwright for scripts/demo_screenshots.py
+streamlit==1.45.1
+playwright==1.49.1
