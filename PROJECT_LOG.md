@@ -177,3 +177,33 @@ Nothing under `data/` was created or modified. No unzipping was needed.
 **Open questions for the user:** none new.
 
 **Next step (waiting for user approval):** D00b — BITS-2 forensics plan, using `docs/papers/BITS2_DataInBrief_2024.pdf`. D01 (PPG-DaLiA ingestion audit) is to be marked as largely covered by D00a.
+
+## 2026-10-12 01:10 — D00b — User decisions D00b (recorded before running)
+**What I did:** Recorded the user's approval of the D00b plan, its changes and decisions 1–12 before any D00b code ran.
+
+**Decisions made (user, 2026-10-12):**
+- **Rate verdict, changed and fixed before results.**
+  - (a) CONSISTENCY: the rate is "consistent" if the spread across files is under 15% (IQR/median) AND estimators A and B agree within 15% where both apply. This is reported overall, per activity and per subject.
+  - (b) MATCH TO PAPER: the median estimate is reported against the stated 20 Hz.
+  - Final verdict is one of three outcomes: "consistent and ≈20 Hz", "consistent but different from paper (rate stated)", or "inconsistent".
+  - Time-dependent features are allowed only for the first two outcomes, and only after the user reviews the rate.
+  - The report must include a section on what the rate means for abrupt-event detection (samples per 2 s window, whether impact peaks are captured).
+1. user28 fall4 = fall8 → exclude BOTH (the true label is unknowable).
+2. Only magnetometer shared → drop the `mgm` stream for both files and keep the files. Any shared acc/acg/gyro/hrt data → exclude both files.
+3. HR is invalid if status −1, OR bpm = 0, OR bpm outside 30–220. Status 0 → keep but flag (`hr_unreliable=1`). Never impute.
+4. A file is usable for HR/event analysis only if ≥80% of its HR rows are valid AND it has ≥20 valid HR rows. Files failing this remain usable for motion analysis (per-file scope: `motion_ok`, `hr_ok`).
+5. adlK = paper Table 1 row K is accepted IF the duration cross-check agrees for most indices. Disagreeing indices (e.g. adl7/adl8) are flagged in the manifest and the report.
+6. If the verdict is "inconsistent": no jerk or frequency features for BITS-2 v1, and no row-index proxy rate.
+7. If files hold one trial each: accept ~984 published recordings, not 4,920. Never claim 4,920 anywhere.
+8. Follow the data: `acg` includes gravity; record the paper conflict. The canonical BITS-2 ACC is the WITH-gravity stream (`acg`, which matches the E4).
+9. Context proposal (report only; the user confirms before it goes into config):
+   - adl1–2 → locomotion
+   - adl3–4 → vigorous_activity
+   - adl5–8 → vigorous_activity ("assumed stairs, not stated in paper")
+   - adl13 → stationary
+   - adl9–12 and adl14–16 → excluded from context training; included as motion hard negatives and in false-alert evaluation
+10. Create `metadata/bits2_subjects.csv` from paper Table 2. Base HR may later feed relative-HR features. Health conditions are for analysis only, never model inputs.
+11. Fetch the website's separate "without HR" data into a NEW folder `data/raw/bits2_website_nohr/` (existing raw folders untouched), add it to the checksum manifest, and compare its timestamps and values with the merged files. If it can't be downloaded from here, give the user the exact link.
+12. Make `data/raw/bits2_website/` read-only like the other raw folders.
+
+**Next step:** execute D00b as planned, in tmux `sao` and env `wearsafe`.
