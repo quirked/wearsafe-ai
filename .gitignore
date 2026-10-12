@@ -15,3 +15,15 @@ __pycache__/
 .venv/
 # Logs: keep the folder, not the log files
 logs/*.log
+# Demo v4 runtime inputs (2026-10-12): narrow exceptions, exact files only; every other results/ file stays ignored
+!results/
+results/*
+!results/2026-10-12_M02_demo_replay/
+results/2026-10-12_M02_demo_replay/*
+!results/2026-10-12_M02_demo_replay/replay.joblib
+!results/2026-10-12_M03_v2_demo_replay/
+results/2026-10-12_M03_v2_demo_replay/*
+!results/2026-10-12_M03_v2_demo_replay/heart.joblib
+!results/2026-10-12_M02_extra_sensors/
+results/2026-10-12_M02_extra_sensors/*
+!results/2026-10-12_M02_extra_sensors/summary.csv
