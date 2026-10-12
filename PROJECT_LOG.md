@@ -1334,3 +1334,25 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** which variant the demo app shows by default (it offers the toggle).
 
 **Next step (waiting for user approval):** STOP; the demo app is next.
+
+## 2026-10-12 07:50 — Demo app (demo_v0/v1, PRELIMINARY)
+**What I did:** Built the Streamlit demo app `app/wearsafe_demo.py`. It replays per-second outputs produced by the real engine (`inference.py`) and the `fusion_v1` rules through `scripts/demo_precompute.py`, and contains no detection logic. No model, threshold or rule was changed.
+
+**Files created/changed:** `app/wearsafe_demo.py`, `app/requirements-app.txt`, `scripts/demo_precompute.py`, `scripts/demo_screenshots.py`, `reports/figures/demo_v0/` (6 screenshots), `README.md` (new "How to run the demo" section), `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **Recordings:** everyday life = PPGDALIA_S03 (test partition; context from the fold model that left S03 out); falls = FALLALLD_S01 (test partition; fold-0 motion model, which left S01 out).
+- **Timelines:** check-ins (Balanced) occur during cycling (3) and table soccer (3), none in sitting, driving or walking. The fall clip triggers at 11 s under every setting; the jogging clip triggers none.
+- **App:** runs in tmux `sao` on 127.0.0.1:8501; health check ok.
+- **Screenshots:** all 6 saved. The first run of `demo_screenshots.py` timed out on #5 (the log text sits in a canvas grid); #5 and #6 were captured inline with a fixed wait.
+- **Banned-word grep:** only an internal mapping line (never displayed).
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:**
+- Installed streamlit 1.45.1 and playwright 1.49.1 into the `wearsafe` env. Streamlit downgraded pillow 12.3 → 11.3 and packaging 26.3 → 24.2. The test suite has not been re-run since.
+- The first pip run stalled on a slow network socket and was stopped (my own process, by PID).
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** STOP.
