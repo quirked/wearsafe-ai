@@ -1646,3 +1646,22 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 10:20 — M03-lite — "Still but heart racing" definitions pre-registered (before any result)
+**What I did:** Wrote `config/m03_still_racing.yaml` before any M03 result. Tag demo_v0, PRELIMINARY. The demo app is untouched.
+
+**Files created/changed:** `config/m03_still_racing.yaml`, `PROJECT_LOG.md`.
+
+**Checks run and results:** none yet.
+
+**Decisions made (and why)** (mine, overrulable):
+- **Gate value:** the fusion v0 all-subject value (0.5671 m/s²).
+- **"Consecutive":** two adjacent 15 s-step windows.
+- **Stress caught:** reported at window and subject level.
+- **Device check:** uses gated windows.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run M03-lite.

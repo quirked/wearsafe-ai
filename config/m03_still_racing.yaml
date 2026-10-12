@@ -1,0 +1,19 @@
+# M03-lite "still but heart racing" check-in (tag demo_v0, PRELIMINARY). Written BEFORE any M03 result (PROJECT_LOG).
+version: 0
+tag: demo_v0
+wesad_build:
+  signals: "wrist ACC (raw 1/64 g counts -> /64 -> g -> x 9.80665 m/s^2), wrist BVP 64 Hz; ids WESAD_Sxx"
+  alignment: "pkl signals and 700 Hz labels share a common start (D00a); label at wrist time t = label[floor(t*700)]; durations of ACC/32, BVP/64, label/700 checked equal"
+  windows: "30 s, 15 s step, start at 0; majority label over 4 Hz label samples (every 175th 700 Hz sample) + purity"
+  training: "purity 1.0 baseline (0, low) vs stress (1, high) (label_maps wesad.training_v1); amusement, meditation = probes"
+features: "D03 physiology code (wearsafe.features.physiology_features + rel_baseline, config/features_v1.yaml): hr_mean, hr_std, hr_min, hr_max, hr_delta, hr_slope, hr_rel_baseline, bvp_peak_rate, ibi_mean, ibi_std, ppg_sqi; plus acc_mag_std over the same 30 s (wrist motion intensity). No EDA."
+gate: "still and reliable = NOT physiology_uncertain (SQI >= 0.9, >= 2 valid IBIs, HR 30-220) AND acc_mag_std(30 s) <= 0.5671 m/s^2 (fusion v0 gate, all-subject PPG-DaLiA sitting p95). Only gated windows are used for training and scoring"
+models:
+  lr: "median imputer -> StandardScaler -> LogisticRegression(class_weight=balanced, max_iter=5000)"
+  rf: "median imputer -> RandomForest(n_estimators=300, min_samples_leaf=2, class_weight=balanced_subsample, random_state=0)"
+  cv: "outer LOSO over 15 WESAD subjects; threshold per outer fold from inner LOSO over the 14 training subjects: highest score with recall >= 0.80 on pooled inner stress windows"
+  deploy: "fit on all 15 subjects; threshold = median of the 15 outer-fold thresholds"
+checkin_rule: "a check-in fires when the score >= threshold in 2 consecutive gated 30 s windows (adjacent windows, 15 s apart; fires at the second); then a 300 s pause"
+everyday: "deploy model on PPG-DaLiA 30 s physiology windows (D03 v1 features + acc_mag_std from Layer A), all 15 subjects; same gate; check-ins per hour overall / per activity (activity of the firing window) / per subject"
+device_check: "WESAD baseline vs PPG-DaLiA sitting windows (both gated), same features, GroupKFold(5) by subject, LR and RF AUC; report only"
+stress_caught: "window level: % of gated stress windows >= threshold (out-of-fold); subject level: % of subjects with >= 1 check-in during stress"
