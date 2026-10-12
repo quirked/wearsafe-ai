@@ -1,13 +1,14 @@
 """D02 — PPG-DaLiA Layer B windows (index references into Layer A; user decision P7).
 
-Reads data/interim/ppg_dalia/normalized_signals_<tag>/ and writes
+Reads data/interim/ppg_dalia/normalized_signals_<in-tag>/ and writes
 data/interim/ppg_dalia/windows_<tag>/{motion_2s,context_5s,physiology_30s}.parquet
 plus run_info.json, checks.json and summary tables (window counts, labels, roles, saturation).
 
-Window rules: config/windowing_v1.yaml. Label maps: config/label_maps.yaml.
+Window rules: --config (default config/windowing_v2.yaml; v1 lacks the boundary margin). Label maps: config/label_maps.yaml.
 No window is dropped. Invariant checks stop the run on failure (CLAUDE.md §3). Refuses to overwrite.
 
-Usage (repo root):  python scripts/d02_ppg_dalia_windows.py --tag smoke_v1 [--root data/interim/ppg_dalia]
+Usage (repo root):  python scripts/d02_ppg_dalia_windows.py --tag smoke_v2 --in-tag smoke_v1 \
+                        [--config config/windowing_v2.yaml] [--root data/interim/ppg_dalia]
 """
 import argparse
 import hashlib
@@ -28,7 +29,6 @@ from wearsafe import windowing as wn  # noqa: E402
 from wearsafe.schemas import is_valid_subject_id  # noqa: E402
 
 LABEL_MAPS = REPO / "config/label_maps.yaml"
-WIN_CFG = REPO / "config/windowing_v1.yaml"
 TASK_ABBR = {"motion_2s": "mot2", "context_5s": "ctx5", "physiology_30s": "phy30"}
 
 
@@ -46,11 +46,16 @@ def sha(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
-def window_role(label, purity, maps, threshold):
-    m = maps["ppg_dalia"]
-    if label in m["training_v1"]["context"]:
-        return "train_candidate" if purity >= threshold else "false_alert_eval_only"
-    return m["eval_role"][label]
+def window_role(label, purity, margin_s, maps, cfg):
+    """eval_role per config/windowing_v2.yaml (margin_s is ignored if the config has no boundary_margin_s)."""
+    m, r = maps["ppg_dalia"], cfg["eval_role"]
+    if label not in m["training_v1"]["context"]:
+        return m["eval_role"][label]
+    if purity < r["purity_threshold"]:
+        return "false_alert_eval_only"
+    if "boundary_margin_s" in r and margin_s < r["boundary_margin_s"]:
+        return "false_alert_eval"
+    return "train_candidate"
 
 
 def make_windows(subject_dir, name, spec, maps, cfg):
@@ -63,7 +68,7 @@ def make_windows(subject_dir, name, spec, maps, cfg):
     duration = len(codes) / io.FS_ACT
     m = maps["ppg_dalia"]
     names = {int(k): v for k, v in m["original_label"].items()}
-    thr = cfg["eval_role"]["purity_threshold"]
+    changes = wn.change_times(codes, io.FS_ACT)
     sid, rid, trial = act["subject_id"].iat[0], act["recording_id"].iat[0], act["trial_id"].iat[0]
     rows = []
     for i, (start, end) in enumerate(wn.window_bounds(duration, spec["length_s"], spec["step_s"])):
@@ -72,6 +77,7 @@ def make_windows(subject_dir, name, spec, maps, cfg):
         b0, b1 = wn.sample_range(start, end, io.FS_BVP)
         k0, k1 = wn.hr_ref_range(start, end, io.HR_REF_WIN_S, io.HR_REF_SHIFT_S, n_ref)
         maj, purity, n_distinct = wn.majority_label(codes[a0:a1])
+        margin = wn.seconds_to_nearest_boundary(float(start), float(end), changes)
         label = names[maj]
         ctx = m["context_class"][label]
         rows.append({
@@ -82,10 +88,11 @@ def make_windows(subject_dir, name, spec, maps, cfg):
             "hr_ref_k0": k0, "hr_ref_k1": k1, "n_hr_ref": k1 - k0,
             "original_label": label, "majority_code": maj, "label_purity": purity,
             "n_distinct_labels": n_distinct, "crosses_boundary": n_distinct > 1,
+            "seconds_to_nearest_boundary": margin,
             "context_class": ctx, "motion_event_class": m["motion_event_class"]["default"]
             if label not in m["motion_event_class"] else m["motion_event_class"][label],
             "arousal_class": None,                         # user decision B: PPG-DaLiA has no arousal labels
-            "eval_role": window_role(label, purity, maps, thr),
+            "eval_role": window_role(label, purity, margin, maps, cfg),
             "has_acc": c1 <= len(sat), "has_gyro": False, "has_bvp": b1 <= n_bvp, "has_hr_ref": k1 > k0,
             "fs_acc": float(io.FS_ACC), "fs_bvp": float(io.FS_BVP),
             "acc_saturated_frac": float(sat[c0:c1].mean()),
@@ -126,7 +133,30 @@ def window_checks(df, name, spec, duration, codes, n_acc, n_bvp, maps, cfg, resu
           results, sid, name)
     m = maps["ppg_dalia"]
     thr = cfg["eval_role"]["purity_threshold"]
+    margin_cfg = cfg["eval_role"]["boundary_margin_s"]
+    # seconds_to_nearest_boundary recomputed by brute force (windows x changes) from the raw codes
+    ch = (np.flatnonzero(np.diff(codes) != 0) + 1) / io.FS_ACT
+    st, en = df["window_start"].to_numpy()[:, None], df["window_end"].to_numpy()[:, None]
+    if len(ch):
+        inside = ((ch[None, :] > st) & (ch[None, :] < en)).any(axis=1)
+        dist = np.where(ch[None, :] <= st, st - ch[None, :], np.where(ch[None, :] >= en, ch[None, :] - en, 0.0))
+        brute = np.where(inside, 0.0, dist.min(axis=1))
+    else:
+        brute = np.full(len(df), np.inf)
+    check(np.array_equal(brute, df["seconds_to_nearest_boundary"].to_numpy()),
+          "seconds_to_nearest_boundary matches a brute-force recomputation", results, sid, name)
+    check((df.loc[df["crosses_boundary"], "seconds_to_nearest_boundary"] == 0).all(),
+          "boundary-crossing windows have distance 0", results, sid, name)
     tc = df["eval_role"] == "train_candidate"
+    check((df.loc[tc, "seconds_to_nearest_boundary"] >= margin_cfg).all(),
+          f"train_candidate only with seconds_to_nearest_boundary >= {margin_cfg} s", results, sid, name)
+    near = (df["original_label"].isin(m["training_v1"]["context"]) & (df["label_purity"] >= thr)
+            & (df["seconds_to_nearest_boundary"] < margin_cfg))
+    check((df.loc[near, "eval_role"] == "false_alert_eval").all(),
+          "pure training-label windows within the margin are false_alert_eval (kept)", results, sid, name)
+    check(((df["eval_role"] == "train_candidate") == (df["original_label"].isin(m["training_v1"]["context"])
+          & (df["label_purity"] >= thr) & (df["seconds_to_nearest_boundary"] >= margin_cfg))).all(),
+          "train_candidate <=> training label & purity >= threshold & margin met", results, sid, name)
     check((df.loc[tc, "label_purity"] >= thr).all() and df.loc[tc, "original_label"].isin(m["training_v1"]["context"]).all(),
           "train_candidate only for training labels with purity >= threshold", results, sid, name)
     check(not df.loc[tc, "context_class"].isin([None, "TODO"]).any(), "no train_candidate with null/TODO context",
@@ -147,11 +177,14 @@ def window_checks(df, name, spec, duration, codes, n_acc, n_bvp, maps, cfg, resu
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--tag", required=True)
+    ap.add_argument("--tag", required=True, help="output version, e.g. smoke_v2 or v1")
+    ap.add_argument("--in-tag", required=True, help="Layer A version to read, e.g. smoke_v1 or v1")
+    ap.add_argument("--config", default="config/windowing_v2.yaml")
     ap.add_argument("--root", default="data/interim/ppg_dalia")
     args = ap.parse_args()
     root = REPO / args.root
-    src = root / f"normalized_signals_{args.tag}"
+    src = root / f"normalized_signals_{args.in_tag}"
+    win_cfg = REPO / args.config
     out = root / f"windows_{args.tag}"
     if out.exists():
         raise FileExistsError(f"{out} exists; refusing to overwrite (CLAUDE.md §2.1)")
@@ -159,7 +192,9 @@ def main():
     if tmp.exists():
         raise FileExistsError(f"{tmp} exists from an interrupted run; inspect it, do not overwrite")
     maps = yaml.safe_load(open(LABEL_MAPS))
-    cfg = yaml.safe_load(open(WIN_CFG))
+    cfg = yaml.safe_load(open(win_cfg))
+    if "boundary_margin_s" not in cfg["eval_role"]:
+        raise ValueError(f"{args.config} has no boundary_margin_s; use config/windowing_v2.yaml or later")
     subjects = sorted(p for p in src.iterdir() if p.is_dir())
     results, tables = [], {name: [] for name in cfg["tasks"]}
     t0 = time.time()
@@ -184,7 +219,7 @@ def main():
             "git_commit": subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True,
                                          text=True).stdout.strip(),
             "tag": args.tag, "input": str(src.relative_to(REPO)) if src.is_relative_to(REPO) else str(src),
-            "windowing_config_sha256": sha(WIN_CFG), "label_maps_sha256": sha(LABEL_MAPS), "seed": None,
+            "windowing_config": args.config, "windowing_config_sha256": sha(win_cfg), "label_maps_sha256": sha(LABEL_MAPS), "seed": None,
             "n_windows": {k: int(sum(len(p) for p in v)) for k, v in tables.items()},
             "created": time.strftime("%Y-%m-%d %H:%M:%S")}
     (tmp / "run_info.json").write_text(json.dumps(info, indent=2))

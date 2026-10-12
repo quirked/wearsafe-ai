@@ -62,3 +62,21 @@ def hr_ref_range(start: Fraction, end: Fraction, ref_len_s: int, ref_shift_s: in
     k1 = (end - ref_len_s) // ref_shift_s + 1           # last k with k*shift + len <= end, +1
     k0, k1 = int(max(k0, 0)), int(min(max(k1, 0), n_ref))
     return k0, max(k0, k1)
+
+
+def change_times(codes: np.ndarray, fs: int) -> np.ndarray:
+    """Times (s) of label changes: t = i/fs where codes[i] != codes[i-1]."""
+    return (np.flatnonzero(codes[1:] != codes[:-1]) + 1) / fs
+
+
+def seconds_to_nearest_boundary(start: float, end: float, changes: np.ndarray) -> float:
+    """Distance from window [start, end) to the nearest label change; 0 if one lies inside; inf if none."""
+    if len(changes) == 0:
+        return float("inf")
+    i = int(np.searchsorted(changes, start, side="right"))   # changes[:i] <= start
+    j = int(np.searchsorted(changes, end, side="left"))      # changes[j:] >= end
+    if j > i:                                                # start < change < end
+        return 0.0
+    before = start - changes[i - 1] if i > 0 else float("inf")
+    after = changes[j] - end if j < len(changes) else float("inf")
+    return float(min(before, after))

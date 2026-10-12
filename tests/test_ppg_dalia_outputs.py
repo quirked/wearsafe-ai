@@ -13,7 +13,7 @@ from wearsafe import ppg_dalia_io as io  # noqa: E402
 from wearsafe import windowing as wn  # noqa: E402
 
 ROOT = REPO / "data/interim/ppg_dalia"
-TAGS = [t for t in ("smoke_v1", "v1") if (ROOT / f"windows_{t}").is_dir()]
+TAGS = [t for t in ("smoke_v1", "smoke_v2", "v1") if (ROOT / f"windows_{t}").is_dir()]
 CFG = yaml.safe_load((REPO / "config/windowing_v1.yaml").read_text())
 MAPS = yaml.safe_load((REPO / "config/label_maps.yaml").read_text())
 
@@ -22,8 +22,13 @@ pytestmark = pytest.mark.skipif(not TAGS, reason="no D02 outputs on this machine
 
 @pytest.mark.parametrize("tag", TAGS)
 def test_layer_a_and_windows(tag):
-    norm, win = ROOT / f"normalized_signals_{tag}", ROOT / f"windows_{tag}"
-    for name, spec in CFG["tasks"].items():
+    import json
+    win = ROOT / f"windows_{tag}"
+    info = json.loads((win / "run_info.json").read_text())
+    norm = REPO / info["input"]
+    cfg = yaml.safe_load((REPO / info.get("windowing_config", "config/windowing_v1.yaml")).read_text())
+    margin = cfg["eval_role"].get("boundary_margin_s")
+    for name, spec in cfg["tasks"].items():
         w = pd.read_parquet(win / f"{name}.parquet")
         assert w["window_id"].is_unique
         assert w["arousal_class"].isna().all()                         # decision B
@@ -32,6 +37,12 @@ def test_layer_a_and_windows(tag):
         tc = w["eval_role"] == "train_candidate"
         assert (w.loc[tc, "label_purity"] == 1.0).all()                # P2
         assert not w.loc[tc, "original_label"].isin(MAPS["ppg_dalia"]["training_v1"]["excluded"]).any()
+        if margin is not None:                                         # windowing_v2: boundary margin rule
+            assert (w.loc[tc, "seconds_to_nearest_boundary"] >= margin).all()
+            near = (w["original_label"].isin(MAPS["ppg_dalia"]["training_v1"]["context"])
+                    & (w["label_purity"] == 1.0) & (w["seconds_to_nearest_boundary"] < margin))
+            assert (w.loc[near, "eval_role"] == "false_alert_eval").all()
+            assert (w.loc[w["crosses_boundary"], "seconds_to_nearest_boundary"] == 0).all()
         for sid, g in w.groupby("subject_id"):
             act = pd.read_parquet(norm / sid / "activity.parquet", columns=["original_code"])["original_code"].to_numpy()
             dur = len(act) / io.FS_ACT
