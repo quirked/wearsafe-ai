@@ -15,7 +15,6 @@ def causal_split(eda, fs, cutoff=0.05):
     """tonic = forward-only 1st-order Butterworth low-pass; phasic = eda - tonic. Uses only past samples."""
     b, a = butter(1, cutoff, btype="low", fs=fs)
     eda = np.asarray(eda, float)
-    zi = eda[0] * (1 - 0) if len(eda) else 0.0
     tonic = lfilter(b, a, eda - eda[0]) + eda[0] if len(eda) else eda
     return tonic, eda - tonic
 
