@@ -82,3 +82,32 @@ def test_label_columns_are_forbidden_features():
     for col in ("original_label", "context_class", "motion_event_class", "arousal_class", "subject_id"):
         assert col in schemas.FORBIDDEN_FEATURE_COLUMNS
         assert col not in schemas.ALL_FEATURES
+
+
+def test_window_meta_columns_are_forbidden_features():
+    for col in ("label_purity", "crosses_boundary", "eval_role", "hr_ref_bpm", "majority_code",
+                "n_hr_ref", "acc_i0", "recording_id"):
+        assert col in schemas.FORBIDDEN_FEATURE_COLUMNS
+        assert col not in schemas.ALL_FEATURES
+
+
+def test_bits2_context_proposal_values_valid():
+    prop = MAPS["bits2"]["context_class_proposal"]["mapping"]
+    assert set(prop) == {f"adl{k}" for k in range(1, 17)}
+    for src, dst in prop.items():
+        assert dst is None or dst in schemas.CONTEXT_CLASSES, f"{src} -> {dst}"
+    assert MAPS["bits2"]["context_class"] == "TODO"          # not used for v1 context training (Q6)
+    assert MAPS["bits2"]["training_v1"]["motion"] == [] and MAPS["bits2"]["training_v1"]["context"] == []
+
+
+def test_ppg_dalia_has_no_arousal_and_all_normal_adl():
+    m = MAPS["ppg_dalia"]
+    assert m["arousal_class"] is None                       # user decision B after D00b
+    assert m["motion_event_class"]["default"] == "normal_adl"
+    assert set(m["motion_event_class"].values()) == {"normal_adl"}
+
+
+def test_evaluation_rule_recorded():
+    ev = yaml.safe_load((REPO / "config" / "evaluation_v1.yaml").read_text())
+    assert "NOT used to train or tune ANY" in ev["false_alerts_per_user_hour"]["rule"]
+    assert "EVALUATION RULE" in (REPO / "CLAUDE.md").read_text()

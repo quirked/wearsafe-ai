@@ -1,0 +1,19 @@
+# Layer B windowing, version 1 (D02). Fixed before any run (PROJECT_LOG 2026-10-12).
+# Context doc §18: task-specific windows, 50% overlap.
+version: 1
+start_s: 0                       # first window starts at the recording start
+tasks:                           # name -> length / step (step = 50% overlap)
+  motion_2s: {task: motion, length_s: 2, step_s: 1}
+  context_5s: {task: context, length_s: 5, step_s: 2.5}
+  physiology_30s: {task: physiology, length_s: 30, step_s: 15}
+labels:
+  source: "4 Hz activity samples inside [window_start, window_end)"
+  label_purity: "fraction of activity samples carrying the majority label"
+  crosses_boundary: "more than one distinct activity label inside the window"
+  tie_rule: "among tied labels, the label of the window's last sample (else the tied label occurring last)"
+eval_role:                       # user decision P2 after D00b
+  train_candidate: "majority label in label_maps training_v1.context AND label_purity >= purity_threshold"
+  purity_threshold: 1.0
+  false_alert_eval: "majority label is an excluded label with eval_role false_alert_eval (lunch, transient)"
+  false_alert_eval_only: "training label but label_purity < purity_threshold (boundary window)"
+  note: "no window is dropped; every PPG-DaLiA window counts towards false alerts per user-hour (subject-held-out only, config/evaluation_v1.yaml)"

@@ -1,0 +1,24 @@
+# Layer C feature parameters, version 1 (D03). Fixed before any D03 run (user decisions P4-P6 after D00b).
+# NOT used yet: D03 has not been run.
+version: 1
+motion:                          # context doc §14 only (P6); computed on |acc| in m/s^2, window samples only
+  features: [acc_mag_mean, acc_mag_std, acc_mag_max, acc_mag_p95, acc_mag_rms, acc_mag_range,
+             jerk_mean, jerk_std, jerk_max, motion_energy, dominant_freq, spectral_entropy,
+             spectral_energy, acc_saturated_frac]
+  spectrum: "rfft of de-meaned |acc| with a Hann window, DC excluded"
+physiology:                      # 30 s windows, BVP only; ECG reference HR is NEVER a feature
+  bandpass_hz: [0.5, 4.0]
+  peaks: "neurokit2 ppg_findpeaks, method elgendi"
+  hr_valid_bpm: [30, 220]
+  baseline: "median of good-quality hr_mean over the PREVIOUS 300 s of the same recording (past only)"
+  baseline_s: 300
+ppg_sqi:                         # P5
+  method: "template matching (Orphanidou-style), neurokit2 ppg_quality(method='templatematch')"
+  secondary_report_only: "skewness SQI (Elgendi 2016)"
+  physiology_uncertain: "ppg_sqi < 0.9 OR fewer than 2 valid IBIs OR HR outside hr_valid_bpm"
+  threshold: 0.9                 # fixed a priori; never tuned on outcomes
+  sensitivity_report_only: [0.80, 0.85, 0.90, 0.95]   # report-only table; must NOT change the v1 threshold
+bvp_hr_vs_ecg:                   # P4; analysis output, never a feature
+  primary: "dataset 8 s / 2 s reference windows, aligned exactly to hr_ref"
+  secondary: "30 s physiology windows; hr_ref averaged over reference windows fully inside"
+  metrics: [mae, rmse, bias, pct_within_5bpm, pct_within_10bpm]

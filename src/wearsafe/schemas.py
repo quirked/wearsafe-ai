@@ -75,6 +75,7 @@ class SignalRecord:
     original_unit: str = ""
     canonical_unit: str = ""
     quality_flag: Optional[str] = None  # source status code (e.g. BITS-2 HR status), kept verbatim
+    acc_saturated: Optional[bool] = None  # acc only: any axis at the sensor rail (E4: -128/+127 counts)
 
 
 # ---------------------------------------------------------------------------
@@ -108,6 +109,12 @@ class WindowRecord:
     has_hr: bool = False
     signal_quality: dict = field(default_factory=dict)  # e.g. {"ppg_sqi": 0.7, "acc_clipped_frac": 0.0}
     missing_fraction: dict = field(default_factory=dict)
+    # D02 additions (config/windowing_v1.yaml). original_label = MAJORITY original label of the window.
+    recording_id: str = ""
+    label_purity: Optional[float] = None    # fraction of label samples carrying the majority label
+    crosses_boundary: Optional[bool] = None
+    eval_role: Optional[str] = None         # train_candidate / false_alert_eval / false_alert_eval_only
+    acc_saturated_frac: Optional[float] = None
 
 
 # ---------------------------------------------------------------------------
@@ -135,8 +142,17 @@ PHYSIOLOGY_FEATURES = (
 )
 ALL_FEATURES = MOTION_FEATURES + GYRO_FEATURES + PHYSIOLOGY_FEATURES
 
-# Columns that must never be used as model inputs (CLAUDE.md §2.3: no label-derived features).
-FORBIDDEN_FEATURE_COLUMNS = FEATURE_TABLE_ID_COLUMNS
+# Window metadata that is label-derived, an index reference, or ground truth (D02/D03).
+WINDOW_META_COLUMNS = (
+    "recording_id", "duration", "majority_code", "n_distinct_labels",
+    "label_purity", "crosses_boundary", "eval_role",
+    "acc_i0", "acc_i1", "bvp_i0", "bvp_i1", "act_i0", "act_i1",
+    "hr_ref_k0", "hr_ref_k1", "n_hr_ref", "has_hr_ref", "hr_ref_bpm",
+)
+
+# Columns that must never be used as model inputs (CLAUDE.md §2.3: no label-derived features;
+# hr_ref_bpm is ECG ground truth).
+FORBIDDEN_FEATURE_COLUMNS = FEATURE_TABLE_ID_COLUMNS + WINDOW_META_COLUMNS
 
 
 # ---------------------------------------------------------------------------
