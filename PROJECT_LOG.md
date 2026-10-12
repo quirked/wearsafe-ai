@@ -1714,3 +1714,30 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: compute the dev choice, then the rest.
+
+## 2026-10-12 10:39 — SQI v2 — DEV choice recorded (before M03 v2)
+**What I did:** Ran `scripts/sqi_v2_select.py`. Outputs are in `results/2026-10-12_SQI_v2_demo_v0/`.
+
+**Files created/changed:** `scripts/sqi_v2_select.py`, the results folder, `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **DEV, motion-gated 30 s windows with a wrist HR:**
+
+  | SQI cut-off | MAE | Within ±10 bpm | Coverage |
+  |---|---|---|---|
+  | 0.50 | 4.71 bpm | 85.9% | 100% |
+  | 0.60 | 4.69 bpm | 86.0% | 99.9% |
+  | 0.70 | 4.44 bpm | 87.4% | 96.8% |
+  | 0.80 | 2.77 bpm | 96.3% | 67.9% |
+  | 0.90 | 1.52 bpm | 100% | 35.0% |
+
+- **TEST (report only):** coverage of gated windows v1 31.0% → v2 99.9%; MAE 1.2 → 4.4 bpm; within ±10 bpm 99.5% → 87.6%. Table soccer under v2: MAE 10.9, 55% within ±10.
+
+**Decisions made (and why):**
+- **Chosen cut-off: 0.50**, the lowest that meets MAE ≤ 5 and ≥ 85% within ±10. Chosen on dev only, by the pre-registered rule.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run M03 v2.
