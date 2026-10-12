@@ -81,7 +81,7 @@ def main():
     S.append("err = BVP HR − ECG HR (bpm). coverage = % of reference windows with a BVP HR estimate "
              "(≥ 2 valid IBIs). Metrics are over covered windows. Analysis output only — never a model feature.\n")
     for f, title in (("primary_overall.csv", "Overall"), ("primary_by_subject.csv", "Per subject"),
-                     ("primary_by_activity.csv", "Per activity (both subjects pooled)"),
+                     ("primary_by_activity.csv", "Per activity (all subjects in this run pooled)"),
                      ("primary_by_subject_activity.csv", "Per subject and activity"),
                      ("primary_by_sqi_bin.csv", "By SQI bin (is the SQI informative?)"),
                      ("primary_by_saturation.csv", "By fraction of saturated ACC samples in the 8 s window")):

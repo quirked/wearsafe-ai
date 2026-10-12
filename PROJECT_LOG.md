@@ -1,12 +1,12 @@
 # PROJECT_LOG — WearSafe AI
 
 ## Current status
-- **Current milestone:** D03 smoke test (S03, S06) DONE (45/45 checks), waiting for approval of the full D03 run. Design change after D00c accepted (FallAllD wrist = main motion source).
+- **Current milestone:** D03 — PPG-DaLiA features + wrist-PPG vs ECG — DONE (15 subjects, 318/318 checks), waiting for user review. No next milestone started.
 - **Environment:** conda env `wearsafe` (Python 3.11.17), `requirements.txt` + `requirements-lock.txt`.
-- **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2).
+- **Data version:** PPG-DaLiA Layer A `data/interim/ppg_dalia/normalized_signals_v1/`; Layer B `windows_v1/` (built with `config/windowing_v2.yaml`: purity 1.0 + 10 s boundary margin). Smoke versions `*_smoke_v1` and `windows_smoke_v2` are kept. Raw checksum manifest **v3** `metadata/raw_checksums_v3.csv` (3,112 files; v1 and v2 kept). BITS-2: `metadata/bits2_file_manifest.csv`, `metadata/bits2_exclusions.csv` (v1; the Q5 rule is defined for v2). PPG-DaLiA features v1: `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet` (config `features_v1.yaml`).
 - **Split version:** none.
-- **Last validated result:** D03 smoke 2026-10-12: features for 13,989 / 5,594 / 930 windows (motion / context / physiology); wrist HR vs ECG MAE 2.70 bpm (sitting) to 32.82 bpm (stairs); deterministic. Tests 53 passed / 1 skipped.
-- **Open items:** next FallAllD milestone must first verify 4096 counts/g (median low-motion |acc| within 1 ± 0.05 g, else STOP); harmonised format per `config/motion_harmonisation_v1.yaml`; position-only baseline and device-discrimination checks are required (CLAUDE.md §2.3); optional D03 report-only distance-to-boundary table.
+- **Last validated result:** D03 full 2026-10-12: wrist HR vs ECG MAE 10.64 ± 4.83 bpm across subjects (sitting 3.50, stairs 28.38); deterministic. Tests 53 passed / 1 skipped.
+- **Open items:** findings for later (v2 SQI threshold chosen on training subjects only; 10 s vs 30 s label-edge margin experiment); next FallAllD milestone must first verify 4096 counts/g; position-only baseline and device-discrimination checks are required (CLAUDE.md §2.3).
 ---
 
 ## 2026-10-11 23:55 — D00a — Data inventory (look-only)
@@ -726,3 +726,46 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** approved: the full D03 run, then stop.
+
+## 2026-10-12 05:44 — D03 — Full run done: features + wrist-PPG vs ECG (15 subjects, v1)
+**What I did:**
+- Ran D03 on all 15 subjects in tmux `sao`, env `wearsafe`, on CPU (no GPU needed).
+- A scratch trial run and the official run went in parallel, into separate outputs, with identical code. Logs: `logs/2026-10-12_D03_full.log`, `logs/2026-10-12_D03_full_trial.log`.
+- Generated the tables with `scripts/d03_report.py`.
+
+**Files created/changed:**
+- **Features:** `data/processed/{motion,context,physiology}/ppg_dalia_features_v1.parquet`, plus `data/processed/ppg_dalia_features_v1_run/`.
+- **HR comparison:** `results/2026-10-12_D03_bvp_hr_vs_ecg_v1/`.
+- **Reports:** `reports/D03_ppg_dalia_features_full.md`, `reports/D03_ppg_dalia_v1_tables.md`.
+- **Code:** `scripts/d03_report.py`, a heading text fix after the run (see Problems).
+
+**Checks run and results:**
+- **Invariant checks:** 318/318 passed.
+- **Rows:** motion 129,474, context 51,777, physiology 8,612 (= the D02 v1 window counts).
+- **Determinism:** 3/3 feature tables and 13/13 result CSVs are identical to the trial run.
+- **pytest:** 53 passed, 1 skipped.
+- **Wrist HR vs ECG (8 s/2 s):**
+  - 64,697 reference windows, coverage 99.97%;
+  - across subjects MAE 10.64 ± 4.83 bpm, bias −5.83 ± 6.80 bpm;
+  - per activity (mean ± std across subjects): sitting 3.50 ± 2.09, working 4.83 ± 2.46, driving 6.55 ± 3.16, lunch 6.88 ± 2.50, transient 11.85 ± 6.22, walking 16.07 ± 10.69, table soccer 16.37 ± 11.29, cycling 21.91 ± 17.56, stairs 28.38 ± 14.72 bpm.
+  - Per subject: best S07 at 5.77 bpm, worst S05 at 23.61.
+- **SQI:** informative (Spearman −0.419). MAE by SQI bin is 15.61 (0.5–0.7) down to 2.15 bpm (≥ 0.95).
+- **SQI 0.9:** keeps 26.4% of windows (MAE 3.96). The report-only sensitivity was produced and not used.
+- **physiology_uncertain:** 59.3–99.8% of 30 s windows per subject.
+- **hr_rel_baseline:** NaN in 50.35% of windows.
+- **Label-edge table (report-only):** relative to the activity core, 10–20 s from an edge: lunch 8.2×, working 2.6×, driving 2.1×, sitting 1.5×; at 20–40 s: lunch 6.2×, driving 1.6×. Walking, stairs and table soccer are insensitive. The 10 s rule and roles are unchanged.
+
+**Decisions made (and why):** none.
+- Per user instruction, two "findings for later" were recorded in the report, with no changes now:
+  1. a possible v2 SQI threshold chosen against ECG agreement on training subjects only;
+  2. a 10 s vs 30 s label-edge margin experiment reported side by side.
+
+**Problems / surprises:**
+- Stairs stay poor even in windows not flagged uncertain (MAE 27.9 bpm, n = 28).
+- Windows with ACC saturation have about twice the HR error.
+- One heading in the generated tables file reads "both subjects pooled" (left over from the smoke test). The table pools all 15 subjects. The script text is fixed; the generated file is not edited, and the report notes it.
+- My first report draft had wrong motion/context row totals. They were corrected against `run_info.json` and the D02 window tables before commit.
+
+**Open questions for the user:** none blocking. Next milestone to be chosen by the user.
+
+**Next step (waiting for user approval):** none started.
