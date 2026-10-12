@@ -769,3 +769,22 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** none blocking. Next milestone to be chosen by the user.
 
 **Next step (waiting for user approval):** none started.
+
+## 2026-10-12 05:54 — Findings for later (continued, user)
+**What I did:** Recorded two more user findings. Items 1–2 are in `reports/D03_ppg_dalia_features_full.md` ("Findings for later"). Nothing else changed.
+
+**Files created/changed:** `PROJECT_LOG.md` (this entry only).
+
+**Checks run and results:** none (recording only).
+
+**Decisions made (and why):** findings recorded as proposals; nothing decided.
+3. **The SQI can be fooled by rhythmic motion.** Stair windows rated "certain" still have ~28 bpm error (D03: 27.9 bpm, n = 28), likely because step cadence is mistaken for pulse.
+   - **Proposal for the fusion milestone**, to be decided before any fusion model or threshold exists: physiology is treated as uncertain when motion intensity is high, regardless of SQI (a fixed, motion-aware gate).
+4. **hr_rel_baseline is missing in ~50% of windows** (D03: 50.35%), because 5-minute histories often lack a good-quality window.
+   - **Proposal for a v2 feature version:** a longer or "last known good" baseline. Decided before modelling, not tuned on results.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** the D08 plan is approved; execution follows.
