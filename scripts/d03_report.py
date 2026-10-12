@@ -87,9 +87,19 @@ def main():
                      ("primary_by_saturation.csv", "By fraction of saturated ACC samples in the 8 s window")):
         S.append(f"**{title}**\n\n" + md(r(pd.read_csv(res / f))) + "\n")
     pw = pd.read_csv(res / "per_window_8s.csv")
-    S.append("Per-subject mean ± std of per-activity MAE: " + "; ".join(
-        f"{a}: {g.mae.mean():.2f} ± {g.mae.std(ddof=0):.2f}"
-        for a, g in pd.read_csv(res / "primary_by_subject_activity.csv").groupby("activity")) + "\n")
+    sa = pd.read_csv(res / "primary_by_subject_activity.csv")
+    rows = []
+    for a, g in sa.groupby("activity"):
+        rows.append({"activity": a, "subjects": len(g),
+                     "MAE mean ± std (bpm)": f"{g.mae.mean():.2f} ± {g.mae.std(ddof=0):.2f}",
+                     "bias mean ± std (bpm)": f"{g.bias.mean():.2f} ± {g.bias.std(ddof=0):.2f}",
+                     "within ±10 bpm mean ± std (%)": f"{g.pct_within_10.mean():.1f} ± {g.pct_within_10.std(ddof=0):.1f}",
+                     "MAE min–max": f"{g.mae.min():.2f}–{g.mae.max():.2f}"})
+    S.append("**Per activity, across subjects (each subject's MAE counted once; population std)**\n\n"
+             + md(pd.DataFrame(rows)) + "\n")
+    ps = pd.read_csv(res / "primary_by_subject.csv")
+    S.append(f"Across subjects (all activities): MAE {ps.mae.mean():.2f} ± {ps.mae.std(ddof=0):.2f} bpm, "
+             f"bias {ps.bias.mean():.2f} ± {ps.bias.std(ddof=0):.2f} bpm (n = {len(ps)} subjects).\n")
     S.append(f"Rank correlation of SQI and |err| (covered windows): "
              f"{pw[['ppg_sqi']].assign(abs_err=pw.err.abs()).dropna().corr(method='spearman').iloc[0, 1]:.3f}; "
              f"skewness SQI vs |err|: "

@@ -709,3 +709,20 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** whether to run the full D03 (15 subjects, tag `v1`).
 
 **Next step (waiting for user approval):** full D03 run. Not started.
+
+## 2026-10-12 05:17 — D03 — Start: full run (15 subjects, tag v1)
+**What I did:** Started the full D03 run (approved), with the same code and settings as the smoke test.
+- The only code change is in the report script (`scripts/d03_report.py`), which now prints a per-activity table of mean ± std across subjects (MAE, bias, % within ±10 bpm) and the across-subject overall MAE. Feature and HR-comparison code is unchanged since the smoke test.
+- An independent scratch re-run is used for the determinism check.
+
+**Files created/changed:** `scripts/d03_report.py`, `PROJECT_LOG.md`.
+
+**Checks run and results:** pytest passes before the run.
+
+**Decisions made (and why):** none.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: the full D03 run, then stop.
