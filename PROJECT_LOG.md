@@ -1464,3 +1464,22 @@ All outputs are tagged `demo_v0`; all results are PRELIMINARY. Runs on CPU (`CUD
 **Open questions for the user:** none.
 
 **Next step (waiting for user approval):** STOP.
+
+## 2026-10-12 09:30 — A02 — EDA definitions pre-registered (before any result)
+**What I did:** Wrote `config/a02_eda.yaml` before any A02 result. It is an analysis only; the demo app, models and rules are untouched.
+
+**Files created/changed:** `config/a02_eda.yaml`, `PROJECT_LOG.md`.
+
+**Checks run and results:** none yet.
+
+**Decisions made (and why)** (mine, overrulable):
+- **Causal decomposition:** a forward-only 0.05 Hz low-pass gives the tonic part; phasic = the rest. Zero-phase methods would leak future data into the pre-event values.
+- **SCR minimum amplitude:** 0.01 µS (Boucsein 2012).
+- **Artefact rule:** Kleckner et al. 2018 (< 0.05 µS, > 60 µS, |slope| > 10 µS/s).
+- **Events and controls:** reused from A01.
+
+**Problems / surprises:** none.
+
+**Open questions for the user:** none.
+
+**Next step (waiting for user approval):** approved: run A02.

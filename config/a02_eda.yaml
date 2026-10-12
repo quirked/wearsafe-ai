@@ -1,0 +1,23 @@
+# A02 — wrist EDA after jolts (PPG-DaLiA) and during stress (WESAD). ANALYSIS ONLY; nothing adopted.
+# Written BEFORE any A02 result (PROJECT_LOG). EDA is not part of the frozen MVP sensor set.
+version: 1
+signal: "E4 wrist EDA (pkl signal/wrist/EDA), 4 Hz (verified by the script), microsiemens"
+artefact_flag: "sample flagged if EDA < 0.05 uS (contact loss) or EDA > 60 uS or |slope| > 10 uS/s (Kleckner et al. 2018, IEEE TBME 65(7):1460-1467 quality rules)"
+decomposition: "CAUSAL split (mine, for the causality requirement): tonic = forward-only 1st-order Butterworth low-pass 0.05 Hz (scipy lfilter) of the raw EDA; phasic = EDA - tonic. Standard zero-phase methods (neurokit2 eda_phasic) use future samples and would leak into pre-event values"
+scr_detection: "neurokit2.eda_peaks(phasic, sampling_rate=4, method='neurokit', amplitude_min=0) on the whole recording, then keep SCRs with absolute amplitude >= 0.01 uS (minimum amplitude: Boucsein 2012, Electrodermal Activity, 2nd ed.; Dawson et al. 2007) and onset outside artefact-flagged samples"
+quick_response: "an SCR whose onset lies in [t + 1 s, t + 5 s]"
+phasic_change: "phasic area (sum * dt) in [t, t + 10 s] minus phasic area in [t - 10 s, t)"
+tonic_change: "tonic mean in [t + 5, t + 15 s] minus tonic mean in [t - 15, t - 5 s]"
+artefact_event: "event flagged if any artefact sample in [t - 15 s, t + 15 s]"
+causality: "pre-event values use only samples before t (causal filter; windows end before t)"
+part1:
+  events: "A01 events (V0-base false alarms) — results/2026-10-12_A01_post_event_hr/events.csv"
+  controls: "A01 matched controls (same method) — results/2026-10-12_A01_post_event_hr/controls.csv"
+  partition: "config/fusion_v1_partition.json: TEST final, dev separately"
+  baseline_scr_rate: "SCRs per minute of each activity (whole recordings, test subjects), excluding artefact samples' time"
+part2:
+  dataset: "WESAD wrist EDA, all 15 subjects (descriptive)"
+  conditions: {1: baseline, 2: stress, 3: amusement, 4: meditation}
+  measures: "SCR rate per minute, mean SCR amplitude, mean tonic level per subject x condition; mean +- std across subjects"
+  effect_size: "per subject Cohen's d of per-minute SCR rate, stress vs baseline (non-overlapping 60 s segments)"
+  note: "WESAD stress is sustained (TSST), not a single scare moment"
