@@ -1,0 +1,14 @@
+# WearSafe AI — direct dependencies, pinned. Environment: conda env 'wearsafe', Python 3.11.17
+# Recreate: conda create -n wearsafe python=3.11 && ~/miniconda3/envs/wearsafe/bin/python -m pip install -r requirements.txt
+# Full transitive pin list: requirements-lock.txt
+numpy==2.4.6
+pandas==2.3.3
+scipy==1.17.1
+h5py==3.16.0
+pyarrow==26.0.0
+scikit-learn==1.9.1
+xgboost==3.2.0
+neurokit2==0.2.13
+matplotlib==3.11.2
+pytest==9.1.1
+PyYAML==6.0.3

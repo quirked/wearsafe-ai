@@ -1,0 +1,95 @@
+# Label maps: source label -> derived classes (docs/WearSafe_AI_Context.md §15–§17).
+# Rules:
+#   - original_label is always kept; derived classes are added alongside it (CLAUDE.md §3).
+#   - null = no derived class (sample/window excluded from that task, NOT dropped from storage).
+#   - "TODO" = open decision for the user; code must refuse to build a task dataset
+#     while a needed mapping is TODO.
+#   - There is no "attack" class anywhere (CLAUDE.md §2.3).
+version: 1
+
+subject_id_format: "{PREFIX}_S{nn:02d}"   # PPGDALIA_S01, WESAD_S02, BITS2_S03
+subject_prefix:
+  ppg_dalia: PPGDALIA
+  wesad: WESAD
+  bits2: BITS2
+
+classes:
+  context_class: [stationary, low_activity, locomotion, vigorous_activity]
+  motion_event_class: [normal_adl, abrupt_event_proxy]
+  arousal_class: [low_arousal, high_arousal]
+
+ppg_dalia:
+  source: "SX.pkl['activity'] (4 Hz); codes verified in reports/D00a_data_inventory.md §1.4"
+  original_label:            # code -> name
+    0: transient             # includes CSV 'NO_ACTIVITY' and 'CLEAN_BASELINE'
+    1: sitting
+    2: stairs
+    3: table_soccer
+    4: cycling
+    5: driving
+    6: lunch
+    7: walking
+    8: working
+  context_class:             # context doc §16
+    transient: null
+    sitting: stationary
+    working: low_activity
+    driving: low_activity
+    walking: locomotion
+    stairs: vigorous_activity
+    cycling: vigorous_activity
+    table_soccer: vigorous_activity
+    lunch: TODO              # OPEN QUESTION (context doc §16/§41): "mixed / low_activity, to be decided after inspection"
+  hard_negative: [table_soccer, stairs, cycling]   # context doc §17
+  motion_event_class:        # PROPOSED (context doc §10: everyday movement); confirm with user
+    default: normal_adl
+    transient: normal_adl
+  arousal_class: null        # no arousal ground truth in PPG-DaLiA
+
+wesad:
+  source: "SX.pkl['label'] (700 Hz); codes from wesad_readme.pdf"
+  original_label:
+    0: transient
+    1: baseline
+    2: stress
+    3: amusement
+    4: meditation
+    5: ignore_5              # inferred bRead (D00a §2.4); docs: "should be ignored"
+    6: ignore_6              # inferred sRead
+    7: ignore_7              # inferred fRead
+  arousal_class:
+    transient: null
+    baseline: low_arousal
+    stress: high_arousal
+    amusement: TODO          # OPEN QUESTION: context doc §17 lists it as "non-danger high arousal" hard negative
+    meditation: TODO         # OPEN QUESTION: low_arousal or excluded?
+    ignore_5: null
+    ignore_6: null
+    ignore_7: null
+  hard_negative: [amusement]
+  context_class: null        # lab protocol, not daily-life context
+  motion_event_class: null
+
+bits2:
+  source: "Dataset/{adl,fall}/userN/userN_{adl,fall}K.csv; activity names UNKNOWN (no docs in download)"
+  original_label: "file stem, e.g. adl7 / fall3 (kept verbatim)"
+  event_type:
+    adl: adl
+    fall: fall
+  motion_event_class:        # context doc §9/§15: falls are abrupt-event PROXIES, not attacks
+    adl: normal_adl
+    fall: abrupt_event_proxy
+  context_class: TODO        # needs activity names for adl1-16 (missing documentation)
+  arousal_class: null
+
+units:                       # original -> canonical (context doc §20; D00a §4)
+  ppg_dalia:
+    wrist_acc: {original: g, canonical: m/s^2, factor: 9.80665}
+  wesad:
+    wrist_acc: {original: "1/64 g", canonical: m/s^2, factor: 0.15322890625}   # 9.80665 / 64
+  bits2:
+    acc: {original: "m/s^2 (inferred, gravity removed)", canonical: m/s^2, factor: 1.0}
+    acg: {original: "m/s^2 (inferred, incl. gravity)", canonical: m/s^2, factor: 1.0}
+    gyro: {original: "rad/s (inferred)", canonical: rad/s, factor: 1.0}
+    mgm: {original: "uT (inferred)", canonical: uT, factor: 1.0}
+    hrt: {original: bpm, canonical: bpm, factor: 1.0}

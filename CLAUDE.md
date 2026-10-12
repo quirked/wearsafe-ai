@@ -68,3 +68,45 @@ Each entry uses this format:
 ```
 
 Keep a short "Current status" block at the TOP of the file (current milestone, current data/split versions, last validated result). Updating that block is the only allowed edit to existing text in the log.
+
+## 5. Compute and environment rules
+- Use the dedicated conda environment **`wearsafe`** (Python 3.11). Every dependency is pinned in `requirements.txt`, and the environment is rebuilt from that file. Never install packages into the user's `sao` environment or into `base`. Run code as `~/miniconda3/envs/wearsafe/bin/python ...` or `conda run -n wearsafe ...`.
+- Run every experiment, training job or long-running script inside the tmux session named **`sao`**. Create it if missing (`tmux new-session -d -s sao`). Never kill that session or any other tmux session. Save stdout/stderr to `logs/<YYYY-MM-DD>_<milestone>_<name>.log`.
+- Before any experiment:
+  1. Run `nvidia-smi`.
+  2. Choose a GPU that is currently free (low memory use, no other processes).
+  3. Set `CUDA_VISIBLE_DEVICES` to it.
+  4. Record the GPU choice and the `nvidia-smi` snapshot in `PROJECT_LOG.md`.
+- If no GPU is free, say so and use CPU (`CUDA_VISIBLE_DEVICES=""`). Classical models are fine on CPU. Never kill or interfere with other users' processes.
+
+## 6. Verified dataset facts (from `reports/D00a_data_inventory.md`; re-verify before relying on anything marked UNVERIFIED)
+
+### PPG-DaLiA
+15 subjects (S1–S15), `SX.pkl` (load with `encoding="latin1"`).
+- **Wrist (Empatica E4, non-dominant):** ACC 32 Hz, **stored in g in the pkl** (raw E4 CSV is 1/64 g; saturates at ±2 g). BVP 64 Hz. EDA and TEMP 4 Hz.
+- **Chest (RespiBAN):** 700 Hz. EDA, EMG and Temp are dummy constants; discard them.
+- **Labels:**
+  - `activity` at 4 Hz: 0 transient, 1 sitting, 2 stairs, 3 table soccer, 4 cycling, 5 driving, 6 lunch, 7 walking, 8 working. `CLEAN_BASELINE` in the CSV is coded 0.
+  - `label` is the ECG-derived HR ground truth, one value per 8 s window with a 2 s shift.
+- **Timing:** all pkl signals share a common start and duration. There are no timestamps; time = index / rate.
+- S6 is valid only to 5250 s; its activity CSV extends beyond that.
+
+### WESAD
+15 subjects (S2–S11, S13–S17; S1 and S12 are absent by design), `SX.pkl` (latin1).
+- **Wrist E4:** same rates as PPG-DaLiA, but **ACC is stored as raw 1/64 g integer counts. Divide by 64 to get g.** This is the same device as PPG-DaLiA, with a 64× scale difference.
+- **Labels** at 700 Hz: 0 transient, 1 baseline, 2 stress, 3 amusement, 4 meditation (×2 sessions), 5/6/7 ignore (inferred: reading periods).
+- There is no HR ground truth.
+- quest.csv times are offset from the pkl by a constant 33–155 s per subject. **Use the pkl labels only.**
+- S3 chest Temp contains −273.15.
+
+### BITS-2
+41 subjects (user1–41) × 24 activity files each = 984 CSVs: 16 ADL (`adl1–16`) + 8 falls (`fall1–8`).
+- **Format:** each file contains **IMU and HR together** (blocks `acc`, `acg`, `gyro`, `mgm`, `hrt`). There are no separate HR files.
+- **Units (inferred):** m/s², with `acc` gravity-removed and `acg` including gravity. Gyro in rad/s. Magnetometer in µT. HR in bpm with an Android status code (3 / 0 / −1).
+- **Timestamp damage:** about 99% of timestamps were saved with ≤3 significant digits, so the IMU sampling rate is **unverified and appears irregular** (evidence ranges from ~5 to 50 Hz). HR is ≈1 Hz. Do not assume a fixed IMU rate.
+- **No activity names or device documentation are in the download.**
+- **"Each activity repeated 5 times": UNVERIFIED.** The user reported this from a paper. However, `docs/papers/BITS2-paper.pdf` is actually the PerHeart dataset paper (Kołakowski et al., Data 2026). It cites BITS-2 only in a summary table (41 participants, age 27.9 ± 8.6, lab falls) and does not mention repetitions. The files hold one CSV per subject × activity, with no trial field.
+- **Known defects:** user28 fall4 == fall8 (byte-identical). user5_adl2 and user40_adl4 share an identical `mgm` block. user7_fall3 contains two recordings. Four files are named `user31_.fallN.csv`. 181 files have fewer than 10 HR rows.
+
+### Cross-dataset
+Wrist ACC units differ by dataset (g / 1/64 g / m/s²). The canonical unit is m/s². Only BITS-2 has a gyroscope. Only PPG-DaLiA and WESAD have BVP/PPG.

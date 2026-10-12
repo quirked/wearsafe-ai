@@ -13,3 +13,5 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .venv/
+# Logs: keep the folder, not the log files
+logs/*.log

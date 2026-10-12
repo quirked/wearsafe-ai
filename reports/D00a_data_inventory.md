@@ -418,3 +418,28 @@ python scripts/inspect/inspect_ppg_dalia.py      # ~10 min, loads one 1.0–1.7 
 python scripts/inspect/inspect_wesad.py          # ~10 min
 python scripts/inspect/inspect_bits2.py
 ```
+
+---
+
+## 9. Differences from the context document (added 2026-10-12, milestone D00)
+
+*This section was appended after `docs/WearSafe_AI_Context.md` became available. It replaces the placeholder in §5. Section numbers like "§8" refer to the context document. Tags: **[read]** = verified in D00a; **[inferred]** = interpretation.*
+
+| # | Context doc says | What the data shows | Impact |
+|---|---|---|---|
+| 1 | §8: BITS-2 has wrist ACC, gyro and HR | **[read]** Yes. It also has a **magnetometer** (`mgm`) and **two accelerometer variants**: `acc` (gravity removed) and `acg` (with gravity) **[inferred]**. The **wrist location and device are not documented** in the download. | Pick `acg` or `acc` explicitly. Wrist placement needs a source. |
+| 2 | §9: BITS-2 provides motion and HR "from the same trial", allowing synchronous analysis | **[read]** True at file level: IMU and HR are in the same file, and their time ranges overlap in all 984 files. However, ~99% of timestamps are rounded to ≤3 significant digits, so the **within-file alignment of HR to motion is only coarse** (rounding steps of 1–1000 s). | §19 pre/during/post-event HR features may not be computable reliably. This needs a decision in D05. |
+| 3 | §20: "motion canonical rate 20–32 Hz, because BITS-2 is lower-rate" | **[read]** The BITS-2 IMU rate is **unverified and irregular**. Surviving evidence ranges from ~5 Hz (median rows/span) to ~50 Hz (one file at 20 ms spacing). E4 ACC is 32 Hz. | "BITS-2 is lower-rate" is not established. Resampling BITS-2 depends on trustworthy timestamps. |
+| 4 | §8, §11: datasets share a logical schema; canonical acc in m/s² (§20) | **[read]** Stored wrist ACC units differ: PPG-DaLiA pkl **g**, WESAD pkl **1/64 g** (×64 vs DaLiA), BITS-2 m/s² **[inferred]**. | Conversion factors are now in `config/label_maps.yaml`. A missed conversion silently breaks motion features. |
+| 5 | §18/§27: abrupt-motion detection on the wrist | **[read]** E4 ACC **saturates at ±2 g** in every PPG-DaLiA and WESAD subject. BITS-2 reaches ~±8 g. | Peak and jerk features clip on E4 data. Motion models trained on BITS-2 may not transfer one-to-one to E4 hard negatives (§17). |
+| 6 | §16: context map covers the 8 PPG-DaLiA activities | **[read]** There is also a **transient code 0** (22–44% of each recording) and a `CLEAN_BASELINE` CSV segment coded 0. Neither is mentioned in §16. | The transient is mapped to `null` (excluded from context training, kept in storage, still counted for false-alert evaluation **[proposed]**). `lunch` remains TODO, as §16/§41 say. |
+| 7 | §15/§17/§23: arousal = baseline/low vs stress/high; amusement is a hard negative | **[read]** WESAD also has **meditation (×2)** and codes **5/6/7** ("ignore"). The doc does not say where meditation or amusement go. | `amusement` and `meditation` are left TODO in `config/label_maps.yaml`; codes 5/6/7 are `null`. |
+| 8 | §8: WESAD row "PPG/HR: BVP/PPG" | **[read]** WESAD has BVP but **no HR ground truth** (only the E4-derived HR.csv, which its docs say to ignore). PPG-DaLiA, by contrast, has ECG-derived HR ground truth (8 s / 2 s), which the doc doesn't mention. | WESAD HR must be derived (ECG or BVP), with the method fitted on training folds only. DaLiA's ECG-HR is an asset for PPG-quality work (§26). |
+| 9 | §14/§26: PPG signal-quality score | **[read]** BITS-2 has **no PPG waveform**, only HR values with an Android status code (3 / 0 / −1). HR is sparse: 181 files have fewer than 10 HR rows. | A PPG SQI is not computable for BITS-2. The status code is the only quality proxy, and HR is often missing. |
+| 10 | §12: Layer A has a `timestamp` per sample and a `sampling_rate` | **[read]** DaLiA and WESAD pkls have **no timestamps** (time = index / rate). BITS-2 has timestamps, but they are rounded and sometimes non-monotonic. | `src/wearsafe/schemas.py` allows `sampling_rate=None` (irregular/unverified) and stores time as seconds from recording start. |
+| 11 | §42: "BITS-2 — Zenodo record and associated data paper" | **[read]** No BITS-2 documentation is in the download. `docs/papers/BITS2-paper.pdf` is the **PerHeart** paper (Kołakowski et al., *Data* 2026, heart-failure patients). It cites BITS-2 only in its Table 1 (41 participants, age 27.9 ± 8.6, lab falls), which matches our 41 users. | Activity names, device, rates and the "5 repetitions per activity" claim (from the user) all remain **unverified**. Our files show one CSV per subject × activity with no trial field. |
+| 12 | §19: BITS-2 event-centred records with `event_start/peak/end` | **[read]** Files are not annotated with event times. One file holds two recordings (user7_fall3). There is a byte-identical duplicate (user28 fall4/fall8) and a cross-subject duplicated `mgm` block (user5_adl2 / user40_adl4). | Event times would have to be detected from the signal. Duplicates must be resolved before splits (§22 leakage). |
+| 13 | §21: `data/raw/upfall/`, `data/raw/fallalld/` | **[read]** Not downloaded. | Not needed until §40 steps 4–5. Folders were not created, because raw is read-only. |
+| 14 | §22: namespaced IDs `PPGDALIA_S01` etc. | **[read]** The IDs map cleanly. WESAD numbers are non-contiguous (no S1, S12). BITS-2 users 1–41 → `BITS2_S01..S41`. | None. |
+
+Items in §41 (open decisions) are unchanged by this inventory, except that the **motion canonical rate** (20/25/32 Hz) now also depends on resolving the BITS-2 timestamp problem.
