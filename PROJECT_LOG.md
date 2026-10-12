@@ -878,3 +878,34 @@ User decisions on the D00b questions (user's wording kept):
 **Open questions for the user:** decision 12 (39 clips), and the overlap handling (a/b/c).
 
 **Next step (waiting for user approval):** approved: the smoke build on S01 + S04, then stop.
+
+## 2026-10-12 06:06 — D08 — Smoke run STOPPED: edge-artefact invariant failed (diagnosed; nothing changed)
+**What I did:**
+- Started the D08 smoke run (S01 + S04) in tmux `sao` (log `logs/2026-10-12_D08_smoke.log`).
+- The scratch trial build passed all 15 build checks (344 records, 6,536 windows).
+- The trial feature step then **failed the edge-artefact invariant**: on unclipped cyclic-ADL clips, the last window's median `acc_mag_mean` was 2.08% below the interior, against a limit of < 1%.
+- Per CLAUDE.md §3 the run stopped. The official build, features and split manifest were **not** run, so nothing was written under `data/interim/fallalld/`, `data/processed/` or `splits/`. The trial outputs exist only in the scratchpad.
+- Ran a read-only diagnostic (`scripts/d08_edge_diagnostic.py`, log `logs/2026-10-12_D08_edge_diagnostic.log`). It applies the same comparison to the native 238 Hz raw data (no filter) and to the 32 Hz output.
+
+**Files created/changed:** `scripts/d08_edge_diagnostic.py`, `PROJECT_LOG.md`.
+
+**Checks run and results:**
+- **The deviation is in the raw recordings, not caused by resampling:**
+  - smoke subjects: native 238 Hz last window −2.04% vs 32 Hz −2.08%;
+  - all 13 wrist subjects (413 cyclic-ADL clips): native first −2.44% / last −2.59%, vs 32 Hz −2.39% / −2.58%.
+  - Resampling changes the edge windows by ≤ ~0.15 percentage points.
+- **Clip-centred structure in ADL clips too:**
+  - the median window |a| profile over all cyclic-ADL clips (start 0..18 s, % vs interior) rises to **+4–5% at 8–10 s** and falls to −2.5% at both ends, at native rate as well;
+  - per activity the edge deviation ranges from −3.2% (24 jogging slowly, 6 waving) to +3.4% (36 downstairs quickly, first window).
+  - So FallAllD ADL clips also appear to be cut around a centre [inferred], not only the fall clips.
+
+**Decisions made (and why):** none. The 1% threshold and the check were NOT changed after failing.
+
+**Problems / surprises:** as written, the check cannot separate a resampling artefact from real structure in the clips.
+
+**Open questions for the user:**
+1. **Redefine the edge-artefact invariant?** Proposal: compare each edge window of the resampled signal with the same window of the native 238 Hz signal (a resampling-only artefact; limit < 1%). The real clip-centre structure is reported separately.
+2. **Position-leakage test (b) will likely NOT be at chance**, because the clip-centre structure is in the data itself (ADL clips are more intense at the centre). The position-matched subset (a) and the clip-level metrics (c) are unaffected. How should (b) be interpreted or redefined?
+3. Still pending from the pre-checks: decision 12 (39 clips), and the overlap handling (a/b/c).
+
+**Next step (waiting for user approval):** STOPPED. No D08 data outputs written; awaiting the user's decision on the check.
